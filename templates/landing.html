@@ -15,7 +15,7 @@
 	function showFBLoginDialog() {
 		FB.login(function(response) {
 			if (response.status === 'connected') {
-				startServerSession();
+				startServerSession(response);
 			}
 			else {
 				console.log(response);
@@ -26,7 +26,7 @@
 	function fbLogin() {
 		FB.getLoginStatus(function(response) {
 			if (response.status === 'connected') {
-				startServerSession();
+				startServerSession(response);
 			} else if (response.status === 'not_authorized') {
 				showFBLoginDialog();
 			} else {
@@ -35,8 +35,11 @@
 		});
 	}
 
-	function startServerSession() {
-		console.log('Starting server session');
+	function startServerSession(response) {
+		var params = {"fb_id":response.authResponse.userID,"accessToken":response.authResponse.accessToken}
+		$.post( "/rest/fb_login", params, function() {
+			
+		})
 	}
 
   window.fbAsyncInit = function() {
@@ -48,7 +51,7 @@
 
     FB.getLoginStatus(function(response) {
 		if (response.status === 'connected') {
-			startServerSession();
+			startServerSession(response);
 		}
 	});
   };
