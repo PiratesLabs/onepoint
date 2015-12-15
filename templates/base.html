@@ -5,11 +5,16 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta name="description" content="OnePoint QR Code">
         <link href="/assets/css/sass_out/base.css" type="text/css" rel="stylesheet">
-        <script src="/assets/js/jquery.js"></script>
+        <!-- Bootstrap -->
+        <link href="/assets/css/bootstrap.min.css" rel="stylesheet">
+        <link href="/assets/css/font-awesome.min.css" type="text/css" rel="stylesheet">
         {% block Styles %}{% endblock %}
         <title>{% block Title %}OnePoint{% endblock %}</title>
     </head>
     <body>
         {% block Content %}{% endblock %}
+        <script src="/assets/js/jquery.js"></script>
+        <script src="/assets/js/bootstrap.min.js"></script>
+        {% block Scripts %}{% endblock %}
     </body>
 </html>
