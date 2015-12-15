@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block Styles %}
+	<link href="/assets/css/sass_out/bar_base.css" type="text/css" rel="stylesheet">
+	{% block BarStyles %}
+	{% endblock%}
+{% endblock %}
+{% block Content %}
+	{% include "components/top_nav.html" %}
+	{% block BarContent%}
+	{% endblock %}
+	{% include "components/bottom_menu.html" %}
+{% endblock %}

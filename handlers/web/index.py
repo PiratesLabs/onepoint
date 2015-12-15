@@ -21,9 +21,9 @@ class QRCodePage(WebRequestHandler):
         template_values = {}
         self.write(self.get_rendered_html(path, template_values), 200)
 
-class AppliancePage(WebRequestHandler):
+class AppliancesPage(WebRequestHandler):
     def get(self):
-        path = 'appliance.html'
+        path = 'appliances.html'
         template_values = {}
         self.write(self.get_rendered_html(path, template_values), 200)
 
