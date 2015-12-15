@@ -3,6 +3,14 @@
 <link href="/assets/css/sass_out/landing.css" type="text/css" rel="stylesheet">
 {% endblock %}
 {% block Content %}
+<div>
+	<img src="/assets/img/landing.png"><br>
+	<button onclick="fbLogin()"><a href="#"><i class="fa fa-facebook fa-fw"></i>Connect via Facebook</a></button><br>
+	<button><a href="/qr_code">Get Started</a></button>
+	<div style="background-color: transparent;"><a href="" style="float:left;">Create Account</a><a href="" style="float:right;">Need Help?</a></div>
+</div>
+{% endblock %}
+{% block Scripts %}
 <script>
 	function showFBLoginDialog() {
 		FB.login(function(response) {
@@ -53,14 +61,4 @@
      fjs.parentNode.insertBefore(js, fjs);
    }(document, 'script', 'facebook-jssdk'));
 </script>
-
-<div>
-	<img src="/assets/img/landing.png">
-	<div><span></span><img src="/assets/img/btnimg1.png"><input type="text" placeholder="Username"></input></div>
-	<div><span></span><img src="/assets/img/btnimg2.png"><input type="text" placeholder="Password"></input></div>
-	<button onclick="fbLogin()"><a href="#">Connect via Facebook</a></button>
-	<button><a href="/qr_code">Get Started</a></button>
-	<div style="background-color: transparent;"><a href="" style="float:left;">Create Account</a><a href="" style="float:right;">Need Help?</a></div>
-</div>
-
 {% endblock %}
