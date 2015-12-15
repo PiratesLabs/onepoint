@@ -49,6 +49,9 @@ handlers:
   upload: assets/img/favicon\.png
 
 ######################### WEB ENDPOINTS #########################
+- url: /rest/fb_login
+  script: handlers.rest.login.app
+  secure: never
 
 - url: /.*
   script: handlers.web.app
