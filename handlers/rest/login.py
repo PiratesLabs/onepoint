@@ -16,6 +16,7 @@ class FacebookLoginHandler(WebRequestHandler):
 
     def post(self):
         if self.any_previous_sessions():
+            print("Returning")
             return
         user_deets = self.get_user_details_from_fb()
         member = Member.get_by_key_name(user_deets['id'])
