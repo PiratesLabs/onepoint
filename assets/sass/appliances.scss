@@ -6,7 +6,8 @@ html {
     		text-align:center;
     		margin:auto;
     		padding-top: 100px;
-    		padding-bottom: 100px;
+            color: #579EDE;
+            font-weight: bold;
 
     		button {
     			margin: auto;
@@ -18,6 +19,30 @@ html {
     			margin-top: 20px;
     			background-color: #579EDE;
     		}
+
+            .row {
+                min-height: 200px;
+
+                [class*=col-] {
+                    min-height: 200px;
+                }
+            }
+
+            .nav-tabs>li {
+                a {
+                    color: #ffffff;
+                }
+                padding: 0px;
+            }
+
+            .nav-tabs>li.active {
+                background-color: #ffffff;
+                border-top: 1px solid lightgray;
+                a {
+                    color: #579EDE;
+                    border: none;
+                }
+            }
     	}
     }
 }
