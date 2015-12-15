@@ -1,13 +1,13 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"> 
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="OnePoint">
-    {% block Styles %}{% endblock %}
-    <title>{% block Title %}OnePoint{% endblock %}</title>
-</head>
-<body>
-    <p>Test</p>
-</body>
-</html>
+{% extends "base.html" %}
+{% block Styles %}
+<link href="/assets/css/sass_out/landing.css" type="text/css" rel="stylesheet">
+{% endblock %}
+{% block Content %}
+<div>
+	<img src="/assets/img/landing.png">
+	<div><span></span><img src="/assets/img/btnimg1.png"><input type="text" placeholder="Username"></input></div>
+	<div><span></span><img src="/assets/img/btnimg2.png"><input type="text" placeholder="Password"></input></div>
+	<button><a href="/qr_code">Get Started</a></button>
+	<div style="background-color: transparent;"><a href="" style="float:left;">Create Account</a><a href="" style="float:right;">Need Help?</a></div>
+</div>
+{% endblock %}

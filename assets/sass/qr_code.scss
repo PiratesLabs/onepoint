@@ -1,0 +1,76 @@
+@import "partials/_images.scss";
+@import "partials/_standards.scss";
+@import "partials/_constants.scss";
+
+html {
+    body {
+    	.barone {
+    		background-color: #579EDE;
+    		height: 50px;
+    		width: 100%;
+    		text-align: center;
+    		position: relative;
+
+    		.img-helper {
+    			display: inline-block;
+				height: 100%;
+				vertical-align: middle;
+    		}
+
+    		.logo {
+    			margin:auto;
+    			vertical-align: middle;
+    		}
+
+    		div {
+    			position: absolute;
+    			z-index: 999;
+    		}
+
+    		@media (max-width: 767px) {
+                font-size: 10px;
+            }
+    	}
+    	.bartwo {
+    		background-color: #6BAFEB;
+    		height: 50px;
+    		width: 100%;
+    	}
+    	.barone, .bartwo {
+    		text-align: center;
+    		color: #ffffff;
+    		line-height: 50px;
+    	}
+
+    	.content {
+    		text-align:center;
+    		margin:auto;
+    		padding-top: 100px;
+    		padding-bottom: 100px;
+
+    		button {
+    			margin: auto;
+    			color: #ffffff;
+    			border: none;
+    			border-radius: 25px;
+    			width: 250px;
+    			height: 40px;
+    			margin-top: 20px;
+    			background-color: #579EDE;
+    		}
+    	}
+
+    	.barthree {
+    		background-color: #424242;
+    		height: 50px;
+    		width: 100%;
+    		text-align: center;
+
+    		img {
+    			margin: auto;
+    			max-height: 100%;
+    			max-width: 15%;
+    		}
+    	}
+    }
+}

@@ -1,0 +1,58 @@
+$hero_font: 'Oswald', sans-serif;
+$hero_font_size: 38px;
+$hero_font_weight: 300;
+
+$oswald_font: 'Oswald', sans-serif;
+$h1_font_size: 38px;
+$h1_font_size_mob: 18px;
+$h2_font_size: 30px;
+$h2_font_size_mob: 23px;
+$h2_font_weight: 400;
+$h2_text_transform: uppercase;
+$h3_font_size: 18px;
+$h3_font_size_mob: 14px;
+$h3_font_weight: 500;
+$normal_font_size: 14px;
+$normal_font_size_mob: 12px;
+$normal_font_weight: 300;
+$merriweather_font: 'Merriweather', sans-serif;
+$button_font_size: 16px;
+$button_font_weight: 300;
+
+@mixin font_definition($font,$font_size,$font_weight,$text_transform: none,$line_height: 1.5)
+{
+	text-transform: $text_transform;
+	font:{
+		family: $font;
+		weight: $font_weight;
+		size: $font_size;
+	}
+	line-height: $line_height;
+}
+
+h2, .header-2{
+	@include font_definition($oswald_font,$h2_font_size,$h2_font_weight,$h2_text_transform);
+	text-align: center;
+}
+
+h3, .header-3{
+	@include font_definition($oswald_font,$h3_font_size,$h3_font_weight);
+}
+
+.normal-copy {
+    @include font_definition($merriweather_font,$normal_font_size,$normal_font_weight);
+}
+
+@media (max-width: 767px) {
+    h2, .header-2{
+        @include font_definition($oswald_font,$h2_font_size_mob,$h2_font_weight,$h2_text_transform);
+    }
+
+    h3, .header-3{
+        @include font_definition($oswald_font,$h3_font_size_mob,$h3_font_weight);
+    }
+
+    .normal-copy {
+        @include font_definition($merriweather_font,$normal_font_size_mob,$normal_font_weight);
+    }
+}

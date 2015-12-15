@@ -20,7 +20,33 @@ handlers:
 
 ######################### REST ENDPOINTS #########################
 
+- url: /api/appliance/.*
+  script: handlers.rest.appliance.app
+
 ######################### STATIC ENDPOINTS #########################
+
+- url: /assets/css
+  static_dir: assets/css
+
+- url: /assets/js
+  static_dir: assets/js
+
+- url: /assets/img
+  static_dir: assets/img
+
+- url: /assets/fonts
+  static_dir: assets/fonts
+
+- url: /assets/scss
+  static_dir: assets/scss
+
+- url: /assets
+  static_dir: assets
+
+- url: /favicon\.ico
+  mime_type: image/png
+  static_files: assets/img/favicon.png
+  upload: assets/img/favicon\.png
 
 ######################### WEB ENDPOINTS #########################
 

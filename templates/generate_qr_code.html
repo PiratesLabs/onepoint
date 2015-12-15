@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="description" content="OnePoint QR Code">
+        <script src="/assets/js/jquery.js"></script>
+    </head>
+    <body>
+        <div style="text-align:center;margin:auto;">
+            <img src="" id="qr-code-img" width="100" height="100" style="display: none;border:100px solid #ffffff;"><br>
+            Enter Appliance Name: <input type="text" id="app-name" name="app_name" value=""><br>
+            Enter Appliance Code: <input type="text" id="app-id" name="app_id" value=""><br>
+            <input type="submit" onclick="generate_qr_code()">
+        </div>
+        <script type="text/javascript">
+            function generate_qr_code() {
+                $.post('/api/appliance/add', {'id':$('#app-id').val(), 'name':$('#app-name').val()});
+                $('#qr-code-img').hide();
+                $('#qr-code-img').attr('src','');
+                $('#qr-code-img').attr('src','https://api.qrserver.com/v1/create-qr-code/?data='+$('#app-id').val()+'&amp;size=100x100');
+                $('#qr-code-img').show();
+            }
+        </script>
+    </body>
+</html>

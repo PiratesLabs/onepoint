@@ -1,0 +1,16 @@
+.cover-image {
+	-webkit-background-size: cover;
+	-moz-background-size: cover;
+	-o-background-size: cover;
+	background: {
+		size: cover;
+		repeat: no-repeat;
+		position: center center;
+//		attachment: fixed;
+	}
+}
+.background-image {
+	@extend .cover-image;
+	height:100vh;
+	width:100vw;
+}

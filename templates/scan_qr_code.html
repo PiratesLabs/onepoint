@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="description" content="Pirates">
+        <script src="/assets/js/jquery.js"></script>
+        <script type="text/javascript" src="/assets/js/QRScanJS/qrscan.js"></script>
+    </head>
+    <body>
+        <div style="text-align:center;margin:auto;">
+            <video autoplay="true" id="webcam" width=320 style="margin:auto;"></video>
+            <p id="scanning">Scanning ...</p>
+            <p id="result"></p>
+            <p id="appliance"></p>
+        </div>
+        <script type="text/javascript">
+            QRReader.init("#webcam", "/assets/js/QRScanJS/");
+            function scan() {
+                QRReader.scan(function (result) {
+                    $('#scanning').hide();
+                    $('#result').html("");
+                    $('#appliance').html("");
+                    $.post('/api/appliance/get', {'id':result}).done(function(data){
+                        $('#result').html("Application Code: "+data.id);
+                        $('#appliance').html("Application Name: "+data.name);
+                    })
+                    setTimeout(scan, 200);
+                });
+            }
+            scan();
+        </script>
+    </body>
+</html>

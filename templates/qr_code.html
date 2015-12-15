@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block Styles %}
+<link href="/assets/css/sass_out/qr_code.css" type="text/css" rel="stylesheet">
+{% endblock %}
+{% block Content %}
+<div class="barone">
+	<div style="left:49%;"><span class="img-helper"></span><img class="logo" src="/assets/img/logo.png"></div>
+	<div style="left:90%;"><span style="float:right;">Columbia <img  style="float:right;" src="/assets/img/pic.png"></span></div>
+</div>
+<div class="bartwo">SCHEDULE REPAIR</div>
+<div class="content">
+    <img src="/assets/img/qr_code.png" height="250" width="250" style="border:25% solid #ffffff;"><br>
+    <a href="/generate_qr_code"><button>Generate QR Code</button></a><br>
+    <a href="/appliance"><button>Scan Appliance</button></a><br>
+</div>
+<div class="barthree">
+	<a href=""><img src="/assets/img/appliances.png"></a>
+	<a href=""><img src="/assets/img/providers.png"></a>
+	<a href=""><img src="/assets/img/messages.png"></a>
+	<a href=""><img src="/assets/img/workorders.png"></a>
+	<a href=""><img src="/assets/img/repairs.png"></a>
+</div>
+{% endblock %}
