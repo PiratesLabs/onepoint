@@ -1,6 +1,6 @@
 import webapp2
 from .web_request_handler import WebRequestHandler
-from .index import IndexPage, GenerateQRCodePage, QRCodePage, AppliancesPage, ScanQRCodePage
+from .index import IndexPage, GenerateQRCodePage, QRCodePage, AppliancesPage, ProvidersPage, ScanQRCodePage
 from django import template
 
 app = webapp2.WSGIApplication([
@@ -8,5 +8,6 @@ app = webapp2.WSGIApplication([
     ('/generate_qr_code', GenerateQRCodePage),
     ('/qr_code', QRCodePage),
     ('/appliances', AppliancesPage),
+    ('/providers', ProvidersPage),
     ('/', IndexPage)
 ])

@@ -27,6 +27,12 @@ class AppliancesPage(WebRequestHandler):
         template_values = {}
         self.write(self.get_rendered_html(path, template_values), 200)
 
+class ProvidersPage(WebRequestHandler):
+    def get(self):
+        path = 'providers.html'
+        template_values = {}
+        self.write(self.get_rendered_html(path, template_values), 200)
+
 class IndexPage(WebRequestHandler):
     def get(self):
         path = 'landing.html'

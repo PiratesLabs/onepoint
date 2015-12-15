@@ -21,10 +21,10 @@ html {
     		}
 
             .row {
-                min-height: 200px;
+                min-height: 300px;
 
                 [class*=col-] {
-                    min-height: 200px;
+                    min-height: 300px;
                 }
             }
 
