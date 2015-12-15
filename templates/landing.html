@@ -3,11 +3,64 @@
 <link href="/assets/css/sass_out/landing.css" type="text/css" rel="stylesheet">
 {% endblock %}
 {% block Content %}
+<script>
+	function showFBLoginDialog() {
+		FB.login(function(response) {
+			if (response.status === 'connected') {
+				startServerSession();
+			}
+			else {
+				console.log(response);
+			}
+		}, {scope: 'public_profile,email'});
+	}
+
+	function fbLogin() {
+		FB.getLoginStatus(function(response) {
+			if (response.status === 'connected') {
+				startServerSession();
+			} else if (response.status === 'not_authorized') {
+				showFBLoginDialog();
+			} else {
+				showFBLoginDialog();
+			}
+		});
+	}
+
+	function startServerSession() {
+		console.log('Starting server session');
+	}
+
+  window.fbAsyncInit = function() {
+    FB.init({
+      appId      : '1073004966052452',
+      xfbml      : true,
+      version    : 'v2.5'
+    });
+
+    FB.getLoginStatus(function(response) {
+		if (response.status === 'connected') {
+			startServerSession();
+		}
+	});
+  };
+
+  (function(d, s, id){
+     var js, fjs = d.getElementsByTagName(s)[0];
+     if (d.getElementById(id)) {return;}
+     js = d.createElement(s); js.id = id;
+     js.src = "//connect.facebook.net/en_US/sdk.js";
+     fjs.parentNode.insertBefore(js, fjs);
+   }(document, 'script', 'facebook-jssdk'));
+</script>
+
 <div>
 	<img src="/assets/img/landing.png">
 	<div><span></span><img src="/assets/img/btnimg1.png"><input type="text" placeholder="Username"></input></div>
 	<div><span></span><img src="/assets/img/btnimg2.png"><input type="text" placeholder="Password"></input></div>
+	<button onclick="fbLogin()"><a href="#">Connect via Facebook</a></button>
 	<button><a href="/qr_code">Get Started</a></button>
 	<div style="background-color: transparent;"><a href="" style="float:left;">Create Account</a><a href="" style="float:right;">Need Help?</a></div>
 </div>
+
 {% endblock %}
