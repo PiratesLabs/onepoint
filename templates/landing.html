@@ -38,7 +38,7 @@
 	function startServerSession(response) {
 		var params = {"fb_id":response.authResponse.userID,"accessToken":response.authResponse.accessToken}
 		$.post( "/rest/fb_login", params, function() {
-			window.location="/appliances"
+			window.location="/appliance/list"
 		})
 	}
 

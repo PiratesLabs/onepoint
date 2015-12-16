@@ -10,6 +10,13 @@ class CreateStorePage(WebRequestHandler):
         template_values = {}
         self.write(self.get_rendered_html(path, template_values), 200)
 
+class CreateAppliancePage(WebRequestHandler):
+    def get(self):
+        path = 'create_appliance.html'
+        template_values = {}
+        self.write(self.get_rendered_html(path, template_values), 200)
+
 app = webapp2.WSGIApplication([
-    ('/data_creation/create_store', CreateStorePage)
+    ('/data_creation/create_store', CreateStorePage),
+    ('/data_creation/create_appliance', CreateAppliancePage)
 ])

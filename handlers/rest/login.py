@@ -19,10 +19,12 @@ class FacebookLoginHandler(WebRequestHandler):
             print("Returning")
             return
         user_deets = self.get_user_details_from_fb()
-        member = Member.get_by_key_name(user_deets['id'])
+        member = Member.get_by_key_name(user_deets['email'])
         if not member:
-        	Member(key_name=user_deets['id'], name=user_deets['name'], email=user_deets['email']).put()
-        self.session['fb_id'] = user_deets['id']
+            member = Member(key_name=user_deets['email'], name=user_deets['name'])
+            member.put()
+        self.session['email'] = user_deets['email']
+        self.session['role'] = member.role
 
 app = webapp2.WSGIApplication([
     ('/rest/fb_login', FacebookLoginHandler)
