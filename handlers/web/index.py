@@ -65,6 +65,38 @@ class ApplianceDetailsPage(WebRequestHandler):
         template_values = {'details':details}
         self.write(self.get_rendered_html(path, template_values), 200)
 
+class ProviderDetailsPage(WebRequestHandler):
+    def get(self):
+        path = 'provider_details.html'
+        details = [
+            {
+                'name':'OWNER',
+                'value':'Mike Mason'
+            },
+            {
+                'name':'EMAIL',
+                'value':'mike@acmesvcs.com'
+            },
+            {
+                'name':'PHONE NUMBER',
+                'value':'(202) 531-4576'
+            },
+            {
+                'name':'INSURANCE',
+                'value':'Hartford Insurance, Expires January 13, 2017'
+            },
+            {
+                'name':'CERTIFICATIONS',
+                'value':'Class B Electrician License, Expires October 23, 2018'
+            },
+            {
+                'name':'REPUTATION',
+                'value':''
+            }
+        ]
+        template_values = {'details':details}
+        self.write(self.get_rendered_html(path, template_values), 200)
+
 class IndexPage(WebRequestHandler):
     def get(self):
         path = 'landing.html'
@@ -79,6 +111,7 @@ app = webapp2.WSGIApplication(
         ('/appliances', AppliancesPage),
         ('/providers', ProvidersPage),
         ('/appliance_details', ApplianceDetailsPage),
+        ('/provider_details', ProviderDetailsPage),
         ('/', IndexPage)
     ]
 )

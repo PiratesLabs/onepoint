@@ -15,16 +15,18 @@ html {
     			border-radius: 25px;
     			width: 250px;
     			height: 40px;
-    			margin-top: 30px;
+    			margin-top: 0px;
+                margin-bottom: 20px;
     			background-color: #579EDE;
     		}
 
             .details {
                 text-align: left;
                 font-weight: bold;
+                font-size: 12px;
 
                 .row {
-                    min-height: 50px;
+                    min-height: 60px;
                 }
 
                 .row-title {
@@ -33,6 +35,22 @@ html {
 
                 @media (max-width: 767px) {
                     font-size: 10px;
+                }
+
+                .rating {
+                    unicode-bidi: bidi-override;
+                    direction: ltr;
+
+                    span {
+                        display: inline-block;
+                        position: relative;
+                        width: 1.1em;
+                    }
+
+                    span.selected:before {
+                        content: "\2605";
+                        position: absolute;
+                    }
                 }
             }
     	}
