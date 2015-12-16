@@ -28,6 +28,12 @@ html {
                 }
             }
 
+            .nav-tabs {
+                position: fixed;
+                bottom: 50px;
+                width: 100vw;
+            }
+
             .nav-tabs>li {
                 a {
                     color: #ffffff;

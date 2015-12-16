@@ -8,7 +8,7 @@
 	width: 100vw;
 	text-align: center;
 	margin: 0px;
-	
+
 	.img-helper {
 		display: inline-block;
 		height: 100%;
@@ -43,7 +43,9 @@
 	height: 50px;
 	width: 100%;
 	text-align: center;
-
+	position: fixed;
+	bottom: 0px;
+	
 	img {
 		margin: auto;
 		max-height: 100%;
