@@ -26,13 +26,30 @@ class ApplianceCreationHandler(WebRequestHandler):
 
 class TestDataCreationHandler(WebRequestHandler):
     def create_users(self):
-        Member(key_name='585110577', name='Niranjan Salimath', email='niranjan.salimath@gmail.com').put()
-        Member(key_name=user_deets['id'], name=user_deets['name'], email=user_deets['email']).put()
+        Member(key_name='niranjan.salimath@gmail.com', name='Niranjan Salimath', role='manager').put()
+        Member(key_name='aiyappa@b-eagles.com', name='Aiyappa', role='owner').put()
+
+    def create_stores(self):
+        store = Store(name="Store1", location=db.GeoPt(40.7131116,-74.015359), manager="niranjan.salimath@gmail.com", owner="aiyappa@b-eagles.com")
+        store.put()
+        return [store]
+
+    def create_appliances(self, store_ids):
+        for store in store_ids:
+            Appliance(name="Fryer1", store=store).put()
+            Appliance(name="Fryer2", store=store).put()
+            Appliance(name="Fryer3", store=store).put()
+            Appliance(name="Oven1", store=store).put()
+            Appliance(name="Oven2", store=store).put()
+            Appliance(name="Oven3", store=store).put()
+
     def get(self):
         self.create_users()
+        store_ids = self.create_stores()
+        self.create_appliances(store_ids)
 
 app = webapp2.WSGIApplication([
     ('/rest/create/store', StoreCreationHandler),
     ('/rest/create/appliance', ApplianceCreationHandler),
-    ('/rest/setup_testdata', TestDataCreationHandler)
+    ('/rest/create/setup_testdata', TestDataCreationHandler),
 ])

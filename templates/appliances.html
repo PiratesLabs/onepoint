@@ -8,264 +8,28 @@
 	<div class="tabbable tabs-below">
 		<div class="tab-content">
 			<div class="tab-pane active" id="starred">
-				<div class="row">
-			    	<div class="col-sm-4 col-xs-12">
-			    		<a href="/appliance_details">
-			    			<img src="/assets/img/oven.png">
-			    			<p>Oven 1</p>
-			    		</a>
-			    	</div>
-			    	<div class="col-sm-4 col-xs-12">
-			    		<img src="/assets/img/oven.png">
-			    		<p>Oven 2</p>
-			    	</div>
-			    	<div class="col-sm-4 col-xs-12">
-			    		<img src="/assets/img/hvac.png">
-			    		<p>HVAC 1</p>
-			    	</div>
-			    </div>
-			    <div class="row">
-			    	<div class="col-sm-4 col-xs-12">
-			    		<img src="/assets/img/hvac.png">
-			    		<p>HVAC 2</p>
-			    	</div>
-			    	<div class="col-sm-4 col-xs-12">
-			    		<img src="/assets/img/hvac.png">
-			    		<p>HVAC 3</p>
-			    	</div>
-			    	<div class="col-sm-4 col-xs-12">
-			    		<img src="/assets/img/hvac.png">
-			    		<p>HVAC 4</p>
-			    	</div>
-			    </div>
-			    <div class="row">
-			    	<div class="col-sm-4 col-xs-12">
-			    		<img src="/assets/img/mach.png">
-			    		<p>FRYER 1</p>
-			    	</div>
-			    	<div class="col-sm-4 col-xs-12">
-			    		<img src="/assets/img/mach.png">
-			    		<p>FRYER 2</p>
-			    	</div>
-			    	<div class="col-sm-4 col-xs-12">
-			    		<img src="/assets/img/mach.png">
-			    		<p>FRYER 3</p>
-			    	</div>
-			    </div>
-			    <div class="row">
-			    	<div class="col-sm-4 col-xs-12">
-			    		<img src="/assets/img/oven.png">
-			    		<p>Oven 1</p>
-			    	</div>
-			    	<div class="col-sm-4 col-xs-12">
-			    		<img src="/assets/img/oven.png">
-			    		<p>Oven 2</p>
-			    	</div>
-			    	<div class="col-sm-4 col-xs-12">
-			    		<img src="/assets/img/hvac.png">
-			    		<p>HVAC 1</p>
-			    	</div>
-			    </div>
-			    <div class="row">
-			    	<div class="col-sm-4 col-xs-12">
-			    		<img src="/assets/img/hvac.png">
-			    		<p>HVAC 2</p>
-			    	</div>
-			    	<div class="col-sm-4 col-xs-12">
-			    		<img src="/assets/img/hvac.png">
-			    		<p>HVAC 3</p>
-			    	</div>
-			    	<div class="col-sm-4 col-xs-12">
-			    		<img src="/assets/img/hvac.png">
-			    		<p>HVAC 4</p>
-			    	</div>
-			    </div>
-			    <div class="row">
-			    	<div class="col-sm-4 col-xs-12">
-			    		<img src="/assets/img/mach.png">
-			    		<p>FRYER 1</p>
-			    	</div>
-			    	<div class="col-sm-4 col-xs-12">
-			    		<img src="/assets/img/mach.png">
-			    		<p>FRYER 2</p>
-			    	</div>
-			    	<div class="col-sm-4 col-xs-12">
-			    		<img src="/assets/img/mach.png">
-			    		<p>FRYER 3</p>
-			    	</div>
-			    </div>
-			</div>
+				{% for row in appliances.starred %}
+					<div class="row">
+						{% for appliance in row %}
+				    	<div class="col-sm-4 col-xs-12">
+				    		<a href="/appliance_details">
+				    			<img src="/assets/img/oven.png">
+				    			<p>{{appliance.name}}</p>
+				    		</a>
+				    	</div>
+				    	{% endfor %}
+				    </div>
+				{% endfor %}
+			</div> 
 			<div class="tab-pane" id="newest">
-				<div class="row">
-			    	<div class="col-sm-4 col-xs-12">
-			    		<img src="/assets/img/oven.png">
-			    		<p>Oven 1</p>
-			    	</div>
-			    	<div class="col-sm-4 col-xs-12">
-			    		<img src="/assets/img/oven.png">
-			    		<p>Oven 2</p>
-			    	</div>
-			    	<div class="col-sm-4 col-xs-12">
-			    		<img src="/assets/img/hvac.png">
-			    		<p>HVAC 1</p>
-			    	</div>
-			    </div>
-			    <div class="row">
-			    	<div class="col-sm-4 col-xs-12">
-			    		<img src="/assets/img/hvac.png">
-			    		<p>HVAC 2</p>
-			    	</div>
-			    	<div class="col-sm-4 col-xs-12">
-			    		<img src="/assets/img/hvac.png">
-			    		<p>HVAC 3</p>
-			    	</div>
-			    	<div class="col-sm-4 col-xs-12">
-			    		<img src="/assets/img/hvac.png">
-			    		<p>HVAC 4</p>
-			    	</div>
-			    </div>
-			    <div class="row">
-			    	<div class="col-sm-4 col-xs-12">
-			    		<img src="/assets/img/mach.png">
-			    		<p>FRYER 1</p>
-			    	</div>
-			    	<div class="col-sm-4 col-xs-12">
-			    		<img src="/assets/img/mach.png">
-			    		<p>FRYER 2</p>
-			    	</div>
-			    	<div class="col-sm-4 col-xs-12">
-			    		<img src="/assets/img/mach.png">
-			    		<p>FRYER 3</p>
-			    	</div>
-			    </div>
-			    <div class="row">
-			    	<div class="col-sm-4 col-xs-12">
-			    		<img src="/assets/img/oven.png">
-			    		<p>Oven 1</p>
-			    	</div>
-			    	<div class="col-sm-4 col-xs-12">
-			    		<img src="/assets/img/oven.png">
-			    		<p>Oven 2</p>
-			    	</div>
-			    	<div class="col-sm-4 col-xs-12">
-			    		<img src="/assets/img/hvac.png">
-			    		<p>HVAC 1</p>
-			    	</div>
-			    </div>
-			    <div class="row">
-			    	<div class="col-sm-4 col-xs-12">
-			    		<img src="/assets/img/hvac.png">
-			    		<p>HVAC 2</p>
-			    	</div>
-			    	<div class="col-sm-4 col-xs-12">
-			    		<img src="/assets/img/hvac.png">
-			    		<p>HVAC 3</p>
-			    	</div>
-			    	<div class="col-sm-4 col-xs-12">
-			    		<img src="/assets/img/hvac.png">
-			    		<p>HVAC 4</p>
-			    	</div>
-			    </div>
-			    <div class="row">
-			    	<div class="col-sm-4 col-xs-12">
-			    		<img src="/assets/img/mach.png">
-			    		<p>FRYER 1</p>
-			    	</div>
-			    	<div class="col-sm-4 col-xs-12">
-			    		<img src="/assets/img/mach.png">
-			    		<p>FRYER 2</p>
-			    	</div>
-			    	<div class="col-sm-4 col-xs-12">
-			    		<img src="/assets/img/mach.png">
-			    		<p>FRYER 3</p>
-			    	</div>
-			    </div>
+				{% for appliance in appliances.newest %}
+				
+				{% endfor %}
 			</div>
 			<div class="tab-pane" id="oldest">
-				<div class="row">
-			    	<div class="col-sm-4 col-xs-12">
-			    		<img src="/assets/img/oven.png">
-			    		<p>Oven 1</p>
-			    	</div>
-			    	<div class="col-sm-4 col-xs-12">
-			    		<img src="/assets/img/oven.png">
-			    		<p>Oven 2</p>
-			    	</div>
-			    	<div class="col-sm-4 col-xs-12">
-			    		<img src="/assets/img/hvac.png">
-			    		<p>HVAC 1</p>
-			    	</div>
-			    </div>
-			    <div class="row">
-			    	<div class="col-sm-4 col-xs-12">
-			    		<img src="/assets/img/hvac.png">
-			    		<p>HVAC 2</p>
-			    	</div>
-			    	<div class="col-sm-4 col-xs-12">
-			    		<img src="/assets/img/hvac.png">
-			    		<p>HVAC 3</p>
-			    	</div>
-			    	<div class="col-sm-4 col-xs-12">
-			    		<img src="/assets/img/hvac.png">
-			    		<p>HVAC 4</p>
-			    	</div>
-			    </div>
-			    <div class="row">
-			    	<div class="col-sm-4 col-xs-12">
-			    		<img src="/assets/img/mach.png">
-			    		<p>FRYER 1</p>
-			    	</div>
-			    	<div class="col-sm-4 col-xs-12">
-			    		<img src="/assets/img/mach.png">
-			    		<p>FRYER 2</p>
-			    	</div>
-			    	<div class="col-sm-4 col-xs-12">
-			    		<img src="/assets/img/mach.png">
-			    		<p>FRYER 3</p>
-			    	</div>
-			    </div>
-			    <div class="row">
-			    	<div class="col-sm-4 col-xs-12">
-			    		<img src="/assets/img/oven.png">
-			    		<p>Oven 1</p>
-			    	</div>
-			    	<div class="col-sm-4 col-xs-12">
-			    		<img src="/assets/img/oven.png">
-			    		<p>Oven 2</p>
-			    	</div>
-			    	<div class="col-sm-4 col-xs-12">
-			    		<img src="/assets/img/hvac.png">
-			    		<p>HVAC 1</p>
-			    	</div>
-			    </div>
-			    <div class="row">
-			    	<div class="col-sm-4 col-xs-12">
-			    		<img src="/assets/img/hvac.png">
-			    		<p>HVAC 2</p>
-			    	</div>
-			    	<div class="col-sm-4 col-xs-12">
-			    		<img src="/assets/img/hvac.png">
-			    		<p>HVAC 3</p>
-			    	</div>
-			    	<div class="col-sm-4 col-xs-12">
-			    		<img src="/assets/img/hvac.png">
-			    		<p>HVAC 4</p>
-			    	</div>
-			    </div>
-			    <div class="row">
-			    	<div class="col-sm-4 col-xs-12">
-			    		<img src="/assets/img/mach.png">
-			    		<p>FRYER 1</p>
-			    	</div>
-			    	<div class="col-sm-4 col-xs-12">
-			    		<img src="/assets/img/mach.png">
-			    		<p>FRYER 2</p>
-			    	</div>
-			    	<div class="col-sm-4 col-xs-12">
-			    		<img src="/assets/img/mach.png">
-			    		<p>FRYER 3</p>
-			    	</div>
-			    </div>
+				{% for appliance in appliances.oldest %}
+				
+				{% endfor %}
 			</div>
 		</div>
 		<ul class="nav nav-tabs">

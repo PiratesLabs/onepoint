@@ -3,9 +3,9 @@ import logging
 from model.member import Member
 
 def _member_logged_in(handler):
-    if not 'fb_id' in handler.session:
+    if not 'email' in handler.session:
         return False
-    member = Member.get_by_key_name(handler.session['fb_id'])
+    member = Member.get_by_key_name(handler.session['email'])
     if not member:
         return False
     return True
