@@ -53,6 +53,14 @@ handlers:
   script: handlers.rest.login.app
   secure: never
 
+- url: /rest/create/.*
+  script: handlers.rest.data_create.app
+  secure: never
+
+- url: /data_creation/.*
+  script: handlers.web.data_creation.app
+  secure: never
+
 - url: /.*
   script: handlers.web.index.app
   secure: never
