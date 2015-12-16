@@ -5,10 +5,10 @@
 .barone {
 	background-color: #579EDE;
 	height: 50px;
-	width: 100%;
+	width: 100vw;
 	text-align: center;
-	position: relative;
-
+	margin: 0px;
+	
 	.img-helper {
 		display: inline-block;
 		height: 100%;
@@ -18,11 +18,6 @@
 	.logo {
 		margin:auto;
 		vertical-align: middle;
-	}
-
-	div {
-		position: absolute;
-		z-index: 999;
 	}
 
 	@media (max-width: 767px) {
