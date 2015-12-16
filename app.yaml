@@ -54,7 +54,7 @@ handlers:
   secure: never
 
 - url: /.*
-  script: handlers.web.app
+  script: handlers.web.index.app
   secure: never
 
 libraries:
