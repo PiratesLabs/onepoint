@@ -20,15 +20,8 @@
 		<ul class="nav nav-tabs">
 			<li class="col-xs-4 active" style="background-color: #5A9DE6;"><a href="#starred" data-toggle="tab">Starred</a></li>
 			<li class="col-xs-4" style="background-color: #488AD6;"><a href="#newest" data-toggle="tab">List</a></li>
-			<li class="col-xs-4" style="background-color: #5A9DE6;"><a href="#oldest" data-toggle="tab">Map</a></li>
+			<li class="col-xs-4" style="background-color: #5A9DE6;" onclick="initialize_map()"><a href="#oldest" data-toggle="tab">Map</a></li>
 		</ul>
 	</div>
 </div>
-{% endblock %}
-{% block BarScripts %}
-<script type="text/javascript">
-	$(document).ready(function(){
-		google.maps.event.addDomListener(window, 'load', initialize_map);
-	});
-</script>
 {% endblock %}
