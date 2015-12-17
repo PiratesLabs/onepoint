@@ -24,6 +24,7 @@ class FacebookLoginHandler(WebRequestHandler):
             member = Member(key_name=user_deets['email'], name=user_deets['name'])
             member.put()
         self.session['email'] = user_deets['email']
+        self.session['name'] = user_deets['name']
         self.session['role'] = member.role
 
 app = webapp2.WSGIApplication([

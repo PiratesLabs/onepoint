@@ -15,4 +15,7 @@ class WebRequestHandler(RequestHandler):
         self.write(self.get_rendered_html(template_name, template_values))
 
     def get_rendered_html(self, template_name, template_values = None):
+    	if not template_values:
+    		template_values = {}
+    	template_values['session'] = self.session
         return loader.render_to_string(template_name, template_values)
