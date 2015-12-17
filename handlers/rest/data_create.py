@@ -38,12 +38,12 @@ class TestDataCreationHandler(WebRequestHandler):
 
     def create_appliances(self, store_ids):
         for store in store_ids:
-            Appliance(name="Fryer1", store=store).put()
-            Appliance(name="Fryer2", store=store).put()
-            Appliance(name="Fryer3", store=store).put()
-            Appliance(name="Oven1", store=store).put()
-            Appliance(name="Oven2", store=store).put()
-            Appliance(name="Oven3", store=store).put()
+            Appliance(name="Fryer1", store=store, manufacturer="Frymaster", model="FM102", serial_num="EGY1909334569", last_repair_date="7/2/2015", installed_on="6/1/2010", warranty="Expired 6/1/2013").put()
+            Appliance(name="Fryer2", store=store, manufacturer="Frymaster", model="FM102", serial_num="EGY1909334569", last_repair_date="7/2/2015", installed_on="6/1/2010", warranty="Expired 6/1/2013").put()
+            Appliance(name="Fryer3", store=store, manufacturer="Frymaster", model="FM102", serial_num="EGY1909334569", last_repair_date="7/2/2015", installed_on="6/1/2010", warranty="Expired 6/1/2013").put()
+            Appliance(name="Oven1", store=store, manufacturer="Frymaster", model="FM102", serial_num="EGY1909334569", last_repair_date="7/2/2015", installed_on="6/1/2010", warranty="Expired 6/1/2013").put()
+            Appliance(name="Oven2", store=store, manufacturer="Frymaster", model="FM102", serial_num="EGY1909334569", last_repair_date="7/2/2015", installed_on="6/1/2010", warranty="Expired 6/1/2013").put()
+            Appliance(name="Oven3", store=store, manufacturer="Frymaster", model="FM102", serial_num="EGY1909334569", last_repair_date="7/2/2015", installed_on="6/1/2010", warranty="Expired 6/1/2013").put()
 
     def clear_datastore(self):
         models = [Member, Store, Appliance, Provider]
