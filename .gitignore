@@ -58,6 +58,7 @@ docs/_build/
 
 #Saas
 *.scssc
+assets/css/sass_out/
 
 # PyBuilder
 target/
