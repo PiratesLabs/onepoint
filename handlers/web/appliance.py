@@ -16,7 +16,7 @@ class AppliancesPage(WebRequestHandler):
         appliances = [appliance for appliance in Appliance.all().filter('store =', store).fetch(100)]
         path = 'appliances.html'
         appliances_dict = convert_to_grid_format(appliances, ['starred', 'newest', 'oldest'])
-        template_values = {'appliances':appliances_dict}
+        template_values = {'appliances':appliances_dict, 'count':len(appliances)}
         self.write(self.get_rendered_html(path, template_values), 200)
 
 class ApplianceDetailsPage(WebRequestHandler):
