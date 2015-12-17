@@ -65,6 +65,10 @@ handlers:
   script: handlers.web.appliance.app
   secure: never
 
+- url: /provider/.*
+  script: handlers.web.provider.app
+  secure: never
+
 - url: /.*
   script: handlers.web.index.app
   secure: never
