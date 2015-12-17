@@ -3,6 +3,7 @@ from handlers.web import WebRequestHandler
 from auth import login_required
 from model.store import Store
 from model.appliance import Appliance
+from util.util import convert_to_grid_format
 import json
 import logging
 
@@ -12,26 +13,9 @@ class AppliancesPage(WebRequestHandler):
         email = self.session['email']
         role = self.session['role']
         store = Store.all().filter(role + ' =', email).get()
-        appliances = []
-        for appliance in Appliance.all().filter('store =', store).fetch(100):
-            appliances.append(appliance)
+        appliances = [appliance for appliance in Appliance.all().filter('store =', store).fetch(100)]
         path = 'appliances.html'
-        appliance_tabs = ['starred', 'newest', 'oldest']
-        appliances_dict = {}
-        for tab in appliance_tabs:
-            rows = []
-            curr_row = []
-            for idx,appliance in enumerate(appliances):
-                print idx
-                if idx != 0 and idx % 3 == 0:
-                    print("Inside if..")
-                    rows.append(curr_row)
-                    curr_row = []
-                curr_row.append(appliance)
-            if len(curr_row) > 0:
-                rows.append(curr_row)
-            appliances_dict[tab] = rows
-            print rows
+        appliances_dict = convert_to_grid_format(appliances, ['starred', 'newest', 'oldest'])
         template_values = {'appliances':appliances_dict}
         self.write(self.get_rendered_html(path, template_values), 200)
 

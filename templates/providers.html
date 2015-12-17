@@ -8,94 +8,10 @@
 	<div class="tabbable tabs-below">
 		<div class="tab-content">
 			<div class="tab-pane active" id="starred">
-				<div class="row">
-			    	<div class="col-sm-4 col-xs-12">
-			    		<a href="/provider_details">
-			    			<img src="/assets/img/oven_service.png">
-			    			<p>Acme Oven Services</p>
-			    		</a>
-			    	</div>
-			    	<div class="col-sm-4 col-xs-12">
-			    		<img src="/assets/img/air_cond_service.png">
-			    		<p>Coolair Air Conditioning</p>
-			    	</div>
-			    	<div class="col-sm-4 col-xs-12">
-			    		<img src="/assets/img/hvac_service.png">
-			    		<p>Chesapeake HVAC Services</p>
-			    	</div>
-			    </div>
-			    <div class="row">
-			    	<div class="col-sm-4 col-xs-12">
-			    		<img src="/assets/img/vent_service.png">
-			    		<p>O'Maly Ventilation Repairs</p>
-			    	</div>
-			    	<div class="col-sm-4 col-xs-12">
-			    		<img src="/assets/img/oven_service.png">
-			    		<p>A1 Oven Services</p>
-			    	</div>
-			    	<div class="col-sm-4 col-xs-12">
-			    		<img src="/assets/img/garbage_service.png">
-			    		<p>Clean City Garbage Services</p>
-			    	</div>
-			    </div>
-			    <div class="row">
-			    	<div class="col-sm-4 col-xs-12">
-			    		<img src="/assets/img/air_cond_service.png">
-			    		<p>Coolair2 Air Conditioning</p>
-			    	</div>
-			    	<div class="col-sm-4 col-xs-12">
-			    		<img src="/assets/img/fryer_service.png">
-			    		<p>Deep Fryer Services</p>
-			    	</div>
-			    	<div class="col-sm-4 col-xs-12">
-			    		<img src="/assets/img/oven_service.png">
-			    		<p>A2 Oven Services</p>
-			    	</div>
-			    </div>
-			</div>
+				{% include "components/grid_rows.html" with items=providers.starred %}
+			</div> 
 			<div class="tab-pane" id="newest">
-				<div class="row">
-			    	<div class="col-sm-4 col-xs-12">
-			    		<img src="/assets/img/oven_service.png">
-			    		<p>Acme Oven Services</p>
-			    	</div>
-			    	<div class="col-sm-4 col-xs-12">
-			    		<img src="/assets/img/air_cond_service.png">
-			    		<p>Coolair Air Conditioning</p>
-			    	</div>
-			    	<div class="col-sm-4 col-xs-12">
-			    		<img src="/assets/img/hvac_service.png">
-			    		<p>Chesapeake HVAC Services</p>
-			    	</div>
-			    </div>
-			    <div class="row">
-			    	<div class="col-sm-4 col-xs-12">
-			    		<img src="/assets/img/vent_service.png">
-			    		<p>O'Maly Ventilation Repairs</p>
-			    	</div>
-			    	<div class="col-sm-4 col-xs-12">
-			    		<img src="/assets/img/oven_service.png">
-			    		<p>A1 Oven Services</p>
-			    	</div>
-			    	<div class="col-sm-4 col-xs-12">
-			    		<img src="/assets/img/garbage_service.png">
-			    		<p>Clean City Garbage Services</p>
-			    	</div>
-			    </div>
-			    <div class="row">
-			    	<div class="col-sm-4 col-xs-12">
-			    		<img src="/assets/img/air_cond_service.png">
-			    		<p>Coolair2 Air Conditioning</p>
-			    	</div>
-			    	<div class="col-sm-4 col-xs-12">
-			    		<img src="/assets/img/fryer_service.png">
-			    		<p>Deep Fryer Services</p>
-			    	</div>
-			    	<div class="col-sm-4 col-xs-12">
-			    		<img src="/assets/img/oven_service.png">
-			    		<p>A2 Oven Services</p>
-			    	</div>
-			    </div>
+				
 			</div>
 			<div class="tab-pane" id="oldest">
 				{% include "components/map.html" %}
