@@ -11,7 +11,10 @@ class ProvidersPage(WebRequestHandler):
         providers = [provider for provider in Provider.all().fetch(100)]
         providers_dict = convert_to_grid_format(providers, ['starred'])
         path = 'providers.html'
-        template_values = {'providers':providers_dict,'count':len(providers)}
+        markers = []
+        for provider in providers:
+            markers.append([provider.name, provider.location.lat,provider.location.lon])
+        template_values = {'providers':providers_dict,'count':len(providers),'markers':markers}
         self.write(self.get_rendered_html(path, template_values), 200)
 
     @login_required

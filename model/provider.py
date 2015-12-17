@@ -2,6 +2,7 @@ from google.appengine.ext import db
 
 class Provider(db.Model):
     name = db.StringProperty(indexed=False)
+    location = db.GeoPtProperty(indexed=True)
     owner = db.ReferenceProperty()
     phone_num = db.StringProperty(indexed=True)
     insurance = db.StringProperty(indexed=False)
