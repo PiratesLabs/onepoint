@@ -16,43 +16,19 @@ class AppliancesPage(WebRequestHandler):
         appliances = [appliance for appliance in Appliance.all().filter('store =', store).fetch(100)]
         path = 'appliances.html'
         appliances_dict = convert_to_grid_format(appliances, ['starred', 'newest', 'oldest'])
-        template_values = {'appliances':appliances_dict}
+        template_values = {'appliances':appliances_dict, 'count':len(appliances)}
         self.write(self.get_rendered_html(path, template_values), 200)
 
 class ApplianceDetailsPage(WebRequestHandler):
     def get(self):
         path = 'appliance_details.html'
-        details = [
-            {
-                'name':'MANUFACTURER',
-                'value':'Frymaster'
-            },
-            {
-                'name':'MODEL',
-                'value':'FM102'
-            },
-            {
-                'name':'SERIAL NUMBER',
-                'value':'EGY674489GHTY76'
-            },
-            {
-                'name':'LAST REPAIR DATE',
-                'value':'7/2/2015'
-            },
-            {
-                'name':'INSTALLED ON',
-                'value':'6/1/2010'
-            },
-            {
-                'name':'WARRANTY',
-                'value':'Expired 6/1/2013'
-            }
-        ]
-        template_values = {'details':details}
+        appliance = Appliance.get_by_id(long(self['id']))
+        template_values = {'details':appliance.template_format,'name':appliance.name}
         self.write(self.get_rendered_html(path, template_values), 200)
 
 app = webapp2.WSGIApplication(
     [
-        ('/appliance/list', AppliancesPage)
+        ('/appliance/list', AppliancesPage),
+        ('/appliance/details', ApplianceDetailsPage)
     ]
 )
