@@ -8,264 +8,46 @@
 	<div class="tabbable tabs-below">
 		<div class="tab-content">
 			<div class="tab-pane active" id="starred">
+				{% for details_row in details %}
 				<div class="row">
+			    	{% for detail in details_row %}
 			    	<div class="col-sm-4 col-xs-12">
 			    		<a href="/appliance_details">
-			    			<img src="/assets/img/oven.png">
-			    			<p>Oven 1</p>
+			    			<img src="/assets/img/{{detail.img}}">
+			    			<p>{{detail.name}}</p>
 			    		</a>
 			    	</div>
-			    	<div class="col-sm-4 col-xs-12">
-			    		<img src="/assets/img/oven.png">
-			    		<p>Oven 2</p>
-			    	</div>
-			    	<div class="col-sm-4 col-xs-12">
-			    		<img src="/assets/img/hvac.png">
-			    		<p>HVAC 1</p>
-			    	</div>
+			    	{% endfor %}
 			    </div>
-			    <div class="row">
-			    	<div class="col-sm-4 col-xs-12">
-			    		<img src="/assets/img/hvac.png">
-			    		<p>HVAC 2</p>
-			    	</div>
-			    	<div class="col-sm-4 col-xs-12">
-			    		<img src="/assets/img/hvac.png">
-			    		<p>HVAC 3</p>
-			    	</div>
-			    	<div class="col-sm-4 col-xs-12">
-			    		<img src="/assets/img/hvac.png">
-			    		<p>HVAC 4</p>
-			    	</div>
-			    </div>
-			    <div class="row">
-			    	<div class="col-sm-4 col-xs-12">
-			    		<img src="/assets/img/mach.png">
-			    		<p>FRYER 1</p>
-			    	</div>
-			    	<div class="col-sm-4 col-xs-12">
-			    		<img src="/assets/img/mach.png">
-			    		<p>FRYER 2</p>
-			    	</div>
-			    	<div class="col-sm-4 col-xs-12">
-			    		<img src="/assets/img/mach.png">
-			    		<p>FRYER 3</p>
-			    	</div>
-			    </div>
-			    <div class="row">
-			    	<div class="col-sm-4 col-xs-12">
-			    		<img src="/assets/img/oven.png">
-			    		<p>Oven 1</p>
-			    	</div>
-			    	<div class="col-sm-4 col-xs-12">
-			    		<img src="/assets/img/oven.png">
-			    		<p>Oven 2</p>
-			    	</div>
-			    	<div class="col-sm-4 col-xs-12">
-			    		<img src="/assets/img/hvac.png">
-			    		<p>HVAC 1</p>
-			    	</div>
-			    </div>
-			    <div class="row">
-			    	<div class="col-sm-4 col-xs-12">
-			    		<img src="/assets/img/hvac.png">
-			    		<p>HVAC 2</p>
-			    	</div>
-			    	<div class="col-sm-4 col-xs-12">
-			    		<img src="/assets/img/hvac.png">
-			    		<p>HVAC 3</p>
-			    	</div>
-			    	<div class="col-sm-4 col-xs-12">
-			    		<img src="/assets/img/hvac.png">
-			    		<p>HVAC 4</p>
-			    	</div>
-			    </div>
-			    <div class="row">
-			    	<div class="col-sm-4 col-xs-12">
-			    		<img src="/assets/img/mach.png">
-			    		<p>FRYER 1</p>
-			    	</div>
-			    	<div class="col-sm-4 col-xs-12">
-			    		<img src="/assets/img/mach.png">
-			    		<p>FRYER 2</p>
-			    	</div>
-			    	<div class="col-sm-4 col-xs-12">
-			    		<img src="/assets/img/mach.png">
-			    		<p>FRYER 3</p>
-			    	</div>
-			    </div>
+			    {% endfor %}
 			</div>
 			<div class="tab-pane" id="newest">
+				{% for details_row in details %}
 				<div class="row">
+			    	{% for detail in details_row %}
 			    	<div class="col-sm-4 col-xs-12">
-			    		<img src="/assets/img/oven.png">
-			    		<p>Oven 1</p>
+			    		<a href="/appliance_details">
+			    			<img src="/assets/img/{{detail.img}}">
+			    			<p>{{detail.name}}</p>
+			    		</a>
 			    	</div>
-			    	<div class="col-sm-4 col-xs-12">
-			    		<img src="/assets/img/oven.png">
-			    		<p>Oven 2</p>
-			    	</div>
-			    	<div class="col-sm-4 col-xs-12">
-			    		<img src="/assets/img/hvac.png">
-			    		<p>HVAC 1</p>
-			    	</div>
+			    	{% endfor %}
 			    </div>
-			    <div class="row">
-			    	<div class="col-sm-4 col-xs-12">
-			    		<img src="/assets/img/hvac.png">
-			    		<p>HVAC 2</p>
-			    	</div>
-			    	<div class="col-sm-4 col-xs-12">
-			    		<img src="/assets/img/hvac.png">
-			    		<p>HVAC 3</p>
-			    	</div>
-			    	<div class="col-sm-4 col-xs-12">
-			    		<img src="/assets/img/hvac.png">
-			    		<p>HVAC 4</p>
-			    	</div>
-			    </div>
-			    <div class="row">
-			    	<div class="col-sm-4 col-xs-12">
-			    		<img src="/assets/img/mach.png">
-			    		<p>FRYER 1</p>
-			    	</div>
-			    	<div class="col-sm-4 col-xs-12">
-			    		<img src="/assets/img/mach.png">
-			    		<p>FRYER 2</p>
-			    	</div>
-			    	<div class="col-sm-4 col-xs-12">
-			    		<img src="/assets/img/mach.png">
-			    		<p>FRYER 3</p>
-			    	</div>
-			    </div>
-			    <div class="row">
-			    	<div class="col-sm-4 col-xs-12">
-			    		<img src="/assets/img/oven.png">
-			    		<p>Oven 1</p>
-			    	</div>
-			    	<div class="col-sm-4 col-xs-12">
-			    		<img src="/assets/img/oven.png">
-			    		<p>Oven 2</p>
-			    	</div>
-			    	<div class="col-sm-4 col-xs-12">
-			    		<img src="/assets/img/hvac.png">
-			    		<p>HVAC 1</p>
-			    	</div>
-			    </div>
-			    <div class="row">
-			    	<div class="col-sm-4 col-xs-12">
-			    		<img src="/assets/img/hvac.png">
-			    		<p>HVAC 2</p>
-			    	</div>
-			    	<div class="col-sm-4 col-xs-12">
-			    		<img src="/assets/img/hvac.png">
-			    		<p>HVAC 3</p>
-			    	</div>
-			    	<div class="col-sm-4 col-xs-12">
-			    		<img src="/assets/img/hvac.png">
-			    		<p>HVAC 4</p>
-			    	</div>
-			    </div>
-			    <div class="row">
-			    	<div class="col-sm-4 col-xs-12">
-			    		<img src="/assets/img/mach.png">
-			    		<p>FRYER 1</p>
-			    	</div>
-			    	<div class="col-sm-4 col-xs-12">
-			    		<img src="/assets/img/mach.png">
-			    		<p>FRYER 2</p>
-			    	</div>
-			    	<div class="col-sm-4 col-xs-12">
-			    		<img src="/assets/img/mach.png">
-			    		<p>FRYER 3</p>
-			    	</div>
-			    </div>
+			    {% endfor %}
 			</div>
 			<div class="tab-pane" id="oldest">
+				{% for details_row in details %}
 				<div class="row">
+			    	{% for detail in details_row %}
 			    	<div class="col-sm-4 col-xs-12">
-			    		<img src="/assets/img/oven.png">
-			    		<p>Oven 1</p>
+			    		<a href="/appliance_details">
+			    			<img src="/assets/img/{{detail.img}}">
+			    			<p>{{detail.name}}</p>
+			    		</a>
 			    	</div>
-			    	<div class="col-sm-4 col-xs-12">
-			    		<img src="/assets/img/oven.png">
-			    		<p>Oven 2</p>
-			    	</div>
-			    	<div class="col-sm-4 col-xs-12">
-			    		<img src="/assets/img/hvac.png">
-			    		<p>HVAC 1</p>
-			    	</div>
+			    	{% endfor %}
 			    </div>
-			    <div class="row">
-			    	<div class="col-sm-4 col-xs-12">
-			    		<img src="/assets/img/hvac.png">
-			    		<p>HVAC 2</p>
-			    	</div>
-			    	<div class="col-sm-4 col-xs-12">
-			    		<img src="/assets/img/hvac.png">
-			    		<p>HVAC 3</p>
-			    	</div>
-			    	<div class="col-sm-4 col-xs-12">
-			    		<img src="/assets/img/hvac.png">
-			    		<p>HVAC 4</p>
-			    	</div>
-			    </div>
-			    <div class="row">
-			    	<div class="col-sm-4 col-xs-12">
-			    		<img src="/assets/img/mach.png">
-			    		<p>FRYER 1</p>
-			    	</div>
-			    	<div class="col-sm-4 col-xs-12">
-			    		<img src="/assets/img/mach.png">
-			    		<p>FRYER 2</p>
-			    	</div>
-			    	<div class="col-sm-4 col-xs-12">
-			    		<img src="/assets/img/mach.png">
-			    		<p>FRYER 3</p>
-			    	</div>
-			    </div>
-			    <div class="row">
-			    	<div class="col-sm-4 col-xs-12">
-			    		<img src="/assets/img/oven.png">
-			    		<p>Oven 1</p>
-			    	</div>
-			    	<div class="col-sm-4 col-xs-12">
-			    		<img src="/assets/img/oven.png">
-			    		<p>Oven 2</p>
-			    	</div>
-			    	<div class="col-sm-4 col-xs-12">
-			    		<img src="/assets/img/hvac.png">
-			    		<p>HVAC 1</p>
-			    	</div>
-			    </div>
-			    <div class="row">
-			    	<div class="col-sm-4 col-xs-12">
-			    		<img src="/assets/img/hvac.png">
-			    		<p>HVAC 2</p>
-			    	</div>
-			    	<div class="col-sm-4 col-xs-12">
-			    		<img src="/assets/img/hvac.png">
-			    		<p>HVAC 3</p>
-			    	</div>
-			    	<div class="col-sm-4 col-xs-12">
-			    		<img src="/assets/img/hvac.png">
-			    		<p>HVAC 4</p>
-			    	</div>
-			    </div>
-			    <div class="row">
-			    	<div class="col-sm-4 col-xs-12">
-			    		<img src="/assets/img/mach.png">
-			    		<p>FRYER 1</p>
-			    	</div>
-			    	<div class="col-sm-4 col-xs-12">
-			    		<img src="/assets/img/mach.png">
-			    		<p>FRYER 2</p>
-			    	</div>
-			    	<div class="col-sm-4 col-xs-12">
-			    		<img src="/assets/img/mach.png">
-			    		<p>FRYER 3</p>
-			    	</div>
-			    </div>
+			    {% endfor %}
 			</div>
 		</div>
 		<ul class="nav nav-tabs">

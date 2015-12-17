@@ -24,7 +24,93 @@ class QRCodePage(WebRequestHandler):
 class AppliancesPage(WebRequestHandler):
     def get(self):
         path = 'appliances.html'
-        template_values = {}
+        details = [
+            [
+                {
+                    'img':'oven.png',
+                    'name':'Oven 1'
+                },
+                {
+                    'img':'oven.png',
+                    'name':'Oven 2'
+                },
+                {
+                    'img':'hvac.png',
+                    'name':'HVAC 1'
+                }
+            ],
+            [
+                {
+                    'img':'hvac.png',
+                    'name':'HVAC 2'
+                },
+                {
+                    'img':'hvac.png',
+                    'name':'HVAC 3'
+                },
+                {
+                    'img':'hvac.png',
+                    'name':'HVAC 4'
+                }
+            ],
+            [
+                {
+                    'img':'mach.png',
+                    'name':'FRYER 1'
+                },
+                {
+                    'img':'mach.png',
+                    'name':'FRYER 2'
+                },
+                {
+                    'img':'mach.png',
+                    'name':'FRYER 3'
+                }
+            ],
+            [
+                {
+                    'img':'oven.png',
+                    'name':'Oven 1'
+                },
+                {
+                    'img':'oven.png',
+                    'name':'Oven 2'
+                },
+                {
+                    'img':'hvac.png',
+                    'name':'HVAC 1'
+                }
+            ],
+            [
+                {
+                    'img':'hvac.png',
+                    'name':'HVAC 2'
+                },
+                {
+                    'img':'hvac.png',
+                    'name':'HVAC 3'
+                },
+                {
+                    'img':'hvac.png',
+                    'name':'HVAC 4'
+                }
+            ],
+            [
+                {
+                    'img':'mach.png',
+                    'name':'FRYER 1'
+                },
+                {
+                    'img':'mach.png',
+                    'name':'FRYER 2'
+                },
+                {
+                    'img':'mach.png',
+                    'name':'FRYER 3'
+                }
+            ]
+        ]
+        template_values = {'details':details}
         self.write(self.get_rendered_html(path, template_values), 200)
 
 class ProvidersPage(WebRequestHandler):
