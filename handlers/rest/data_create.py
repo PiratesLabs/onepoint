@@ -46,7 +46,7 @@ class TestDataCreationHandler(WebRequestHandler):
             Appliance(name="Oven3", store=store).put()
 
     def clear_datastore(self):
-        models = [Member, Store, Appliance]
+        models = [Member, Store, Appliance, Provider]
         for model in models:
             q = model.all(keys_only=True)
             entries = q.fetch(100)
