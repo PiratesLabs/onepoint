@@ -25,7 +25,7 @@ class ProviderDetailsPage(WebRequestHandler):
     def get(self):
         path = 'provider_details.html'
         provider = Provider.get_by_id(long(self['id']))
-        template_values = {'details':provider.template_format,'name':provider.name}
+        template_values = {'details':provider.template_format,'name':provider.name, 'ratings':[x for x in range(1,6)]}
         self.write(self.get_rendered_html(path, template_values), 200)
 
 app = webapp2.WSGIApplication(

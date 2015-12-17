@@ -12,12 +12,27 @@
                 <div class="col-xs-8 col-sm-6 col-md-4">
                     <div class="col-xs-5 row-title">{{detail.0}}</div>
                     <div class="col-xs-2"></div>
-                    <div class="col-xs-5">{{detail.1}}</div>
+                    <div class="col-xs-5">
+                        {% if forloop.counter == 6 %}
+                            <div class="rating">
+                                {% for i in ratings %}
+                                    {% if i <= detail.1 %}
+                                        <span class="selected">&#9734;</span>
+                                    {% else %}
+                                        <span>&#9734;</span>
+                                    {% endif %}
+                                {% endfor %}
+                            </div>
+                        {% else %}
+                            {{detail.1}}
+                        {% endif %}
+                    </div>
                 </div>
                 <div class="col-xs-2 col-sm-3 col-md-4"></div>
             </div>
         {% endfor %}
     </div>
-    <a href="/providers"><button>Select Provider</button></a><br>
+    <a href="/providers"><button>Schedule Repair</button></a><br>
+    <a href="/providers"><button>View History</button></a><br>
 </div>
 {% endblock %}
