@@ -34,7 +34,7 @@ class ProviderDetailsPage(WebRequestHandler):
 class ProviderScheduleRepairPage(WebRequestHandler):
     @login_required
     def get(self):
-        path = 'schedule_repair.html'
+        path = 'provider_schedule_repair.html'
         provider = Provider.get_by_id(long(self['id']))
         appliances = get_appliances_for_logged_in_user(self)
         appliance_array = [(appliance.id, appliance.name) for appliance in appliances]

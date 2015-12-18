@@ -23,6 +23,9 @@ handlers:
 - url: /rest/appliance/.*
   script: handlers.rest.appliance.app
 
+- url: /rest/provider/.*
+  script: handlers.rest.provider.app
+
 ######################### STATIC ENDPOINTS #########################
 
 - url: /assets/css

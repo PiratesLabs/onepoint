@@ -18,6 +18,10 @@ class Provider(db.Model):
         return '/provider/schedule_repair?id='+str(self.key().id())
 
     @property
+    def id(self):
+        return self.key().id()
+
+    @property
     def template_format(self):
         return [('OWNER',self.owner.name),
                 ('EMAIL',self.owner.key().name),
