@@ -9,7 +9,6 @@ class ApplianceDetailsHandler(WebRequestHandler):
     def post(self):
         id = self['id']
         appliance = Appliance.get_by_id(long(id))
-        logging.info(appliance.name)
         self.write(json.dumps({'appliance':{'serial':appliance.serial_num,'manufacturer':appliance.manufacturer}}),
                    content_type = 'application/json')
 

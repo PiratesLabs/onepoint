@@ -37,7 +37,8 @@ class ApplianceScheduleRepairPage(WebRequestHandler):
         details = [
             {
                 'name':'appliance',
-                'value':appliance.name
+                'value':appliance.name,
+                'id':appliance.id
             },
             {
                 'name':'provider',

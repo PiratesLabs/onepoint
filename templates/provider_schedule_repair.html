@@ -20,7 +20,7 @@
                         {% endfor %}
                     </select>
                 {% else %}
-                    <input type="text" name="{{detail.name}}" value="{% if forloop.counter == 1 %}{{detail.value}}{% endif %}" placeholder="{{detail.value}}" {% if not forloop.last %}readonly{% endif %}>
+                    <input type="text" name="{{detail.name}}" value="{% if forloop.counter == 1 %}{{detail.value}}" id="{{detail.id}}{% endif %}" placeholder="{{detail.value}}" {% if not forloop.last %}readonly{% endif %}>
                 {% endif %}
             </div>
         </div>
@@ -41,7 +41,8 @@
     <div class="row">
         <div class="col-xs-4"></div>
         <div class="col-xs-4">
-            <a href=""><button>Schedule Repair</button></a><br>
+            <button id="create-wo-btn" onclick="create_work_order()">Create Work Order</button><br>
+            <p id='wo-creation-result'></p>
         </div>
         <div class="col-xs-4"></div>
     </div>
@@ -56,6 +57,22 @@
             .done(function(data){
                 $("input[name='appliance_serial']").val(data.appliance.serial);
                 $("input[name='appliance_manufacturer']").val(data.appliance.manufacturer);
+            });
+        }
+
+        function create_work_order() {
+            $('#wo-creation-result').html('');
+            provider = $("input[name='provider']").attr("id");
+            appliance = $("select[name='appliance']").val();
+            $.get('/rest/work_order/create',{'provider':provider, 'appliance':appliance})
+            .done(function(data){
+                data = JSON.parse(data);
+                if(data.work_order_id) {
+                    $('#create-wo-btn').hide();
+                    $('#wo-creation-result').html('Work Order Created Successfully! Work Order ID: '+data.work_order_id);
+                } else {
+                    $('#wo-creation-result').html('Work Order Creation Error: '+data.message);
+                }
             });
         }
 
