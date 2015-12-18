@@ -3,7 +3,7 @@
 <link href="/assets/css/sass_out/schedule_repair.css" type="text/css" rel="stylesheet">
 {% endblock %}
 {% block BarContent%}
-<div class="bartwo">{{name}}</div>
+<div class="bartwo"><a href="{{details_url}}" style="float:left;"> <-- </a>{{name}}</div>
 <div class="content">
     {% for detail in details %}
     <div class="order-details row">
