@@ -15,6 +15,10 @@ class Appliance(db.Model):
         return '/appliance/details?id=' + str(self.key().id())
 
     @property
+    def id(self):
+        return self.key().id()
+
+    @property
     def template_format(self):
         return [('MANUFACTURER',self.manufacturer),
                 ('MODEL',self.model),
@@ -22,4 +26,8 @@ class Appliance(db.Model):
                 ('LAST REPAIR DATE', self.last_repair_date),
                 ('INSTALLED ON', self.installed_on),
                 ('WARRANTY', self.warranty)]
+
+    @classmethod
+    def for_id(cls, id):
+        return cls.get_by_id(id)
     

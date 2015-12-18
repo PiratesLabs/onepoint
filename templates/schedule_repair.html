@@ -1,0 +1,71 @@
+{% extends "bar_base.html" %}
+{% block BarStyles %}
+<link href="/assets/css/sass_out/schedule_repair.css" type="text/css" rel="stylesheet">
+{% endblock %}
+{% block BarContent%}
+<div class="bartwo">{{name}}</div>
+<div class="content">
+    {% for detail in details %}
+    <div class="order-details row">
+        <div class="col-xs-4"></div>
+        <div class="col-xs-4">
+            <div class="detail-box">
+                <span></span>
+                <img src="{{detail.img}}">
+                {% if forloop.counter == 2 %}
+                    <select name="{{detail.name}}" onchange="fetch_apply_appliance($(this).val())">
+                        <option value="-1">{{detail.value}}</option>
+                        {% for appliance in detail.appliances %}
+                            <option value="{{appliance.0}}">{{appliance.1}}</option>
+                        {% endfor %}
+                    </select>
+                {% else %}
+                    <input type="text" name="{{detail.name}}" value="{% if forloop.counter == 1 %}{{detail.value}}{% endif %}" placeholder="{{detail.value}}" {% if not forloop.last %}readonly{% endif %}>
+                {% endif %}
+            </div>
+        </div>
+        <div class="col-xs-4"></div>
+    </div>
+    {% endfor %}
+    <div class="row">
+        <div class="col-xs-4"></div>
+        <div class="col-xs-4">
+            <div class="row">
+                <div class="col-xs-3 priority">High</div>
+                <div class="col-xs-3 priority">Medium</div>
+                <div class="col-xs-3 priority">Low</div>
+            </div>
+        </div>
+        <div class="col-xs-4"></div>
+    </div>
+    <div class="row">
+        <div class="col-xs-4"></div>
+        <div class="col-xs-4">
+            <a href="/providers"><button>Schedule Repair</button></a><br>
+        </div>
+        <div class="col-xs-4"></div>
+    </div>
+</div>
+{% endblock %}
+{% block BarScripts %}
+    <script type="text/javascript">
+        function fetch_apply_appliance(appliance_id) {
+            $("input[name='appliance_serial']").val('');
+            $("input[name='appliance_manufacturer']").val('');
+            $.post('/rest/appliance/get',{'id':appliance_id})
+            .done(function(data){
+                $("input[name='appliance_serial']").val(data.appliance.serial);
+                $("input[name='appliance_manufacturer']").val(data.appliance.manufacturer);
+            });
+        }
+
+        $(document).ready(function(){
+            $('.priority').click(function(){
+                $('.priority').each(function(){
+                    $(this).removeClass('selected');
+                });
+                $(this).addClass('selected');
+            });
+        });
+    </script>
+{% endblock%}

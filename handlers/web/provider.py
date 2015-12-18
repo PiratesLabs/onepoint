@@ -2,7 +2,7 @@ import webapp2
 from handlers.web import WebRequestHandler
 from auth import login_required
 from model.provider import Provider
-from util.util import convert_to_grid_format
+from util.util import convert_to_grid_format, get_appliances_for_logged_in_user
 import json
 import logging
 
@@ -25,12 +25,46 @@ class ProviderDetailsPage(WebRequestHandler):
     def get(self):
         path = 'provider_details.html'
         provider = Provider.get_by_id(long(self['id']))
-        template_values = {'details':provider.template_format,'name':provider.name, 'ratings':[x for x in range(1,6)]}
+        template_values = {'details':provider.template_format,'name':provider.name, 'ratings':[x for x in range(1,6)], 'schedule_repair_url':provider.schedule_repair_url}
+        self.write(self.get_rendered_html(path, template_values), 200)
+
+class ProviderScheduleRepairPage(WebRequestHandler):
+    @login_required
+    def get(self):
+        path = 'schedule_repair.html'
+        provider = Provider.get_by_id(long(self['id']))
+        appliances = get_appliances_for_logged_in_user(self)
+        appliance_array = [(appliance.id, appliance.name) for appliance in appliances]
+        details = [
+            {
+                'name':'provider',
+                'value':provider.name
+            },
+            {
+                'name':'appliance',
+                'value':'Choose Appliance',
+                'appliances':appliance_array
+            },
+            {
+                'name':'appliance_serial',
+                'value':'Appliance Serial Number'
+            },
+            {
+                'name':'appliance_manufacturer',
+                'value':'Appliance Manufacturer'
+            },
+            {
+                'name':'remarks',
+                'value':'Remarks'
+            }
+        ]
+        template_values = {'details':details,'name':'WORK ORDER #12-345', 'ratings':[x for x in range(1,6)]}
         self.write(self.get_rendered_html(path, template_values), 200)
 
 app = webapp2.WSGIApplication(
     [
         ('/provider/list', ProvidersPage),
-        ('/provider/details',ProviderDetailsPage)
+        ('/provider/details',ProviderDetailsPage),
+        ('/provider/schedule_repair', ProviderScheduleRepairPage)
     ]
 )

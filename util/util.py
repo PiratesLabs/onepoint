@@ -1,3 +1,7 @@
+from model.store import Store
+from model.appliance import Appliance
+import logging
+
 def convert_to_grid_format(items, tabs):
     items_dict = {}
     for tab in tabs:
@@ -12,3 +16,10 @@ def convert_to_grid_format(items, tabs):
             rows.append(curr_row)
         items_dict[tab] = rows
     return items_dict
+
+def get_appliances_for_logged_in_user(self):
+    email = self.session['email']
+    role = self.session['role']
+    store = Store.all().filter(role + ' =', email).get()
+    appliances = [appliance for appliance in Appliance.all().filter('store =', store).fetch(100)]
+    return appliances

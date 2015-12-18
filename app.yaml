@@ -20,7 +20,7 @@ handlers:
 
 ######################### REST ENDPOINTS #########################
 
-- url: /api/appliance/.*
+- url: /rest/appliance/.*
   script: handlers.rest.appliance.app
 
 ######################### STATIC ENDPOINTS #########################
