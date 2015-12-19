@@ -1,4 +1,5 @@
 from google.appengine.ext import db
+from util.mandrill import send_mandrill_email
 
 work_order_states = ["CREATED", "ESTIMATED", ["APPROVED", "DISAPPROVED"], "PROVIDER_CHECKED_IN", "PROVIDER_CHECKED_OUT", "COMPLETED"]
 
@@ -25,6 +26,7 @@ class WorkOrder(db.Model):
             self.appliance = params['appliance']
             self.provider = params['provider']
             self.create_wo_history(None)
+            send_mandrill_email('Work order created')
         elif self.curr_state == 'CREATED':
             self.curr_state = work_order_states[work_order_states.index(self.curr_state) + 1]
             self.create_wo_history(params['estimate'])
