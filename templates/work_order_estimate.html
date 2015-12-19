@@ -3,15 +3,20 @@
 
 {% endblock %}
 {% block Content %}
-<form role="form" action="/rest/create/appliance" method="post">
+<form role="form" id="estimate-form">
     <div class="form-group">
-        <label for="name">Name:</label>
-        <input type="text" class="form-control" id="name" name="name">
+        <label for="estimate">Estimate:</label>
+        <input type="text" class="form-control" id="estimate" name="estimate">
     </div>
-    <div class="form-group">
-        <label for="location">Store:</label>
-        <input type="text" class="form-control" id="store" name="store">
-    </div>
-    <button type="submit" class="btn btn-default">Submit</button>
+    <button onclick="submit_estimate();return false;" class="btn btn-default">Submit</button>
 </form>
+
+<script>
+    function submit_estimate() {
+    	var params="estimate:" + $('#estimate').val();
+		$.post("/rest/work_order/update", {'params':params,'work_order':{{work_order}}}, function( data ) {
+			alert( "Data Loaded: " + data );
+		});
+    }
+</script>
 {% endblock %}
