@@ -24,13 +24,15 @@ class WorkOrder(db.Model):
         woh.put()
         self.history.append(woh.key().id())
 
-    def send_wo_created_email(self):
+    def send_wo_created_email(self, wo_id):
         appliance = Appliance.get_by_id(long(self.appliance))
         store = appliance.store
         provider = Provider.get_by_id(long(self.provider))
         template_content = [
             {'name':'store_name','content':store.name},
             {'name':'appliance_type','content':appliance.manufacturer+':'+appliance.model},
+            {'name':'provider_name','content':provider.name},
+            {'name':'estimate_link','content':'<a href="http://onepointapp.appspot.com/work_order/provide_estimate?work_order='+str(wo_id)+'">here</a>'}
         ]
         provider_user = provider.owner
         owner = Member.get_by_key_name(store.owner)
@@ -46,23 +48,28 @@ class WorkOrder(db.Model):
             self.appliance = params['appliance']
             self.provider = params['provider']
             self.create_wo_history(None)
-            self.send_wo_created_email()
+            self.put()
+            self.send_wo_created_email(self.key().id())
         elif self.curr_state == 'CREATED':
             self.curr_state = work_order_states[work_order_states.index(self.curr_state) + 1]
             self.create_wo_history(params['estimate'])
+            self.put()
         elif self.curr_state == 'ESTIMATED':
             if params['approval'] == '1':
                 self.curr_state = 'APPROVED'
             else:
                 self.curr_state = 'DISAPPROVED'
             self.create_wo_history(None)
+            self.put()
         elif self.curr_state == 'APPROVED' or self.curr_state == 'DISAPPROVED':
             self.curr_state = work_order_states[work_order_states.index(["APPROVED", "DISAPPROVED"]) + 1]
             self.create_wo_history(None)
+            self.put()
         elif self.curr_state == 'PROVIDER_CHECKED_IN':
             self.curr_state = work_order_states[work_order_states.index('PROVIDER_CHECKED_IN') + 1]
             self.create_wo_history(None)
+            self.put()
         elif self.curr_state == 'PROVIDER_CHECKED_OUT':
             self.curr_state = work_order_states[work_order_states.index('PROVIDER_CHECKED_OUT') + 1]
             self.create_wo_history(params['notes'])
-    	self.put()
+            self.put()
