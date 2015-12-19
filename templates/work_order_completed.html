@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block Styles %}
+
+{% endblock %}
+{% block Content %}
+<form role="form" id="completed-form">
+    <div class="form-group">
+        <label for="notes">Notes:</label>
+        <input type="text" class="form-control" id="notes" name="notes">
+    </div>
+    <button onclick="submit_notes();return false;" class="btn btn-default">Submit</button>
+</form>
+
+<script>
+    function submit_notes() {
+    	var params="notes:" + $('#notes').val();
+		$.get("/rest/work_order/update", {'params':params,'work_order':{{work_order}}}, function( data ) {
+			alert( "Data Loaded: " + data );
+		});
+    }
+</script>
+{% endblock %}

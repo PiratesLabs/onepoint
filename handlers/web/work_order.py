@@ -1,6 +1,6 @@
 import webapp2
 from handlers.web import WebRequestHandler
-from auth import provider_login_required
+from auth import provider_login_required, login_required
 from model.provider import Provider
 import json
 import logging
@@ -12,8 +12,16 @@ class EstimateHandler(WebRequestHandler):
         template_values = {'work_order':self['work_order']}
         self.write(self.get_rendered_html(path, template_values), 200)
 
+class CompletedHandler(WebRequestHandler):
+    @login_required
+    def get(self):
+        path = 'work_order_completed.html'
+        template_values = {'work_order':self['work_order']}
+        self.write(self.get_rendered_html(path, template_values), 200)
+
 app = webapp2.WSGIApplication(
     [
-        ('/work_order/provide_estimate', EstimateHandler)
+        ('/work_order/provide_estimate', EstimateHandler),
+        ('/work_order/completed',CompletedHandler)
     ]
 )

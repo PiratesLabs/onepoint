@@ -14,7 +14,7 @@
 <script>
     function submit_estimate() {
     	var params="estimate:" + $('#estimate').val();
-		$.post("/rest/work_order/update", {'params':params,'work_order':{{work_order}}}, function( data ) {
+		$.get("/rest/work_order/update", {'params':params,'work_order':{{work_order}}}, function( data ) {
 			alert( "Data Loaded: " + data );
 		});
     }
