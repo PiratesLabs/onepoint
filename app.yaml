@@ -76,6 +76,10 @@ handlers:
   script: handlers.web.provider.app
   secure: never
 
+- url: /work_order/.*
+  script: handlers.web.work_order.app
+  secure: never
+
 - url: /.*
   script: handlers.web.index.app
   secure: never
