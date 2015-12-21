@@ -38,6 +38,17 @@ class WorkOrder(db.Model):
     @property
     def manager_user(self):
         return Member.get_by_key_name(self.store.manager)
+    @property
+    def action_url(self):
+        if self.curr_state == 'CREATED':
+            return ('ESTIMATE','/work_order/provide_estimate?work_order='+str(self.id))
+        elif self.curr_state == 'ESTIMATED':
+            return ('PLEASE CHECK EMAIL','')
+        elif self.curr_state == 'APPROVED':
+            return ('CHECK IN PROVIDER','/rest/work_order/update?work_order='+str(self.id))
+        elif self.curr_state == 'PROVIDER_CHECKED_IN':
+            return ('COMPLETE','/work_order/completed?work_order='+str(self.id))
+        return ''
 
     def create_wo_history(self, details):
         woh = WorkOrderHistory()

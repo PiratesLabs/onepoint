@@ -32,16 +32,7 @@ class ListHandler(WebRequestHandler):
     @login_required
     def get(self):
         path = 'workorders.html'
-        workorders = []
-        for wo in WorkOrder.all().fetch(100):
-            o = {}
-            o['id'] = wo.id
-            appliance = Appliance.get_by_id(long(wo.appliance))
-            o['appliance'] = appliance.name
-            provider = Provider.get_by_id(long(wo.provider))
-            o['provider'] = provider.name
-            o['state'] = wo.curr_state
-            workorders.append(o)
+        workorders = WorkOrder.all().fetch(100)
         template_values = {'workorders': workorders, 'count': len(workorders)}
         self.write(self.get_rendered_html(path, template_values), 200)
 

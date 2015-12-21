@@ -21,10 +21,12 @@
 					<div class="row workorder">
 						<div class="col-sm-1"></div>
 						<div class="col-xs-2">{{wo.id}}</div>
-						<div class="col-xs-2">{{wo.appliance}}</div>
-						<div class="col-xs-2">{{wo.provider}}</div>
-						<div class="col-xs-3 col-sm-2">{{wo.state}}</div>
-						<div class="col-xs-3 col-sm-2">{% if wo.state == 'CREATED' %}<a href="/work_order/provide_estimate?work_order={{wo.id}}"><button>ESTIMATE</button></a>{% elif wo.state == 'APPROVED' %}<button>CHECK IN</button>{% elif wo.state == 'PROVIDER_CHECKED_IN' %}<button>COMPLETE</button>{% endif %}</div>
+						<div class="col-xs-2">{{wo.appliance_obj.name}}</div>
+						<div class="col-xs-2">{{wo.provider_obj.name}}</div>
+						<div class="col-xs-3 col-sm-2">{{wo.curr_state}}</div>
+						<div class="col-xs-3 col-sm-2">
+							<a href="{{wo.action_url.1}}"><button>{{wo.action_url.0}}</button></a>
+						</div>
 						<div class="col-sm-1"></div>
 					</div>
 				{% endfor %}
