@@ -22,7 +22,7 @@ class CreateWorkOrderHandler(WebRequestHandler):
         ret_val = {}
         if(self.does_user_own_appliance()):
             wo = WorkOrder()
-            wo.update_state({'appliance':self['appliance'], 'provider':self['provider']})
+            wo.update_state({'appliance':self['appliance'], 'provider':self['provider']}, self.session['role'])
             ret_val = {'status':'success','work_order_id':wo.key().id()}
         else:
             ret_val = {'status':'error','message':'User does not own the appliance'}
@@ -40,8 +40,8 @@ class UpdateWorkOrderHandler(WebRequestHandler):
             for entry_str in entry_strs:
                 entry = entry_str.split(':')
                 params[entry[0]] = entry[1]
-        wo.update_state(params)
-        ret_val = {'status':'success','work_order_id':wo.key().id()}
+        ret_val = wo.update_state(params, self.session['role'])
+        ret_val['work_order_id'] = wo.key().id()
         self.write(json.dumps(ret_val))
 
 app = webapp2.WSGIApplication([

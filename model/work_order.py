@@ -20,6 +20,24 @@ class WorkOrder(db.Model):
     @property
     def id(self):
         return self.key().id()
+    @property
+    def appliance_obj(self):
+        return Appliance.get_by_id(long(self.appliance))
+    @property
+    def provider_obj(self):
+        return Provider.get_by_id(long(self.provider))
+    @property
+    def store(self):
+        return self.appliance_obj.store
+    @property
+    def provider_user(self):
+        return self.provider_obj.owner
+    @property
+    def owner_user(self):
+        return Member.get_by_key_name(self.store.owner)
+    @property
+    def manager_user(self):
+        return Member.get_by_key_name(self.store.manager)
 
     def create_wo_history(self, details):
         woh = WorkOrderHistory()
@@ -30,21 +48,15 @@ class WorkOrder(db.Model):
         return woh
 
     def send_wo_created_email(self, wo_id):
-        appliance = Appliance.get_by_id(long(self.appliance))
-        store = appliance.store
-        provider = Provider.get_by_id(long(self.provider))
         template_content = [
-            {'name':'store_name','content':store.name},
-            {'name':'appliance_type','content':appliance.manufacturer+':'+appliance.model},
-            {'name':'provider_name','content':provider.name},
+            {'name':'store_name','content':self.store.name},
+            {'name':'appliance_type','content':self.appliance_obj.manufacturer+':'+self.appliance_obj.model},
+            {'name':'provider_name','content':self.provider_obj.name},
             {'name':'estimate_link','content':'<a href="http://onepointapp.appspot.com/work_order/provide_estimate?work_order='+str(wo_id)+'">here</a>'}
         ]
-        provider_user = provider.owner
-        owner = Member.get_by_key_name(store.owner)
-        manager = Member.get_by_key_name(store.manager)
-        to = [{'email':provider_user.key().name(),'name':provider_user.name,'type':'to'},
-              {'email':owner.key().name(),'name':owner.name,'type':'cc'},
-              {'email':manager.key().name(),'name':provider.name,'type':'cc'}]
+        to = [{'email':self.provider_user.key().name(),'name':self.provider_user.name,'type':'to'},
+              {'email':self.owner_user.key().name(),'name':self.owner_user.name,'type':'cc'},
+              {'email':self.manager_user.key().name(),'name':self.provider_user.name,'type':'cc'}]
         send_mandrill_email('Work order created', template_content, to)
 
     def send_wo_approval_email(self, estimate, wo_id):
@@ -91,8 +103,22 @@ class WorkOrder(db.Model):
         to = [{'email':provider_user.key().name(),'name':provider_user.name,'type':'to'}]
         send_mandrill_email('work-order-approved', template_content, to)
 
-    def update_state(self, params):
+    def store_login(self, role):
+        if role == 'manager' or role == 'owner':
+            return True
+        return False
+
+    def provider_login(self, role):
+        if role == 'provider':
+            return True
+        return False    
+
+    def update_state(self, params, role):
+        ret_val = {'status':'success'}
     	if not self.curr_state:
+            if not self.store_login(role):
+                ret_val = {'status':'error', 'message':'Only a store manager or owner can create a work order'}
+                return ret_val
             self.curr_state = work_order_states[0]
             self.appliance = params['appliance']
             self.provider = params['provider']
@@ -100,6 +126,9 @@ class WorkOrder(db.Model):
             self.put()
             self.send_wo_created_email(self.key().id())
         elif self.curr_state == 'CREATED':
+            if not self.provider_login(role):
+                ret_val = {'status':'error', 'message':'Only a provider can estimate a work order'}
+                return ret_val
             estimate = long(params['estimate'])
             self.create_wo_history(params['estimate'])
             if estimate > 250:
@@ -110,7 +139,7 @@ class WorkOrder(db.Model):
                 self.create_wo_history(None)
                 self.send_wo_approved_email(self.key().id())
             self.put()
-            return
+            return ret_val
         elif self.curr_state == 'ESTIMATED':
             if params['approval'] == '1':
                 self.curr_state = 'APPROVED'
@@ -128,3 +157,4 @@ class WorkOrder(db.Model):
             self.curr_state = work_order_states[work_order_states.index('PROVIDER_CHECKED_IN') + 1]
             self.create_wo_history(params['notes'])
             self.put()
+        return ret_val
