@@ -136,7 +136,7 @@ class WorkOrder(db.Model):
                 self.create_wo_history(None)
                 self.send_wo_approved_email(self.key().id())
             self.put()
-            return
+            return ret_val
         elif self.curr_state == 'ESTIMATED':
             if params['approval'] == '1':
                 self.curr_state = 'APPROVED'
