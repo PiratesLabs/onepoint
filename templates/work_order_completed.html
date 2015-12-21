@@ -1,22 +1,35 @@
-{% extends "base.html" %}
-{% block Styles %}
-
+{% extends "bar_base.html" %}
+{% block BarStyles %}
+<link href="/assets/css/sass_out/appliances.css" type="text/css" rel="stylesheet">
 {% endblock %}
-{% block Content %}
-<form role="form" id="completed-form">
-    <div class="form-group">
-        <label for="notes">Notes:</label>
-        <input type="text" class="form-control" id="notes" name="notes">
+{% block BarContent%}
+<div class="bartwo">PROVIDE COMPLETION NOTES</div>
+<div class="content">
+    <div class="row">
+        <div class="col-xs-4"></div>
+        <div class="col-xs-4">
+            <form role="form" id="completed-form">
+                <div class="form-group">
+                    <label for="notes">Notes:</label>
+                    <input type="text" class="form-control" id="notes" name="notes">
+                </div>
+                <button onclick="submit_notes();return false;" class="btn btn-default">Submit</button>
+            </form>
+        </div>
+        <div class="col-xs-4"></div>
     </div>
-    <button onclick="submit_notes();return false;" class="btn btn-default">Submit</button>
-</form>
-
+</div>
+{% endblock %}
+{% block BarScripts %}
 <script>
     function submit_notes() {
-    	var params="notes:" + $('#notes').val();
-		$.get("/rest/work_order/update", {'params':params,'work_order':{{work_order}}}, function( data ) {
-			alert( "Data Loaded: " + data );
-		});
+        var params="notes:" + $('#notes').val();
+        $.get("/rest/work_order/update", {'params':params,'work_order':{{work_order}}}).done(function( data ) {
+            data = JSON.parse(data);
+            if(data.status == 'success') {
+                window.location = window.location.origin + '/work_order/list';
+            }
+        });
     }
 </script>
 {% endblock %}

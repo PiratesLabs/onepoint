@@ -24,10 +24,11 @@
 <script>
     function submit_estimate() {
         var params="estimate:" + $('#estimate').val();
-        $.get("/rest/work_order/update", {'params':params,'work_order':{{work_order}}}, function( data ) {
-            alert( "Data Loaded: " + data );
-            $('#estimate').prop( "disabled", true );
-            $('#estimate-btn').hide();
+        $.get("/rest/work_order/update", {'params':params,'work_order':{{work_order}}}).done(function( data ) {
+            data = JSON.parse(data);
+            if(data.status == 'success') {
+                window.location = window.location.origin + '/work_order/list';
+            }
         });
     }
 </script>

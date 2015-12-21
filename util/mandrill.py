@@ -3,7 +3,7 @@ import json
 
 def send_mandrill_email(template_slug, template_content, to):
     json_mandrill = {
-        "key": "xgkxelhSdAwZr2Yn0uPDIA",
+        "key": "rwb7RGauJGM5H1hhTI9vFw",
         "template_name": template_slug,
         "template_content": template_content,
         "message": {

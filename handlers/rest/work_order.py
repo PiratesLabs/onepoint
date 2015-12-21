@@ -42,7 +42,10 @@ class UpdateWorkOrderHandler(WebRequestHandler):
                 params[entry[0]] = entry[1]
         ret_val = wo.update_state(params, self.session['role'])
         ret_val['work_order_id'] = wo.key().id()
-        self.write(json.dumps(ret_val))
+        if ret_val['status'] == 'success':
+            self.redirect('/work_order/list')
+        else:
+            self.error(json.dumps(ret_val))
 
 app = webapp2.WSGIApplication([
     ('/rest/work_order/create', CreateWorkOrderHandler),
