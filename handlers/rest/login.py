@@ -27,6 +27,14 @@ class FacebookLoginHandler(WebRequestHandler):
         self.session['name'] = user_deets['name']
         self.session['role'] = member.role
 
+class LogoutHandler(WebRequestHandler):
+    def get(self):
+        del self.session['email']
+        del self.session['name']
+        del self.session['role']
+
+
 app = webapp2.WSGIApplication([
-    ('/rest/fb_login', FacebookLoginHandler)
+    ('/rest/fb_login', FacebookLoginHandler),
+    ('/rest/logout', LogoutHandler)
 ])
