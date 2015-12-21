@@ -1,4 +1,5 @@
 from model.store import Store
+from model.work_order import WorkOrder
 from model.appliance import Appliance
 import logging
 
@@ -23,3 +24,26 @@ def get_appliances_for_logged_in_user(self):
     store = Store.all().filter(role + ' =', email).get()
     appliances = [appliance for appliance in Appliance.all().filter('store =', store).fetch(100)]
     return appliances
+
+def get_work_orders_for_logged_in_user(self):
+    email = self.session['email']
+    workorders = []
+    if is_store_login(self):
+        store = Store.all().filter(role + ' =', email).get()
+        appliances = [appliance.id for appliance in Appliance.all().filter('store =', store).fetch(100)]
+        workorders = [wo if wo.appliance in appliances for wo in WorkOrder.all().fetch(100)]
+    else if is_provider_login(self):
+        
+    return workorders
+
+def is_store_login(self):
+    role = self.session['role']
+    if role == 'manager' or role == 'owner':
+        return True
+    return False
+
+def is_provider_login(self):
+    self.session['role']
+    if role == 'provider':
+        return True
+    return False

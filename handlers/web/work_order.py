@@ -4,6 +4,7 @@ from auth import provider_login_required, login_required
 from model.provider import Provider
 from model.work_order import WorkOrder
 from model.appliance import Appliance
+from util.util import get_work_orders_for_logged_in_user
 import json
 import logging
 
@@ -32,7 +33,7 @@ class ListHandler(WebRequestHandler):
     @login_required
     def get(self):
         path = 'workorders.html'
-        workorders = WorkOrder.all().fetch(100)
+        workorders = get_work_orders_for_logged_in_user(self)
         template_values = {'workorders': [(wo, wo.get_action_url(self.session['role'])) for wo in workorders], 'count': len(workorders)}
         self.write(self.get_rendered_html(path, template_values), 200)
 
