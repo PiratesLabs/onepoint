@@ -6,7 +6,7 @@ from handlers.web.web_request_handler import WebRequestHandler
 
 class FacebookLoginHandler(WebRequestHandler):
     def any_previous_sessions(self):
-        session_id = self.session['fb_id'] if 'fb_id' in self.session else None
+        session_id = self.session['email'] if 'email' in self.session else None
         return (session_id != None)
 
     def get_user_details_from_fb(self):
