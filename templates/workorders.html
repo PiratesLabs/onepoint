@@ -20,12 +20,12 @@
 				{% for wo in workorders %}
 					<div class="row workorder">
 						<div class="col-sm-1"></div>
-						<div class="col-xs-2">{{wo.id}}</div>
-						<div class="col-xs-2">{{wo.appliance_obj.name}}</div>
-						<div class="col-xs-2">{{wo.provider_obj.name}}</div>
-						<div class="col-xs-3 col-sm-2">{{wo.curr_state}}</div>
+						<div class="col-xs-2">{{wo.0.id}}</div>
+						<div class="col-xs-2">{{wo.0.appliance_obj.name}}</div>
+						<div class="col-xs-2">{{wo.0.provider_obj.name}}</div>
+						<div class="col-xs-3 col-sm-2">{{wo.0.curr_state}}</div>
 						<div class="col-xs-3 col-sm-2">
-							<a href="{{wo.action_url.1}}"><button>{{wo.action_url.0}}</button></a>
+							{% if wo.1 %}<a href="{{wo.1.1}}"><button>{{wo.1.0}}</button></a>{% endif %}
 						</div>
 						<div class="col-sm-1"></div>
 					</div>

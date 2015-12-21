@@ -48,7 +48,7 @@ class WorkOrder(db.Model):
             return ('CHECK IN PROVIDER','/rest/work_order/update?work_order='+str(self.id))
         elif self.curr_state == 'PROVIDER_CHECKED_IN':
             return ('COMPLETE','/work_order/completed?work_order='+str(self.id))
-        return ''
+        return None
 
     def create_wo_history(self, details):
         woh = WorkOrderHistory()
@@ -169,3 +169,14 @@ class WorkOrder(db.Model):
             self.create_wo_history(params['notes'])
             self.put()
         return ret_val
+
+    def get_action_url(self, role):
+        if self.curr_state == 'CREATED':
+            return self.action_url if role == 'provider' else None
+        elif self.curr_state == 'ESTIMATED':
+            return self.action_url if role == 'owner' else None
+        elif self.curr_state == 'APPROVED':
+            return self.action_url if role == 'owner' or role == 'manager' else None
+        elif self.curr_state == 'PROVIDER_CHECKED_IN':
+            return self.action_url if role == 'owner' or role == 'manager' else None
+        return None

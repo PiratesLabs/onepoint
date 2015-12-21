@@ -33,7 +33,7 @@ class ListHandler(WebRequestHandler):
     def get(self):
         path = 'workorders.html'
         workorders = WorkOrder.all().fetch(100)
-        template_values = {'workorders': workorders, 'count': len(workorders)}
+        template_values = {'workorders': [(wo, wo.get_action_url(self.session['role'])) for wo in workorders], 'count': len(workorders)}
         self.write(self.get_rendered_html(path, template_values), 200)
 
 app = webapp2.WSGIApplication(
