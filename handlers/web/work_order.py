@@ -2,6 +2,8 @@ import webapp2
 from handlers.web import WebRequestHandler
 from auth import provider_login_required, login_required
 from model.provider import Provider
+from model.work_order import WorkOrder
+from model.appliance import Appliance
 import json
 import logging
 
@@ -26,10 +28,28 @@ class ProviderCheckinHandler(WebRequestHandler):
         template_values = {'work_order':self['work_order']}
         self.write(self.get_rendered_html(path, template_values), 200)
 
+class ListHandler(WebRequestHandler):
+    @login_required
+    def get(self):
+        path = 'workorders.html'
+        workorders = []
+        for wo in WorkOrder.all().fetch(100):
+            o = {}
+            o['id'] = wo.id
+            appliance = Appliance.get_by_id(long(wo.appliance))
+            o['appliance'] = appliance.name
+            provider = Provider.get_by_id(long(wo.provider))
+            o['provider'] = provider.name
+            o['state'] = wo.curr_state
+            workorders.append(o)
+        template_values = {'workorders': workorders, 'count': len(workorders)}
+        self.write(self.get_rendered_html(path, template_values), 200)
+
 app = webapp2.WSGIApplication(
     [
         ('/work_order/provide_estimate', EstimateHandler),
         ('/work_order/checkin_provider', ProviderCheckinHandler),
         ('/work_order/completed',CompletedHandler),
+        ('/work_order/list',ListHandler)
     ]
 )

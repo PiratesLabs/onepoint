@@ -17,6 +17,10 @@ class WorkOrder(db.Model):
     history = db.ListProperty(long)
     curr_state = db.StringProperty(indexed=True)
 
+    @property
+    def id(self):
+        return self.key().id()
+
     def create_wo_history(self, details):
         woh = WorkOrderHistory()
         if details:

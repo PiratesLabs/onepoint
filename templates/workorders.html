@@ -1,0 +1,43 @@
+{% extends "bar_base.html" %}
+{% block BarStyles %}
+<link href="/assets/css/sass_out/workorders.css" type="text/css" rel="stylesheet">
+{% endblock %}
+{% block BarContent%}
+<div class="bartwo">{{count}} WORK ORDERS</div>
+<div class="content">
+	<div class="tabbable tabs-below">
+		<div class="tab-content">
+			<div class="tab-pane active" id="all">
+				<div class="row heading">
+					<div class="col-sm-1"></div>
+					<div class="col-xs-2">WO No.</div>
+					<div class="col-xs-2">APPLIANCE</div>
+					<div class="col-xs-2">PROVIDER</div>
+					<div class="col-xs-3 col-sm-2">STATUS</div>
+					<div class="col-xs-3 col-sm-2">ACTION</div>
+					<div class="col-sm-1"></div>
+				</div>
+				{% for wo in workorders %}
+					<div class="row workorder">
+						<div class="col-sm-1"></div>
+						<div class="col-xs-2">{{wo.id}}</div>
+						<div class="col-xs-2">{{wo.appliance}}</div>
+						<div class="col-xs-2">{{wo.provider}}</div>
+						<div class="col-xs-3 col-sm-2">{{wo.state}}</div>
+						<div class="col-xs-3 col-sm-2">{% if wo.state == 'APPROVED' %}<button>CHECK IN</button>{% elif wo.state == 'PROVIDER_CHECKED_IN' %}<button>COMPLETE</button>{% endif %}</div>
+						<div class="col-sm-1"></div>
+					</div>
+				{% endfor %}
+				<div class="row">
+					<div class="col-xs-2 col-xs-offset-5">
+						<a href="{{create_wo_url}}"><button>Create Work Order</button></a>
+					</div>
+				</div>
+			</div>
+		</div>
+		<ul class="nav nav-tabs">
+			<li class="col-xs-12 active" style="background-color: #5A9DE6;"><a href="#all" data-toggle="tab">All</a></li>
+		</ul>
+	</div>
+</div>
+{% endblock %}
