@@ -1,6 +1,8 @@
 from model.store import Store
 from model.work_order import WorkOrder
 from model.appliance import Appliance
+from model.member import Member
+from model.provider import Provider
 import logging
 
 def convert_to_grid_format(items, tabs):
@@ -35,8 +37,9 @@ def get_work_orders_for_logged_in_user(self):
             print appliance
             workorders.extend([wo for wo in WorkOrder.all().filter('appliance =', str(appliance))])
     elif is_provider_login(self):
-        provider = Member.get_by_key_name(email)
-        workorders = [wo for wo in WorkOrder.all().filter('provider =', str(provider.key().id()))]
+        providers = [p for p in Provider.all().fetch(100) if p.owner.key().name() == email]
+        for provider in providers:
+            workorders.extend([wo for wo in WorkOrder.all().filter('provider =', str(provider.key().id()))])
     return workorders
 
 def is_store_login(self):
@@ -46,7 +49,7 @@ def is_store_login(self):
     return False
 
 def is_provider_login(self):
-    self.session['role']
+    role = self.session['role']
     if role == 'provider':
         return True
     return False

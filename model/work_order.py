@@ -122,6 +122,11 @@ class WorkOrder(db.Model):
     def provider_login(self, role):
         if role == 'provider':
             return True
+        return False
+
+    def owner_login(self, role):
+        if role == 'owner':
+            return True
         return False    
 
     def update_state(self, params, role):
@@ -152,6 +157,10 @@ class WorkOrder(db.Model):
             self.put()
             return ret_val
         elif self.curr_state == 'ESTIMATED':
+            print role
+            if not self.owner_login(role):
+                ret_val = {'status':'error', 'message':'Only a store owner can approve a work order'}
+                return ret_val
             if params['approval'] == '1':
                 self.curr_state = 'APPROVED'
                 self.send_wo_approved_email(self.key().id())

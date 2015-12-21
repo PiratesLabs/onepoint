@@ -48,12 +48,6 @@
       xfbml      : true,
       version    : 'v2.5'
     });
-
-    FB.getLoginStatus(function(response) {
-		if (response.status === 'connected') {
-			startServerSession(response);
-		}
-	});
   };
 
   (function(d, s, id){

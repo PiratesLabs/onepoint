@@ -32,7 +32,7 @@ class TestDataCreationHandler(WebRequestHandler):
         Member(key_name='ranju@b-eagles.com', name='Ranju Salimath', role='provider').put()
 
     def create_stores(self):
-        store = Store(name="Store1", location=db.GeoPt(40.7131116,-74.015359), manager="niranjan.salimath@gmail.com", owner="aiyappa@b-eagles.com")
+        store = Store(name="Store1", location=db.GeoPt(40.7131116,-74.015359), manager="rsalimath@gmail.com", owner="niranjan.salimath@gmail.com")
         store.put()
         return [store]
 
