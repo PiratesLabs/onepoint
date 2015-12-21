@@ -29,11 +29,14 @@ def get_work_orders_for_logged_in_user(self):
     email = self.session['email']
     workorders = []
     if is_store_login(self):
-        store = Store.all().filter(role + ' =', email).get()
+        store = Store.all().filter(self.session['role'] + ' =', email).get()
         appliances = [appliance.id for appliance in Appliance.all().filter('store =', store).fetch(100)]
-        workorders = [wo if wo.appliance in appliances for wo in WorkOrder.all().fetch(100)]
-    else if is_provider_login(self):
-        
+        for appliance in appliances:
+            print appliance
+            workorders.extend([wo for wo in WorkOrder.all().filter('appliance =', str(appliance))])
+    elif is_provider_login(self):
+        provider = Member.get_by_key_name(email)
+        workorders = [wo for wo in WorkOrder.all().filter('provider =', str(provider.key().id()))]
     return workorders
 
 def is_store_login(self):
