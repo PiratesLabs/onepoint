@@ -19,9 +19,17 @@ class CompletedHandler(WebRequestHandler):
         template_values = {'work_order':self['work_order']}
         self.write(self.get_rendered_html(path, template_values), 200)
 
+class ProviderCheckinHandler(WebRequestHandler):
+    @login_required
+    def get(self):
+        path = 'provider_checkin.html'
+        template_values = {'work_order':self['work_order']}
+        self.write(self.get_rendered_html(path, template_values), 200)
+
 app = webapp2.WSGIApplication(
     [
         ('/work_order/provide_estimate', EstimateHandler),
-        ('/work_order/completed',CompletedHandler)
+        ('/work_order/checkin_provider', ProviderCheckinHandler),
+        ('/work_order/completed',CompletedHandler),
     ]
 )

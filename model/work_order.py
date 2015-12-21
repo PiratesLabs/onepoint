@@ -5,7 +5,7 @@ from model.store import Store
 from model.member import Member
 from model.provider import Provider
 
-work_order_states = ["CREATED", "ESTIMATED", ["APPROVED", "DISAPPROVED"], "COMPLETED"]
+work_order_states = ["CREATED", "ESTIMATED", ["APPROVED", "DISAPPROVED"], "PROVIDER_CHECKED_IN", "COMPLETED"]
 
 class WorkOrderHistory(db.Model):
 	time = db.DateTimeProperty(auto_now=True)
@@ -118,5 +118,9 @@ class WorkOrder(db.Model):
             self.put()
         elif self.curr_state == 'APPROVED':
             self.curr_state = work_order_states[work_order_states.index(["APPROVED", "DISAPPROVED"]) + 1]
+            self.create_wo_history(None)
+            self.put()
+        elif self.curr_state == 'PROVIDER_CHECKED_IN':
+            self.curr_state = work_order_states[work_order_states.index('PROVIDER_CHECKED_IN') + 1]
             self.create_wo_history(params['notes'])
             self.put()

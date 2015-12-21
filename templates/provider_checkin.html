@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block Styles %}
+
+{% endblock %}
+{% block Content %}
+<form role="form" id="checkin-form">
+    <button onclick="checkin();return false;" class="btn btn-default">Check-In</button>
+</form>
+
+<script>
+    function checkin() {
+		$.get("/rest/work_order/update", {'work_order':{{work_order}}}, function( data ) {
+			alert( "Data Loaded: " + data );
+		});
+    }
+</script>
+{% endblock %}
