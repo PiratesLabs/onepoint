@@ -4,13 +4,13 @@
 {% endblock %}
 {% block BarContent%}
 <div class="bartwo">{{count}} PROVIDERS</div>
-<div class="content">
+<div class="content" style="margin-top: 0px;">
 	<div class="tabbable tabs-below">
 		<div class="tab-content">
-			<div class="tab-pane active" id="starred" style="padding-top: 30px;">
+			<div class="tab-pane active" id="starred" style="margin-top: 50px;">
 				{% include "components/grid_rows.html" with items=providers.starred %}
 			</div> 
-			<div class="tab-pane" id="newest" style="padding-top: 30px;">
+			<div class="tab-pane" id="newest" style="margin-top: 50px;">
 				
 			</div>
 			<div class="tab-pane" id="oldest">
