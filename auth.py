@@ -30,4 +30,6 @@ def provider_login_required(fn):
     def check_provider_login(self, *args):
         if _provider_logged_in(self):
             fn(self, *args)
+        else:
+            self.write('<h1>401 Unauthorized access</h1><p>You are not logged in as a provider to be able to do this action</p>', 401)
     return check_provider_login

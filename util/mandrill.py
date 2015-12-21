@@ -18,5 +18,4 @@ def send_mandrill_email(template_slug, template_content, to):
         payload=json.dumps(json_mandrill),
         method=urlfetch.POST,
         headers={'Content-Type': 'application/x-www-form-urlencoded'})
-    print(result.content)
     return result
