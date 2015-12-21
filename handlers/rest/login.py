@@ -6,7 +6,7 @@ from handlers.web.web_request_handler import WebRequestHandler
 
 class FacebookLoginHandler(WebRequestHandler):
     def any_previous_sessions(self):
-        session_id = self.session['fb_id'] if 'fb_id' in self.session else None
+        session_id = self.session['email'] if 'email' in self.session else None
         return (session_id != None)
 
     def get_user_details_from_fb(self):
@@ -27,6 +27,14 @@ class FacebookLoginHandler(WebRequestHandler):
         self.session['name'] = user_deets['name']
         self.session['role'] = member.role
 
+class LogoutHandler(WebRequestHandler):
+    def get(self):
+        del self.session['email']
+        del self.session['name']
+        del self.session['role']
+
+
 app = webapp2.WSGIApplication([
-    ('/rest/fb_login', FacebookLoginHandler)
+    ('/rest/fb_login', FacebookLoginHandler),
+    ('/rest/logout', LogoutHandler)
 ])
