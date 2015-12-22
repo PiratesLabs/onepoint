@@ -3,6 +3,7 @@
 <link href="/assets/css/sass_out/workorders.css" type="text/css" rel="stylesheet">
 {% endblock %}
 {% block BarContent%}
+<input type="hidden" id="active-wo" value="{{active_wo}}">
 <div class="bartwo">{{count}} WORK ORDERS</div>
 <div class="content">
 	<div class="tabbable tabs-below">
@@ -66,6 +67,12 @@
 
 {% block BarScripts %}
 <script>
+    $(document).ready(function(){
+      var active_wo = $('#active-wo').val();
+      if(active_wo) {
+        $('#c'+active_wo).collapse('show');
+      }
+    });
     function submit_estimate(wo_id) {
         var params="estimate:" + $('#estimate'+wo_id).val();
         $.post("/rest/work_order/update", {'params':params,'work_order':wo_id}).done(function( data ) {

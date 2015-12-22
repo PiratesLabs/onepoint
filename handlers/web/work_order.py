@@ -33,8 +33,11 @@ class ListHandler(WebRequestHandler):
     @login_required
     def get(self):
         path = 'workorders.html'
+        wo_id = str(self['work_order'])
         workorders = get_work_orders_for_logged_in_user(self)
         template_values = {'workorders': [(wo, wo.get_action_url(self.session['role'])) for wo in workorders], 'count': len(workorders)}
+        if wo_id:
+            template_values['active_wo'] = wo_id
         self.write(self.get_rendered_html(path, template_values), 200)
 
 app = webapp2.WSGIApplication(

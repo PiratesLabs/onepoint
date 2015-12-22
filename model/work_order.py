@@ -63,7 +63,7 @@ class WorkOrder(db.Model):
             {'name':'store_name','content':self.store.name},
             {'name':'appliance_type','content':self.appliance_obj.manufacturer+':'+self.appliance_obj.model},
             {'name':'provider_name','content':self.provider_obj.name},
-            {'name':'estimate_link','content':'<a href="http://onepointapp.appspot.com/work_order/provide_estimate?work_order='+str(wo_id)+'">here</a>'}
+            {'name':'estimate_link','content':'<a href="http://onepointapp.appspot.com/work_order/list?work_order='+str(wo_id)+'">here</a>'}
         ]
         to = [{'email':self.provider_user.key().name(),'name':self.provider_user.name,'type':'to'},
               {'email':self.owner_user.key().name(),'name':self.owner_user.name,'type':'cc'},
@@ -82,8 +82,8 @@ class WorkOrder(db.Model):
             {'name':'appliance_type','content':appliance.manufacturer+':'+appliance.model},
             {'name':'estimate','content':estimate},
             {'name':'provider_name','content':provider.name},
-            {'name':'approval_link','content':'<a href="http://onepointapp.appspot.com/rest/work_order/update?work_order='+str(wo_id)+'&params=approval:1">here</a>'},
-            {'name':'disapproval_link','content':'<a href="http://onepointapp.appspot.com/rest/work_order/update?work_order='+str(wo_id)+'&params=approval:0">here</a>'}
+            {'name':'approval_link','content':'<a href="http://onepointapp.appspot.com/work_order/list?work_order='+str(wo_id)+'">here</a>'},
+            {'name':'disapproval_link','content':'<a href="http://onepointapp.appspot.com/work_order/list?work_order='+str(wo_id)+'">here</a>'}
         ]
         to = [{'email':owner.key().name(),'name':owner.name,'type':'to'}]
         send_mandrill_email('approve-work-order', template_content, to)
