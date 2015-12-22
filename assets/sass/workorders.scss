@@ -6,7 +6,7 @@ html {
             font-weight: bold;
 
             @media (max-width: 767px) {
-                font-size: 7px;
+                font-size: 10px;
             }
 
             .workorder {
@@ -28,6 +28,7 @@ html {
                 @media (max-width: 767px) {
                     width: 60px;
                     height: 20px;
+                    font-size: 10px;
                 }
     		}
 

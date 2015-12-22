@@ -8,28 +8,53 @@
 	<div class="tabbable tabs-below">
 		<div class="tab-content">
 			<div class="tab-pane active" id="all">
-				<div class="row heading">
-					<div class="col-sm-1"></div>
-					<div class="col-xs-2">WO No.</div>
-					<div class="col-xs-2">APPLIANCE</div>
-					<div class="col-xs-2">PROVIDER</div>
-					<div class="col-xs-3 col-sm-2">STATUS</div>
-					<div class="col-xs-3 col-sm-2">ACTION</div>
-					<div class="col-sm-1"></div>
-				</div>
-				{% for wo in workorders %}
-					<div class="row workorder">
-						<div class="col-sm-1"></div>
-						<div class="col-xs-2">{{wo.0.id}}</div>
-						<div class="col-xs-2">{{wo.0.appliance_obj.name}}</div>
-						<div class="col-xs-2">{{wo.0.provider_obj.name}}</div>
-						<div class="col-xs-3 col-sm-2">{{wo.0.curr_state}}</div>
-						<div class="col-xs-3 col-sm-2">
-							{% if wo.1 %}<a href="{{wo.1.1}}"><button>{{wo.1.0}}</button></a>{% endif %}
-						</div>
-						<div class="col-sm-1"></div>
-					</div>
-				{% endfor %}
+        <div class="row">
+          <div class="col-sm-3 col-xs-1"></div>
+          <div class="col-sm-6 col-xs-10">
+            <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+              {% for wo in workorders %}
+                <div class="panel panel-default">
+                  <div class="panel-heading heading" role="tab" id="{{wo.0.id}}">
+                    <h4 class="panel-title">
+                      <a role="button" data-toggle="collapse" data-parent="#accordion" href="#c{{wo.0.id}}" aria-expanded="true" aria-controls="c{{wo.0.id}}">
+                        {{wo.0.id}}
+                      </a>
+                    </h4>
+                  </div>
+                  <div id="c{{wo.0.id}}" class="panel-collapse collapse workorder" role="tabpanel" aria-labelledby="{{wo.0.id}}">
+                    <div class="panel-body">
+                      <p>APPLIANCE: {{wo.0.appliance_obj.name}}</p>
+                      <p>PROVIDER: {{wo.0.provider_obj.name}}</p>
+                      <p>STATE: {{wo.0.curr_state}}</p>
+                      {% if wo.1 %}
+                        {% if wo.1.0.0 == 'ESTIMATE' %}
+                          <form role="form" id="estimate-form">
+                            <div class="form-group">
+                                <label for="estimate">PROVIDE ESTIMATE:</label>
+                                <input type="text" class="form-control" id="estimate{{wo.0.id}}" name="estimate">
+                            </div>
+                            <button onclick="submit_estimate({{wo.0.id}});return false;">{{wo.1.0.0}}</button>
+                          </form>
+                        {% else %}
+                          <form role="form">
+                              <div class="form-group">
+                                  <label for="notes">PROVIDE NOTES:</label>
+                                  <input type="text" class="form-control" id="notes{{wo.0.id}}" name="notes">
+                              </div>
+                              {% for wo_choice in wo.1 %}
+                              <button onclick="submit_notes('{{wo.0.id}}', '{{wo_choice.1}}');return false;">{{wo_choice.0}}</button><br><br>
+                              {% endfor %}
+                          </form>
+                        {% endif %}
+                      {% endif %}
+                    </div>
+                  </div>
+                </div>
+              {% endfor %}
+            </div>
+          </div>
+          <div class="col-sm-3 col-xs-1"></div>
+        </div>
 			</div>
 		</div>
 		<ul class="nav nav-tabs">
@@ -38,3 +63,30 @@
 	</div>
 </div>
 {% endblock %}
+
+{% block BarScripts %}
+<script>
+    function submit_estimate(wo_id) {
+        var params="estimate:" + $('#estimate'+wo_id).val();
+        $.post("/rest/work_order/update", {'params':params,'work_order':wo_id}).done(function( data ) {
+            data = JSON.parse(data);
+            if(data.status == 'success') {
+                window.location = window.location.origin + '/work_order/list';
+            }
+        });
+    }
+
+    function submit_notes(wo_id, args) {
+        var params="notes:" + $('#notes'+wo_id).val();
+        if(args) {
+          params = params + ';' + args;
+        }
+        $.post("/rest/work_order/update", {'params':params,'work_order':wo_id}).done(function( data ) {
+            data = JSON.parse(data);
+            if(data.status == 'success') {
+                window.location = window.location.origin + '/work_order/list';
+            }
+        });
+    }
+</script>
+{% endblock%}

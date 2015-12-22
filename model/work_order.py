@@ -41,13 +41,13 @@ class WorkOrder(db.Model):
     @property
     def action_url(self):
         if self.curr_state == 'CREATED':
-            return ('ESTIMATE','/work_order/provide_estimate?work_order='+str(self.id))
+            return [('ESTIMATE','')]
         elif self.curr_state == 'ESTIMATED':
-            return ('PLEASE CHECK EMAIL','')
+            return [('APPROVE','approval:1'), ('DISAPPROVE','approval:0')]
         elif self.curr_state == 'APPROVED':
-            return ('CHECK IN PROVIDER','/rest/work_order/update?work_order='+str(self.id))
+            return [('CHECK IN PROVIDER','')]
         elif self.curr_state == 'PROVIDER_CHECKED_IN':
-            return ('COMPLETE','/work_order/completed?work_order='+str(self.id))
+            return [('COMPLETE','')]
         return None
 
     def create_wo_history(self, details):

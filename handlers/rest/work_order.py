@@ -30,7 +30,7 @@ class CreateWorkOrderHandler(WebRequestHandler):
 
 class UpdateWorkOrderHandler(WebRequestHandler):
     @login_required
-    def get(self):
+    def post(self):
         wo = WorkOrder.get_by_id(long(self['work_order']))
         ret_val = {}
         params = {}
