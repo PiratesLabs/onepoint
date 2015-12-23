@@ -63,12 +63,12 @@ class WorkOrder(db.Model):
             {'name':'store_name','content':self.store.name},
             {'name':'appliance_type','content':self.appliance_obj.manufacturer+':'+self.appliance_obj.model},
             {'name':'provider_name','content':self.provider_obj.name},
-            {'name':'estimate_link','content':'<a href="http://onepointapp.appspot.com/work_order/list?work_order='+str(wo_id)+'">here</a>'}
+            {'name':'estimate_link','content':'<a href="http://onepointapp.appspot.com/work_order/provide_estimate?work_order='+str(wo_id)+'&provider='+str(self.provider_obj.key().id())+'>here</a>'}
         ]
         to = [{'email':self.provider_user.key().name(),'name':self.provider_user.name,'type':'to'},
               {'email':self.owner_user.key().name(),'name':self.owner_user.name,'type':'cc'},
               {'email':self.manager_user.key().name(),'name':self.provider_user.name,'type':'cc'}]
-        send_mandrill_email('Work order created', template_content, to)
+        send_mandrill_email('work-order-created', template_content, to)
 
     def send_wo_approval_email(self, estimate, wo_id):
         appliance = Appliance.get_by_id(long(self.appliance))
@@ -141,21 +141,6 @@ class WorkOrder(db.Model):
             self.create_wo_history(None)
             self.put()
             self.send_wo_created_email(self.key().id())
-        elif self.curr_state == 'CREATED':
-            if not self.provider_login(role):
-                ret_val = {'status':'error', 'message':'Only a provider can estimate a work order'}
-                return ret_val
-            estimate = long(params['estimate'])
-            self.create_wo_history(params['estimate'])
-            if estimate > 250:
-                self.curr_state = work_order_states[work_order_states.index(self.curr_state) + 1]
-                self.send_wo_approval_email(params['estimate'], self.key().id())
-            else:
-                self.curr_state = 'APPROVED'
-                self.create_wo_history(None)
-                self.send_wo_approved_email(self.key().id())
-            self.put()
-            return ret_val
         elif self.curr_state == 'ESTIMATED':
             print role
             if not self.owner_login(role):
@@ -177,6 +162,23 @@ class WorkOrder(db.Model):
             self.curr_state = work_order_states[work_order_states.index('PROVIDER_CHECKED_IN') + 1]
             self.create_wo_history(params['notes'])
             self.put()
+        return ret_val
+
+    def estimate(self, estimate_str):
+        ret_val = {'status':'success'}
+        if self.curr_state != 'CREATED':
+            ret_val = {'status':'error', 'message':'Only a work order in created state can be estimated'}
+            return ret_val
+        estimate = long(estimate_str)
+        self.create_wo_history(estimate_str)
+        if estimate > 250:
+            self.curr_state = work_order_states[work_order_states.index(self.curr_state) + 1]
+            self.send_wo_approval_email(estimate_str, self.key().id())
+        else:
+            self.curr_state = 'APPROVED'
+            self.create_wo_history(None)
+            self.send_wo_approved_email(self.key().id())
+        self.put()
         return ret_val
 
     def get_action_url(self, role):
