@@ -23,7 +23,6 @@ html {
             .details {
                 text-align: left;
                 font-weight: bold;
-                font-size: 12px;
 
                 .row {
                     min-height: 60px;
@@ -31,10 +30,6 @@ html {
 
                 .row-title {
                     color: #5A9DE6;
-                }
-
-                @media (max-width: 767px) {
-                    font-size: 10px;
                 }
 
                 .rating {

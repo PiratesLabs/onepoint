@@ -56,3 +56,11 @@ h3, .header-3{
         @include font_definition($merriweather_font,$normal_font_size_mob,$normal_font_weight);
     }
 }
+
+body {
+	font-size: 16px;
+
+	@media (max-width: 767px) {
+		font-size: 12px;
+	}
+}

@@ -5,10 +5,6 @@ html {
             color: #579EDE;
             font-weight: bold;
 
-            @media (max-width: 767px) {
-                font-size: 10px;
-            }
-
             .workorder {
                 color: #000000;
             }
@@ -42,7 +38,6 @@ html {
                 @media (max-width: 767px) {
                     width: 60px;
                     height: 20px;
-                    font-size: 10px;
                 }
     		}
 
