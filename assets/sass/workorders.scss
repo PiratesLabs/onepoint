@@ -9,18 +9,8 @@ html {
                 color: #000000;
             }
 
-            .panel-title {
-                position: relative;
-            }
-
             .new {
-                float: left;
-                transform: rotate(-45deg);
-                color: #579EDE;
-                display: none;
-                position: absolute;
-                top: 0px;
-                left: 0px;
+                outline: 2px solid lightgreen; 
             }
 
     		button {

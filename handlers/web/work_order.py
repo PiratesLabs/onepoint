@@ -32,8 +32,8 @@ class ListHandler(WebRequestHandler):
     @login_required
     def get(self):
         path = 'workorders.html'
-        wo_id = str(self['work_order'])
-        new_wo = str(self['new_wo'])
+        wo_id = str(self['work_order']) if self['work_order'] else ''
+        new_wo = str(self['new_wo']) if self['new_wo'] else ''
         workorders = get_work_orders_for_logged_in_user(self)
         template_values = {'workorders': [(wo, wo.get_action_url(self.session['role'])) for wo in workorders], 'count': len(workorders)}
         if wo_id:
