@@ -68,8 +68,7 @@
             .done(function(data){
                 data = JSON.parse(data);
                 if(data.work_order_id) {
-                    $('#create-wo-btn').hide();
-                    $('#wo-creation-result').html('Work Order Created Successfully! Work Order ID: '+data.work_order_id);
+                    window.location = window.location.origin + '/work_order/list?new_wo=' + data.work_order_id;
                 } else {
                     $('#wo-creation-result').html('Work Order Creation Error: '+data.message);
                 }

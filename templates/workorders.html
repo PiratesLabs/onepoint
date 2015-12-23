@@ -4,6 +4,7 @@
 {% endblock %}
 {% block BarContent%}
 <input type="hidden" id="active-wo" value="{{active_wo}}">
+<input type="hidden" id="new-wo" value="{{new_wo}}">
 <div class="bartwo">{{count}} WORK ORDERS</div>
 <div class="content">
 	<div class="tabbable tabs-below">
@@ -16,11 +17,12 @@
               {% for wo in workorders %}
                 <div class="panel panel-default">
                   <div class="panel-heading heading" role="tab" id="{{wo.0.id}}">
+                    <a role="button" data-toggle="collapse" data-parent="#accordion" href="#c{{wo.0.id}}" aria-expanded="true" aria-controls="c{{wo.0.id}}">
                     <h4 class="panel-title">
-                      <a role="button" data-toggle="collapse" data-parent="#accordion" href="#c{{wo.0.id}}" aria-expanded="true" aria-controls="c{{wo.0.id}}">
-                        {{wo.0.id}}
-                      </a>
+                      <span class="new">New!</span>
+                      {{wo.0.id}}
                     </h4>
+                    </a>
                   </div>
                   <div id="c{{wo.0.id}}" class="panel-collapse collapse workorder" role="tabpanel" aria-labelledby="{{wo.0.id}}">
                     <div class="panel-body">
@@ -71,6 +73,10 @@
       var active_wo = $('#active-wo').val();
       if(active_wo) {
         $('#c'+active_wo).collapse('show');
+      }
+      var new_wo = $('#new-wo').val();
+      if(new_wo) {
+        $('#'+new_wo+' .new').show();
       }
     });
     function submit_estimate(wo_id) {
