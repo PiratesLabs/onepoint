@@ -63,7 +63,7 @@ class WorkOrder(db.Model):
             {'name':'store_name','content':self.store.name},
             {'name':'appliance_type','content':self.appliance_obj.manufacturer+':'+self.appliance_obj.model},
             {'name':'provider_name','content':self.provider_obj.name},
-            {'name':'estimate_link','content':'<a href="http://onepointapp.appspot.com/work_order/provide_estimate?work_order='+str(wo_id)+'&provider='+str(self.provider_obj.key().id())+'>here</a>'}
+            {'name':'estimate_link','content':'<a href="http://onepointapp.appspot.com/work_order/provide_estimate?work_order='+str(wo_id)+'">here</a>'}
         ]
         to = [{'email':self.provider_user.key().name(),'name':self.provider_user.name,'type':'to'},
               {'email':self.owner_user.key().name(),'name':self.owner_user.name,'type':'cc'},
