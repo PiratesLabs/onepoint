@@ -13,8 +13,8 @@
                 <span></span>
                 <img src="{{detail.img}}">
                 {% if forloop.counter == 2 %}
-                    <select name="{{detail.name}}" onchange="fetch_apply_provider($(this).val())">
-                        <option value="-1">{{detail.value}}</option>
+                    <select name="{{detail.name}}" onchange="fetch_apply_provider($(this).val())" required>
+                        <option value="">{{detail.value}}</option>
                         {% for provider in detail.providers %}
                             <option value="{{provider.0}}">{{provider.1}}</option>
                         {% endfor %}
@@ -64,7 +64,11 @@
             $('#wo-creation-result').html('');
             appliance = $("input[name='appliance']").attr("id");
             provider = $("select[name='provider']").val();
-            console.log(provider+','+appliance);
+            if(!provider) {
+                $("select[name='provider']").parent().addClass('has-feedback has-error');
+                $("select[name='provider']").focus();
+                return false;
+            }
             $.get('/rest/work_order/create',{'provider':provider, 'appliance':appliance})
             .done(function(data){
                 data = JSON.parse(data);
