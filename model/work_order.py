@@ -114,6 +114,17 @@ class WorkOrder(db.Model):
         to = [{'email':provider_user.key().name(),'name':provider_user.name,'type':'to'}]
         send_mandrill_email('work-order-approved', template_content, to)
 
+    def send_wo_completed_email(self, wo_id):
+        template_content = [
+            {'name':'store_name','content':self.store.name},
+            {'name':'appliance_type','content':self.appliance_obj.manufacturer+':'+self.appliance_obj.model},
+            {'name':'provider_name','content':self.provider_obj.name}
+        ]
+        to = [{'email':self.provider_user.key().name(),'name':self.provider_user.name,'type':'cc'},
+              {'email':self.owner_user.key().name(),'name':self.owner_user.name,'type':'to'},
+              {'email':self.manager_user.key().name(),'name':self.provider_user.name,'type':'to'}]
+        send_mandrill_email('work-order-completed', template_content, to)
+
     def store_login(self, role):
         if role == 'manager' or role == 'owner':
             return True
@@ -162,6 +173,7 @@ class WorkOrder(db.Model):
             self.curr_state = work_order_states[work_order_states.index('PROVIDER_CHECKED_IN') + 1]
             self.create_wo_history(params['notes'])
             self.put()
+            self.send_wo_completed_email(self.key().id())
         return ret_val
 
     def estimate(self, estimate_str):
