@@ -9,7 +9,6 @@ import json
 import logging
 
 class EstimateHandler(WebRequestHandler):
-    @provider_login_required
     def get(self):
         path = 'work_order_estimate.html'
         template_values = {'work_order':self['work_order']}

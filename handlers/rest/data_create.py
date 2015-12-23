@@ -27,12 +27,12 @@ class ApplianceCreationHandler(WebRequestHandler):
 
 class TestDataCreationHandler(WebRequestHandler):
     def create_users(self):
-        Member(key_name='niranjan.salimath@gmail.com', name='Niranjan Salimath', role='manager').put()
-        Member(key_name='rsalimath@gmail.com', name='Rajiv Salimath', role='owner').put()
+        Member(key_name='niranjan.salimath@gmail.com', name='Niranjan Salimath', role='owner').put()
+        Member(key_name='rsalimath@gmail.com', name='Rajiv Salimath', role='manager').put()
         Member(key_name='ranju@b-eagles.com', name='Ranju Salimath', role='provider').put()
 
     def create_stores(self):
-        store = Store(name="Store1", location=db.GeoPt(40.7131116,-74.015359), manager="niranjan.salimath@gmail.com", owner="rsalimath@gmail.com")
+        store = Store(name="Store1", location=db.GeoPt(40.7131116,-74.015359), manager="rsalimath@gmail.com", owner="niranjan.salimath@gmail.com")
         store.put()
         return [store]
 
@@ -53,15 +53,15 @@ class TestDataCreationHandler(WebRequestHandler):
             db.delete(entries)
 
     def create_providers(self):
-        Provider(name="Acme Oven Services", location=db.GeoPt(12.975696,77.6149191), owner=Member.get_by_key_name("ranju@b-eagles.com"), phone_num="617-840-0716", insurance="Hartford insurance", certifications="Class B Electrician license", reputation=4.0).put()
-        Provider(name="Cool Air Conditioning", location=db.GeoPt(12.9733679,77.6181971), owner=Member.get_by_key_name("ranju@b-eagles.com"), phone_num="617-840-0716", insurance="Hartford insurance", certifications="Class B Electrician license", reputation=4.0).put()
-        Provider(name="Chesapeake HVAC Services", location=db.GeoPt(12.9735948,77.6111258), owner=Member.get_by_key_name("ranju@b-eagles.com"), phone_num="617-840-0716", insurance="Hartford insurance", certifications="Class B Electrician license", reputation=4.0).put()
-        Provider(name="O'Mally Ventilation Repairs", location=db.GeoPt(12.9741252,77.6087063), owner=Member.get_by_key_name("ranju@b-eagles.com"), phone_num="617-840-0716", insurance="Hartford insurance", certifications="Class B Electrician license", reputation=4.0).put()
-        Provider(name="A1 Oven Servies", location=db.GeoPt(12.9769457,77.6120782), owner=Member.get_by_key_name("ranju@b-eagles.com"), phone_num="617-840-0716", insurance="Hartford insurance", certifications="Class B Electrician license", reputation=4.0).put()
-        Provider(name="Clean City Services", location=db.GeoPt(12.9735221,77.614239), owner=Member.get_by_key_name("ranju@b-eagles.com"), phone_num="617-840-0716", insurance="Hartford insurance", certifications="Class B Electrician license", reputation=4.0).put()
-        Provider(name="Excel Air Conditioning", location=db.GeoPt(12.975365,77.6178046), owner=Member.get_by_key_name("ranju@b-eagles.com"), phone_num="617-840-0716", insurance="Hartford insurance", certifications="Class B Electrician license", reputation=4.0).put()
-        Provider(name="Hardys Appliance Repairs", location=db.GeoPt(12.97361,77.6195483), owner=Member.get_by_key_name("ranju@b-eagles.com"), phone_num="617-840-0716", insurance="Hartford insurance", certifications="Class B Electrician license", reputation=4.0).put()
-        Provider(name="Oakgrove Oven Services", location=db.GeoPt(13.0552123,77.5863075), owner=Member.get_by_key_name("ranju@b-eagles.com"), phone_num="617-840-0716", insurance="Hartford insurance", certifications="Class B Electrician license", reputation=4.0).put()
+        Provider(name="Acme Oven Services", location=db.GeoPt(40.719510, -74.008930), owner=Member.get_by_key_name("ranju@b-eagles.com"), phone_num="617-840-0716", insurance="Hartford insurance", certifications="Class B Electrician license", reputation=4.0).put()
+        Provider(name="Cool Air Conditioning", location=db.GeoPt(40.720030, -74.007052), owner=Member.get_by_key_name("ranju@b-eagles.com"), phone_num="617-840-0716", insurance="Hartford insurance", certifications="Class B Electrician license", reputation=4.0).put()
+        Provider(name="Chesapeake HVAC Services", location=db.GeoPt(40.721266, -74.009627), owner=Member.get_by_key_name("ranju@b-eagles.com"), phone_num="617-840-0716", insurance="Hartford insurance", certifications="Class B Electrician license", reputation=4.0).put()
+        Provider(name="O'Mally Ventilation Repairs", location=db.GeoPt(40.716948, -74.007814), owner=Member.get_by_key_name("ranju@b-eagles.com"), phone_num="617-840-0716", insurance="Hartford insurance", certifications="Class B Electrician license", reputation=4.0).put()
+        Provider(name="A1 Oven Servies", location=db.GeoPt(40.715143, -74.011022), owner=Member.get_by_key_name("ranju@b-eagles.com"), phone_num="617-840-0716", insurance="Hartford insurance", certifications="Class B Electrician license", reputation=4.0).put()
+        Provider(name="Clean City Services", location=db.GeoPt(40.719542, -74.005700), owner=Member.get_by_key_name("ranju@b-eagles.com"), phone_num="617-840-0716", insurance="Hartford insurance", certifications="Class B Electrician license", reputation=4.0).put()
+        Provider(name="Excel Air Conditioning", location=db.GeoPt(40.717038, -74.008887), owner=Member.get_by_key_name("ranju@b-eagles.com"), phone_num="617-840-0716", insurance="Hartford insurance", certifications="Class B Electrician license", reputation=4.0).put()
+        Provider(name="Hardys Appliance Repairs", location=db.GeoPt(40.721193, -74.014434), owner=Member.get_by_key_name("ranju@b-eagles.com"), phone_num="617-840-0716", insurance="Hartford insurance", certifications="Class B Electrician license", reputation=4.0).put()
+        Provider(name="Oakgrove Oven Services", location=db.GeoPt(40.724043, -74.009989), owner=Member.get_by_key_name("ranju@b-eagles.com"), phone_num="617-840-0716", insurance="Hartford insurance", certifications="Class B Electrician license", reputation=4.0).put()
 
     def get(self):
         self.clear_datastore()

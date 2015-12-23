@@ -23,11 +23,13 @@
 {% block BarScripts %}
 <script>
     function submit_estimate() {
-        var params="estimate:" + $('#estimate').val();
-        $.get("/rest/work_order/update", {'params':params,'work_order':{{work_order}}}).done(function( data ) {
+        $.post("/rest/work_order/estimate", {'estimate':$('#estimate').val(),'work_order':{{work_order}}}).done(function( data ) {
             data = JSON.parse(data);
             if(data.status == 'success') {
-                window.location = window.location.origin + '/work_order/list';
+                alert('Thank you for the estimate, the store will be notified');
+            }
+            else if(data.status == 'error') {
+                alert(data.message);
             }
         });
     }
