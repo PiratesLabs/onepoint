@@ -58,7 +58,8 @@ class ApplianceScheduleRepairPage(WebRequestHandler):
                 'value':'Remarks'
             }
         ]
-        template_values = {'details':details,'name':'WORK ORDER #12-345', 'details_url':appliance.details_url}
+        priorities = ['High', 'Medium', 'Low']
+        template_values = {'details':details,'name':'WORK ORDER #12-345', 'details_url':appliance.details_url, 'priorities':priorities}
         self.write(self.get_rendered_html(path, template_values), 200)
 
 app = webapp2.WSGIApplication(
