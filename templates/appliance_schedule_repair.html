@@ -65,7 +65,7 @@
             appliance = $("input[name='appliance']").attr("id");
             provider = $("select[name='provider']").val();
             if(!provider) {
-                $("select[name='provider']").parent().addClass('has-feedback has-error');
+                $("select[name='provider']").addClass('has-error');
                 $("select[name='provider']").focus();
                 return false;
             }

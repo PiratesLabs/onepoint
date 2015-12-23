@@ -64,7 +64,7 @@ html {
                 background-color: #579EDE;
             }
 
-            select:focus {
+            select.has-error:focus {
                 outline-color: red;
             }
     	}
