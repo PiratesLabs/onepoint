@@ -85,7 +85,7 @@
         $.post("/rest/work_order/update", {'params':params,'work_order':wo_id}).done(function( data ) {
             data = JSON.parse(data);
             if(data.status == 'success') {
-                window.location = window.location.origin + '/work_order/list';
+              setTimeout(load_workorders(), 3000);
             }
         });
     }
@@ -98,9 +98,13 @@
         $.post("/rest/work_order/update", {'params':params,'work_order':wo_id}).done(function( data ) {
             data = JSON.parse(data);
             if(data.status == 'success') {
-                window.location = window.location.origin + '/work_order/list';
+              setTimeout(load_workorders(), 3000);
             }
         });
+    }
+
+    function load_workorders() {
+      window.location = window.location.origin + '/work_order/list';
     }
 </script>
 {% endblock%}
