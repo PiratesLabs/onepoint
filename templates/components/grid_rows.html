@@ -1,10 +1,10 @@
 {% for row in items %}
 	<div class="row">
-		{% for appliance in row %}
+		{% for row_item in row %}
     	<div class="col-sm-4 col-xs-12">
-    		<a href="{{appliance.details_url}}">
-    			<img src="/assets/img/oven.png">
-    			<p>{{appliance.name}}</p>
+    		<a href="{{row_item.details_url}}">
+    			<img src="/assets/img/{{row_item.image_name}}">
+    			<p>{{row_item.name}}</p>
     		</a>
     	</div>
     	{% endfor %}

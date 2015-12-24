@@ -15,6 +15,10 @@ class Appliance(db.Model):
         return '/appliance/details?id=' + str(self.key().id())
 
     @property
+    def image_name(self):
+        return 'appliances/'+self.model+'.png'
+
+    @property
     def schedule_repair_url(self):
         return '/appliance/schedule_repair?id='+str(self.key().id())
 

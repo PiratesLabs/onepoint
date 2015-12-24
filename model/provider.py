@@ -14,6 +14,10 @@ class Provider(db.Model):
         return '/provider/details?id='+str(self.key().id())
 
     @property
+    def image_name(self):
+        return 'providers/'+self.name+'.png'
+
+    @property
     def schedule_repair_url(self):
         return '/provider/schedule_repair?id='+str(self.key().id())
 
