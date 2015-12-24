@@ -9,12 +9,6 @@
 	text-align: center;
 	margin: 0px;
 
-	.img-helper {
-		display: inline-block;
-		height: 100%;
-		vertical-align: middle;
-	}
-
 	.logo {
 		margin:auto;
 		vertical-align: middle;
@@ -49,7 +43,18 @@
 	img {
 		margin: auto;
 		max-height: 100%;
-		max-width: 15%;
+
+		@media (max-width: 767px) {
+			width: 80%;
+		}
+	}
+
+	.container-fluid, .row {
+		height: 100%;
+
+		[class*=col-] {
+            height: 100%;
+        }
 	}
 }
 
