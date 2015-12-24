@@ -4,6 +4,6 @@
 	<div class="col-xs-4 col-sm-5">
 		<span class="img-helper"></span>
 		<span class="hide-mobile" style="float:right;">{{session.name}}</span>
-		<span style="float:right;"><img style="float:right;" src="/assets/img/pic.png"></span>
+		<span style="float:right;"><img style="float:right;" src="{% if session.fb_id %}http://graph.facebook.com/{{session.fb_id}}/picture?type=square{% else %}/assets/img/pic.png{% endif %}"></span>
 	</div>
 </div>

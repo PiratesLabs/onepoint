@@ -25,6 +25,7 @@ class FacebookLoginHandler(WebRequestHandler):
             member.put()
         self.session['email'] = user_deets['email']
         self.session['name'] = user_deets['name']
+        self.session['fb_id'] = user_deets['id']
         self.session['role'] = member.role
         print(self.session['name'])
 
@@ -32,6 +33,7 @@ class LogoutHandler(WebRequestHandler):
     def get(self):
         del self.session['email']
         del self.session['name']
+        del self.session['fb_id']
         del self.session['role']
 
 
