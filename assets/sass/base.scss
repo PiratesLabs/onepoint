@@ -14,3 +14,9 @@ html {
         margin: 0px;
     }
 }
+
+.hide-mobile {
+	@media (max-width: 767px) {
+		display: none;
+	}
+}
