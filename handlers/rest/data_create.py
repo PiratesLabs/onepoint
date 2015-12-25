@@ -1,12 +1,17 @@
 import webapp2
 import urllib2
+import urllib
 import json
+import logging
+import airtable_config as airtable
 from model.member import Member
 from model.store import Store
 from model.appliance import Appliance
 from model.provider import Provider
 from handlers.web.web_request_handler import WebRequestHandler
 from google.appengine.ext import db
+from google.appengine.ext import deferred
+from google.appengine.api import urlfetch
 
 class StoreCreationHandler(WebRequestHandler):
     def post(self):
@@ -70,8 +75,31 @@ class TestDataCreationHandler(WebRequestHandler):
         self.create_appliances(store_ids)
         self.create_providers()
 
+def pull_airtable_data():
+    payload = {'view': airtable.config['view']}
+    encoded_payload = urllib.urlencode(payload)
+    headers = {'Authorization': 'Bearer '+airtable.config['api_key'], 'Content-Type': 'application/x-www-form-urlencoded'}
+    url = 'https://api.airtable.com/v0/'+airtable.config['app_id']+'/Appliances'
+    response = urlfetch.fetch(url=url,payload=encoded_payload,method=urlfetch.GET,headers=headers)
+    if response.content and 'records' in response.content:
+        r = json.loads(response.content)
+        appliances = r['records']
+        for appliance in appliances:
+            logging.info(appliance['id'])
+            fields = appliance['fields']
+            for k, v in fields.iteritems():
+                logging.info(str(k)+' : '+str(v))
+            #Appliance(name=fields['Appliance Name'], store=store, manufacturer=fields['Manufacturer'], model=fields['Model #'], serial_num=fields['Serial #'], last_repair_date="", installed_on="", warranty="").put()
+            logging.info(appliance['createdTime'])
+            logging.info('******')
+
+class AirtableDataPullHandler(webapp2.RequestHandler):
+    def get(self):
+        deferred.defer(pull_airtable_data)
+
 app = webapp2.WSGIApplication([
     ('/rest/create/store', StoreCreationHandler),
     ('/rest/create/appliance', ApplianceCreationHandler),
     ('/rest/create/setup_testdata', TestDataCreationHandler),
+    ('/rest/create/airtable_data', AirtableDataPullHandler)
 ])
