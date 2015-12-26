@@ -35,6 +35,7 @@ class LogoutHandler(WebRequestHandler):
         del self.session['name']
         del self.session['fb_id']
         del self.session['role']
+        self.redirect('/')
 
 
 app = webapp2.WSGIApplication([
