@@ -5,7 +5,8 @@
 {% block Content %}
 <div>
 	<img src="/assets/img/landing.png"><br>
-	<select name="user" onchange="fetch_apply_provider($(this).val())" required>
+	<select name="user" onchange="login_user($(this).val())" required>
+		<option value="">Select User</option>
         {% for user in users %}
             <option value="{{user.email}}">{{user.display_string}}</option>
         {% endfor %}
@@ -17,6 +18,12 @@
 {% endblock %}
 {% block Scripts %}
 <script>
+	function login_user(email_id) {
+		var params = {"email":email_id}
+		$.post( "/rest/temp_login", params, function() {
+			window.location="/appliance/list"
+		})
+	}
 	function showFBLoginDialog() {
 		FB.login(function(response) {
 			if (response.status === 'connected') {

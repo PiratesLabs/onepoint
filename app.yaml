@@ -60,6 +60,10 @@ handlers:
   script: handlers.rest.login.app
   secure: never
 
+- url: /rest/temp_login
+  script: handlers.rest.login.app
+  secure: never
+
 - url: /rest/create/.*
   script: handlers.rest.data_create.app
   secure: never

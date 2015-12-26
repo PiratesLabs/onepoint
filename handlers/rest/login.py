@@ -3,6 +3,7 @@ import urllib2
 import json
 from model.member import Member
 from handlers.web.web_request_handler import WebRequestHandler
+from auth import login_required
 
 class FacebookLoginHandler(WebRequestHandler):
     def any_previous_sessions(self):
@@ -30,6 +31,7 @@ class FacebookLoginHandler(WebRequestHandler):
         print(self.session['name'])
 
 class LogoutHandler(WebRequestHandler):
+    @login_required
     def get(self):
         del self.session['email']
         del self.session['name']
@@ -37,8 +39,17 @@ class LogoutHandler(WebRequestHandler):
         del self.session['role']
         self.redirect('/')
 
+class TempLoginHandler(WebRequestHandler):
+    def post(self):
+        member = Member.get_by_key_name(self['email'])
+        self.session['email'] = member.key().name()
+        self.session['name'] = member.name
+        self.session['fb_id'] = "123"
+        self.session['role'] = member.role
+        print(self.session['email'])
 
 app = webapp2.WSGIApplication([
     ('/rest/fb_login', FacebookLoginHandler),
-    ('/rest/logout', LogoutHandler)
+    ('/rest/logout', LogoutHandler),
+    ('/rest/temp_login', TempLoginHandler)
 ])
