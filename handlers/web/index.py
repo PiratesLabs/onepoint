@@ -1,5 +1,6 @@
 import webapp2
 from handlers.web import WebRequestHandler
+from model.member import Member
 import json
 import logging
 
@@ -22,11 +23,16 @@ class QRCodePage(WebRequestHandler):
         self.write(self.get_rendered_html(path, template_values), 200)
 
 class IndexPage(WebRequestHandler):
+    def fetch_users(self):
+        users = Member.all().fetch(100)
+        return [u for u in users]
+
     def get(self):
         session_id = self.session['email'] if 'email' in self.session else None
         if not session_id:
             path = 'landing.html'
-            template_values = {}
+            print(self.fetch_users())
+            template_values = {'users':self.fetch_users()}
             self.write(self.get_rendered_html(path, template_values), 200)
         else:
             self.redirect('/appliance/list')

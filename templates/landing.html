@@ -5,7 +5,14 @@
 {% block Content %}
 <div>
 	<img src="/assets/img/landing.png"><br>
+	<select name="user" onchange="fetch_apply_provider($(this).val())" required>
+        {% for user in users %}
+            <option value="{{user.email}}">{{user.display_string}}</option>
+        {% endfor %}
+    </select>
+	<!--
 	<button onclick="fbLogin()"><a href="#"><i class="fa fa-facebook fa-fw"></i>Connect via Facebook</a></button><br>
+	-->
 </div>
 {% endblock %}
 {% block Scripts %}
