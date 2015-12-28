@@ -36,6 +36,10 @@ html {
             bottom: 10%;
             position: absolute;
             width: 100%;
+
+            select {
+                max-width: 100%;
+            }
         }
     }
 }
