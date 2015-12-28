@@ -32,7 +32,6 @@
 {% block BarScripts %}
 <script>
     function submit_estimate() {
-        console.log('In submit estimate')
         $.post("/rest/work_order/estimate", {'service_date':$('#service_date').val(),'estimate':$('#estimate').val(),'approval':'1','work_order':{{work_order}}}).done(function( data ) {
             data = JSON.parse(data);
             if(data.status == 'success') {
