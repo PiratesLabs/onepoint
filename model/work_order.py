@@ -59,7 +59,7 @@ class WorkOrder(db.Model):
         self.history.append(woh.key().id())
         return woh
 
-    def send_wo_created_email(self, wo_id):
+    def send_wo_created_email(self, wo_id, remarks, priority):
         template_content = [
             {'name':'work_order_id','content':self.key().id()},
             {'name':'store_address','content':self.store.address},
@@ -72,6 +72,8 @@ class WorkOrder(db.Model):
             {'name':'model','content':self.appliance_obj.model},
             {'name':'serial_num','content':self.appliance_obj.serial_num},
             {'name':'warranty','content':self.appliance_obj.warranty},
+            {'name':'appliance_status','content':remarks},
+            {'name':'service_type','content':priority},
             {'name':'provider_name','content':self.provider_obj.name},
             {'name':'estimate_link','content':'<a href="http://onepointapp.appspot.com/work_order/provide_estimate?work_order='+str(wo_id)+'">here</a>'}
         ]
@@ -173,7 +175,7 @@ class WorkOrder(db.Model):
             notes = params['remarks'] + separator + params['priority']
             self.create_wo_history(notes)
             self.put()
-            self.send_wo_created_email(self.key().id())
+            self.send_wo_created_email(self.key().id(), params['remarks'], params['priority'])
         elif self.curr_state == 'ESTIMATED':
             if not self.owner_login(role):
                 ret_val = {'status':'error', 'message':'Only a store owner can approve a work order'}
@@ -185,6 +187,7 @@ class WorkOrder(db.Model):
                 self.curr_state = 'DISAPPROVED'
                 self.send_wo_disapproved_email(self.key().id())
             self.create_wo_history(None)
+            self.put()
             self.put()
         elif self.curr_state == 'APPROVED':
             self.curr_state = work_order_states[work_order_states.index(["APPROVED", "DISAPPROVED"]) + 1]
