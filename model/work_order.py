@@ -60,7 +60,12 @@ class WorkOrder(db.Model):
 
     def send_wo_created_email(self, wo_id):
         template_content = [
+            {'name':'work_order_id','content':self.key().id()},
+            {'name':'store_address','content':self.store.address},
             {'name':'store_name','content':self.store.name},
+            {'name':'store_manager_name','content':self.manager_user.name},
+            {'name':'store_manager_phone','content':self.manager_user.phone},
+            {'name':'store_address','content':self.store.address},
             {'name':'appliance_type','content':self.appliance_obj.manufacturer+':'+self.appliance_obj.model},
             {'name':'provider_name','content':self.provider_obj.name},
             {'name':'estimate_link','content':'<a href="http://onepointapp.appspot.com/work_order/provide_estimate?work_order='+str(wo_id)+'">here</a>'}

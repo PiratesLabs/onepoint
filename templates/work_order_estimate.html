@@ -26,7 +26,7 @@
 {% block BarScripts %}
 <script>
     function submit_estimate() {
-        $.post("/rest/work_order/estimate", {'estimate':$('#estimate').val(),'work_order':{{work_order}}}).done(function( data ) {
+        $.post("/rest/work_order/estimate", {'estimate':$('#estimate').val(),'approval':'1','work_order':{{work_order}}}).done(function( data ) {
             data = JSON.parse(data);
             if(data.status == 'success') {
                 alert('Thank you for the estimate, the store will be notified');

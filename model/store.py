@@ -5,3 +5,4 @@ class Store(db.Model):
     location = db.GeoPtProperty(indexed=True)
     manager = db.StringProperty(indexed=True)
     owner = db.StringProperty(indexed=True)
+    address = db.StringProperty(indexed=False)

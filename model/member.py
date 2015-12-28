@@ -3,6 +3,7 @@ from google.appengine.ext import db
 class Member(db.Model):
     name = db.StringProperty(indexed=False)
     role = db.StringProperty(indexed=True)
+    phone = db.StringProperty(indexed=False)
 
     @property
     def display_string(self):
