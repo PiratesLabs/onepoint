@@ -117,17 +117,20 @@ class WorkOrder(db.Model):
         to = [{'email':provider_user.key().name(),'name':provider_user.name,'type':'to'}]
         send_mandrill_email('work-order-disapproved', template_content, to)
 
-    def send_wo_approved_email(self, wo_id):
-        appliance = Appliance.get_by_id(long(self.appliance))
-        store = appliance.store
-        provider = Provider.get_by_id(long(self.provider))
-        provider_user = provider.owner
+    def send_wo_approved_email(self):
         template_content = [
-            {'name':'appliance_type','content':appliance.manufacturer+':'+appliance.model},
-            {'name':'provider_name','content':provider.name},
-            {'name':'store_name','content':store.name}
+            {'name':'work_order_id','content':self.key().id()},
+            {'name':'provider_name','content':self.provider_obj.name},
+            {'name':'store_name','content':self.store.name},
+            {'name':'appliance_name','content':self.appliance_obj.name},
+            {'name':'manufacturer','content':self.appliance_obj.manufacturer},
+            {'name':'model','content':self.appliance_obj.model},
+            {'name':'serial_num','content':self.appliance_obj.serial_num},
+            {'name':'warranty','content':self.appliance_obj.warranty},
         ]
-        to = [{'email':provider_user.key().name(),'name':provider_user.name,'type':'to'}]
+        to = [{'email':self.provider_user.key().name(),'name':self.provider_user.name,'type':'to'},
+              {'email':self.owner_user.key().name(),'name':self.owner_user.name,'type':'cc'},
+              {'email':self.manager_user.key().name(),'name':self.provider_user.name,'type':'cc'}]
         send_mandrill_email('work-order-approved', template_content, to)
 
     def send_wo_completed_email(self, wo_id):
@@ -211,7 +214,7 @@ class WorkOrder(db.Model):
                 return ret_val
             if params['approval'] == '1':
                 self.curr_state = 'APPROVED'
-                self.send_wo_approved_email(self.key().id())
+                self.send_wo_approved_email()
             else:
                 self.curr_state = 'DISAPPROVED'
                 self.send_wo_disapproved_email(self.key().id())
