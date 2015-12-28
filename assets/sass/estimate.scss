@@ -1,0 +1,19 @@
+@import "appliances.scss";
+
+html {
+    body {
+    	.content {
+    		button {
+                max-width: 100%;
+    		}
+
+    		.row {
+                min-height: 50px;
+
+                [class*=col-] {
+                    min-height: 200px;
+                }
+            }
+    	}
+    }
+}

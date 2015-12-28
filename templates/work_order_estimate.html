@@ -1,27 +1,27 @@
 {% extends "bar_base.html" %}
 {% block BarStyles %}
-<link href="/assets/css/sass_out/appliances.css" type="text/css" rel="stylesheet">
+<link href="/assets/css/sass_out/estimate.css" type="text/css" rel="stylesheet">
 {% endblock %}
 {% block BarContent%}
 <div class="bartwo">PROVIDE ESTIMATE</div>
 <div class="content">
     <div class="row">
-        <div class="col-xs-4"></div>
-        <div class="col-xs-4">
-            <form role="form" id="estimate-form">
-                <div class="form-group">
-                    <label for="rejection_remarks">Remarks:</label>
+        <div class="col-md-2 col-xs-1"></div>
+        <div class="col-md-8 col-xs-10">
+            <form role="form row" id="estimate-form">
+                <div class="col-md-6">
+                    <label for="rejection_remarks">Provide remarks for rejecting the work-order:</label>
                     <input type="text" class="form-control" id="rejection_remarks" name="rejection_remarks">
-                    <button id="reject-btn" onclick="reject_workorder();return false;" class="btn btn-default">Reject</button>
+                    <button id="reject-btn" onclick="reject_workorder();return false;">Reject</button>
                 </div>
-                <div class="form-group">
-                    <label for="estimate">Estimate:</label>
+                <div class="col-md-6">
+                    <label for="estimate">Provide an estimate for the work-order:</label>
                     <input type="text" class="form-control" id="estimate" name="estimate">
+                    <button id="estimate-btn" onclick="submit_estimate();return false;">Accept</button>
                 </div>
-                <button id="estimate-btn" onclick="submit_estimate();return false;" class="btn btn-default">Accept</button>
             </form>
         </div>
-        <div class="col-xs-4"></div>
+        <div class="col-md-2 col-xs-1"></div>
     </div>
 </div>
 {% endblock %}
