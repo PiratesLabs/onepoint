@@ -6,32 +6,38 @@
 <div class="bartwo">PROVIDE ESTIMATE</div>
 <div class="content">
     <div class="row">
-        <div class="col-md-2 col-xs-1"></div>
-        <div class="col-md-8 col-xs-10">
+        <div class="col-lg-2 col-xs-1"></div>
+        <div class="col-lg-8 col-xs-10">
             <form role="form row" id="estimate-form">
-                <div class="col-md-6">
+                <div class="col-sm-5">
                     <label for="rejection_remarks">Provide remarks for rejecting the work-order:</label>
                     <input type="text" class="form-control" id="rejection_remarks" name="rejection_remarks">
                     <button id="reject-btn" onclick="reject_workorder();return false;">Reject</button>
                 </div>
-                <div class="col-md-6">
+                <div class="col-sm-2"></div>
+                <div class="col-sm-5">
                     <label for="estimate">Provide an estimate for the work-order:</label>
                     <input type="text" class="form-control" id="estimate" name="estimate">
+                    <br>
+                    <label for="service_date">Service date:</label>
+                    <input type="text" class="form-control" id="service_date" name="service_date">
                     <button id="estimate-btn" onclick="submit_estimate();return false;">Accept</button>
                 </div>
             </form>
         </div>
-        <div class="col-md-2 col-xs-1"></div>
+        <div class="col-lg-2 col-xs-1"></div>
     </div>
 </div>
 {% endblock %}
 {% block BarScripts %}
 <script>
     function submit_estimate() {
-        $.post("/rest/work_order/estimate", {'estimate':$('#estimate').val(),'approval':'1','work_order':{{work_order}}}).done(function( data ) {
+        console.log('In submit estimate')
+        $.post("/rest/work_order/estimate", {'service_date':$('#service_date').val(),'estimate':$('#estimate').val(),'approval':'1','work_order':{{work_order}}}).done(function( data ) {
             data = JSON.parse(data);
             if(data.status == 'success') {
                 alert('Thank you for the estimate, the store will be notified');
+                window.location = '/'
             }
             else if(data.status == 'error') {
                 alert(data.message);
@@ -43,6 +49,7 @@
             data = JSON.parse(data);
             if(data.status == 'success') {
                 alert('Too bad you could not accept this work order. The store will be notified!');
+                window.location = '/'
             }
             else if(data.status == 'error') {
                 alert(data.message);

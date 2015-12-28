@@ -60,6 +60,7 @@ class WorkOrder(db.Model):
         return woh
 
     def send_wo_created_email(self, wo_id, remarks, priority):
+        estimation_link = "http://onepointapp.appspot.com/work_order/provide_estimate?work_order="+str(wo_id)
         template_content = [
             {'name':'work_order_id','content':self.key().id()},
             {'name':'store_address','content':self.store.address},
@@ -75,7 +76,8 @@ class WorkOrder(db.Model):
             {'name':'appliance_status','content':remarks},
             {'name':'service_type','content':priority},
             {'name':'provider_name','content':self.provider_obj.name},
-            {'name':'estimate_link','content':'<a href="http://onepointapp.appspot.com/work_order/provide_estimate?work_order='+str(wo_id)+'">here</a>'}
+            {'name':'accept_link','content':'<a class="mcnButton " title="ACCEPT" href="' + estimation_link + '" target="_blank" style="font-weight: bold;letter-spacing: normal;line-height: 100%;text-align: center;text-decoration: none;color: #FFFFFF;">ACCEPT</a>'},
+            {'name':'reject_link','content':'<a class="mcnButton " title="REJECT" href="' + estimation_link + '" target="_blank" style="font-weight: bold;letter-spacing: normal;line-height: 100%;text-align: center;text-decoration: none;color: #FFFFFF;">REJECT</a>'},
         ]
         to = [{'email':self.provider_user.key().name(),'name':self.provider_user.name,'type':'to'},
               {'email':self.owner_user.key().name(),'name':self.owner_user.name,'type':'cc'},
@@ -139,14 +141,39 @@ class WorkOrder(db.Model):
 
     def send_wo_rejected_email(self, remarks):
         template_content = [
+            {'name':'work_order_id','content':self.key().id()},
+            {'name':'store_address','content':self.store.address},
             {'name':'store_name','content':self.store.name},
-            {'name':'appliance_type','content':self.appliance_obj.manufacturer+':'+self.appliance_obj.model},
-            {'name':'provider_name','content':self.provider_obj.name}
+            {'name':'provider_name','content':self.provider_obj.name},
+            {'name':'appliance_name','content':self.appliance_obj.name},
+            {'name':'manufacturer','content':self.appliance_obj.manufacturer},
+            {'name':'model','content':self.appliance_obj.model},
+            {'name':'serial_num','content':self.appliance_obj.serial_num},
+            {'name':'warranty','content':self.appliance_obj.warranty},
+            {'name':'reject_remarks','content':remarks},
         ]
         to = [{'email':self.provider_user.key().name(),'name':self.provider_user.name,'type':'to'},
               {'email':self.owner_user.key().name(),'name':self.owner_user.name,'type':'cc'},
               {'email':self.manager_user.key().name(),'name':self.provider_user.name,'type':'cc'}]
         send_mandrill_email('work-order-rejected', template_content, to)
+
+    def send_wo_auto_approved_email(self, estimate, service_date):
+        template_content = [
+            {'name':'work_order_id','content':self.key().id()},
+            {'name':'store_name','content':self.store.name},
+            {'name':'provider_name','content':self.provider_obj.name},
+            {'name':'appliance_name','content':self.appliance_obj.name},
+            {'name':'manufacturer','content':self.appliance_obj.manufacturer},
+            {'name':'model','content':self.appliance_obj.model},
+            {'name':'serial_num','content':self.appliance_obj.serial_num},
+            {'name':'warranty','content':self.appliance_obj.warranty},
+            {'name':'estimate','content':estimate},
+            {'name':'service_date','content':service_date},
+        ]
+        to = [{'email':self.provider_user.key().name(),'name':self.provider_user.name,'type':'cc'},
+              {'email':self.owner_user.key().name(),'name':self.owner_user.name,'type':'cc'},
+              {'email':self.manager_user.key().name(),'name':self.provider_user.name,'type':'to'}]
+        send_mandrill_email('work-order-auto-approved', template_content, to)
 
     def store_login(self, role):
         if role == 'manager' or role == 'owner':
@@ -200,7 +227,7 @@ class WorkOrder(db.Model):
             self.send_wo_completed_email(self.key().id())
         return ret_val
 
-    def estimate(self, notes, approval_str):
+    def estimate(self, notes, approval_str, service_date):
         ret_val = {'status':'success'}
         if self.curr_state != 'CREATED':
             ret_val = {'status':'error', 'message':'Only a work order in created state can be estimated'}
@@ -214,8 +241,7 @@ class WorkOrder(db.Model):
                 self.send_wo_approval_email(notes, self.key().id())
             else:
                 self.curr_state = 'APPROVED'
-                self.create_wo_history(None)
-                self.send_wo_approved_email(self.key().id())
+                self.send_wo_auto_approved_email(notes, service_date)
         else:
             self.curr_state = "REJECTED"
             self.send_wo_rejected_email(notes)
