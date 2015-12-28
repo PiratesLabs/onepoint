@@ -69,13 +69,15 @@
         function create_work_order() {
             $('#wo-creation-result').html('');
             appliance = $("input[name='appliance']").attr("id");
+            remarks = $("input[name='remarks']").val();
             provider = $("select[name='provider']").val();
+            priority = $(".priority.selected").text()
             if(!provider) {
                 $("select[name='provider']").addClass('has-error');
                 $("select[name='provider']").focus();
                 return false;
             }
-            $.get('/rest/work_order/create',{'provider':provider, 'appliance':appliance})
+            $.get('/rest/work_order/create',{'provider':provider, 'appliance':appliance, 'remarks':remarks, 'priority':priority})
             .done(function(data){
                 data = JSON.parse(data);
                 if(data.work_order_id) {
