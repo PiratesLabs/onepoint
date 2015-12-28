@@ -43,6 +43,7 @@
             data = JSON.parse(data);
             if(data.status == 'success') {
                 alert('Too bad you could not accept this work order. The store will be notified!');
+                window.location = '/'
             }
             else if(data.status == 'error') {
                 alert(data.message);

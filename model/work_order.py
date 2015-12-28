@@ -60,7 +60,7 @@ class WorkOrder(db.Model):
         return woh
 
     def send_wo_created_email(self, wo_id, remarks, priority):
-        estimation_link = "http://onepointapp.appspot.com/work_order/provide_estimate?work_order='+str(wo_id)+'"
+        estimation_link = "http://onepointapp.appspot.com/work_order/provide_estimate?work_order="+str(wo_id)
         template_content = [
             {'name':'work_order_id','content':self.key().id()},
             {'name':'store_address','content':self.store.address},
@@ -141,9 +141,16 @@ class WorkOrder(db.Model):
 
     def send_wo_rejected_email(self, remarks):
         template_content = [
+            {'name':'work_order_id','content':self.key().id()},
+            {'name':'store_address','content':self.store.address},
             {'name':'store_name','content':self.store.name},
-            {'name':'appliance_type','content':self.appliance_obj.manufacturer+':'+self.appliance_obj.model},
-            {'name':'provider_name','content':self.provider_obj.name}
+            {'name':'provider_name','content':self.provider_obj.name},
+            {'name':'appliance_name','content':self.appliance_obj.name},
+            {'name':'manufacturer','content':self.appliance_obj.manufacturer},
+            {'name':'model','content':self.appliance_obj.model},
+            {'name':'serial_num','content':self.appliance_obj.serial_num},
+            {'name':'warranty','content':self.appliance_obj.warranty},
+            {'name':'reject_remarks','content':remarks},
         ]
         to = [{'email':self.provider_user.key().name(),'name':self.provider_user.name,'type':'to'},
               {'email':self.owner_user.key().name(),'name':self.owner_user.name,'type':'cc'},
