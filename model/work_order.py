@@ -84,22 +84,24 @@ class WorkOrder(db.Model):
               {'email':self.manager_user.key().name(),'name':self.provider_user.name,'type':'cc'}]
         send_mandrill_email('work-order-created', template_content, to)
 
-    def send_wo_approval_email(self, estimate, wo_id):
-        appliance = Appliance.get_by_id(long(self.appliance))
-        store = appliance.store
-        provider = Provider.get_by_id(long(self.provider))
-        provider_user = provider.owner
-        owner = Member.get_by_key_name(store.owner)
-        manager = Member.get_by_key_name(store.manager)
+    def send_wo_approval_email(self, estimate):
+        link = 'http://onepointapp.appspot.com/work_order/list?work_order='+str(self.key().id())
         template_content = [
-            {'name':'owner_name','content':owner.name},
-            {'name':'appliance_type','content':appliance.manufacturer+':'+appliance.model},
+            {'name':'work_order_id','content':self.key().id()},
+            {'name':'provider_name','content':self.provider_obj.name},
             {'name':'estimate','content':estimate},
-            {'name':'provider_name','content':provider.name},
-            {'name':'approval_link','content':'<a href="http://onepointapp.appspot.com/work_order/list?work_order='+str(wo_id)+'">here</a>'},
-            {'name':'disapproval_link','content':'<a href="http://onepointapp.appspot.com/work_order/list?work_order='+str(wo_id)+'">here</a>'}
+            {'name':'store_name','content':self.store.name},
+            {'name':'appliance_name','content':self.appliance_obj.name},
+            {'name':'manufacturer','content':self.appliance_obj.manufacturer},
+            {'name':'model','content':self.appliance_obj.model},
+            {'name':'serial_num','content':self.appliance_obj.serial_num},
+            {'name':'warranty','content':self.appliance_obj.warranty},
+            {'name':'accept_link','content':'<a class="mcnButton " title="ACCEPT" href="'+ link + '" target="_blank" style="font-weight: bold;letter-spacing: normal;line-height: 100%;text-align: center;text-decoration: none;color: #FFFFFF;">ACCEPT</a>'},
+            {'name':'reject_link','content':'<a class="mcnButton " title="REJECT" href="'+ link + '" target="_blank" style="font-weight: bold;letter-spacing: normal;line-height: 100%;text-align: center;text-decoration: none;color: #FFFFFF;">REJECT</a>'},
         ]
-        to = [{'email':owner.key().name(),'name':owner.name,'type':'to'}]
+        to = [{'email':self.provider_user.key().name(),'name':self.provider_user.name,'type':'cc'},
+              {'email':self.owner_user.key().name(),'name':self.owner_user.name,'type':'to'},
+              {'email':self.manager_user.key().name(),'name':self.provider_user.name,'type':'cc'}]
         send_mandrill_email('approve-work-order', template_content, to)
 
     def send_wo_disapproved_email(self, wo_id):
@@ -238,7 +240,7 @@ class WorkOrder(db.Model):
             estimate = long(notes)
             if estimate > 250:
                 self.curr_state = "ESTIMATED"
-                self.send_wo_approval_email(notes, self.key().id())
+                self.send_wo_approval_email(notes)
             else:
                 self.curr_state = 'APPROVED'
                 self.send_wo_auto_approved_email(notes, service_date)
