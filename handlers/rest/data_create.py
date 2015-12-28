@@ -5,6 +5,7 @@ import json
 import logging
 import airtable_config as airtable
 from model.member import Member
+from model.work_order import WorkOrder, WorkOrderHistory
 from model.store import Store
 from model.appliance import Appliance
 from model.provider import Provider
@@ -51,7 +52,7 @@ class TestDataCreationHandler(WebRequestHandler):
             Appliance(name="Oven3", store=store, manufacturer="Frymaster", model="O103", serial_num="EGY1909334569", last_repair_date="7/2/2015", installed_on="6/1/2010", warranty="Expired 6/1/2013").put()
 
     def clear_datastore(self):
-        models = [Member, Store, Appliance, Provider]
+        models = [Member, Store, Appliance, Provider, WorkOrder, WorkOrderHistory]
         for model in models:
             q = model.all(keys_only=True)
             entries = q.fetch(100)
@@ -89,7 +90,6 @@ def pull_airtable_data():
             fields = appliance['fields']
             for k, v in fields.iteritems():
                 logging.info(str(k)+' : '+str(v))
-            #Appliance(name=fields['Appliance Name'], store=store, manufacturer=fields['Manufacturer'], model=fields['Model #'], serial_num=fields['Serial #'], last_repair_date="", installed_on="", warranty="").put()
             logging.info(appliance['createdTime'])
             logging.info('******')
 
