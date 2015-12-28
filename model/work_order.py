@@ -60,6 +60,7 @@ class WorkOrder(db.Model):
         return woh
 
     def send_wo_created_email(self, wo_id, remarks, priority):
+        estimation_link = "http://onepointapp.appspot.com/work_order/provide_estimate?work_order='+str(wo_id)+'"
         template_content = [
             {'name':'work_order_id','content':self.key().id()},
             {'name':'store_address','content':self.store.address},
@@ -75,7 +76,8 @@ class WorkOrder(db.Model):
             {'name':'appliance_status','content':remarks},
             {'name':'service_type','content':priority},
             {'name':'provider_name','content':self.provider_obj.name},
-            {'name':'estimate_link','content':'<a href="http://onepointapp.appspot.com/work_order/provide_estimate?work_order='+str(wo_id)+'">here</a>'}
+            {'name':'accept_link','content':'<a class="mcnButton " title="ACCEPT" href="' + estimation_link + '" target="_blank" style="font-weight: bold;letter-spacing: normal;line-height: 100%;text-align: center;text-decoration: none;color: #FFFFFF;">ACCEPT</a>'},
+            {'name':'reject_link','content':'<a class="mcnButton " title="REJECT" href="' + estimation_link + '" target="_blank" style="font-weight: bold;letter-spacing: normal;line-height: 100%;text-align: center;text-decoration: none;color: #FFFFFF;">REJECT</a>'},
         ]
         to = [{'email':self.provider_user.key().name(),'name':self.provider_user.name,'type':'to'},
               {'email':self.owner_user.key().name(),'name':self.owner_user.name,'type':'cc'},
