@@ -7,15 +7,7 @@ html {
     	background: #ffffff;
     	text-align: center;
         color: #579EDE;
-        font-size: 40px;
         font-weight: bold;
-
-        .login {
-        }
-
-        .img-helper {
-            height: 100vh;
-        }
 
         .vertical-middle {
             height: 100vh;
@@ -26,9 +18,11 @@ html {
             top: 15%;
             position: absolute;
             width: 100%;
+            font-size: 40px;
 
             img {
-                max-width: 35%;
+                max-width: 100px;
+                max-height: 100px;
             }
         }
 
@@ -37,8 +31,20 @@ html {
             position: absolute;
             width: 100%;
 
-            select {
-                max-width: 100%;
+            .detail-box {
+                border: none;
+                border-radius: 25px;
+                height: 40px;
+                background-color: #579EDE;
+                color: #ffffff;
+
+                select {
+                    background-color: transparent;
+                    border: none;
+                    max-width: 90%;
+                    max-height: 100%;
+                    text-align: center;
+                }
             }
         }
     }

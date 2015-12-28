@@ -4,24 +4,27 @@
 {% endblock %}
 {% block Content %}
 <div class="row">
-	<div class="col-sm-2 col-xs-1"></div>
-	<div class="col-sm-8 col-xs-10">
+	<div class="col-md-4 col-xs-1"></div>
+	<div class="col-md-4 col-xs-10">
 		<div class="vertical-middle">
 			<div class="top-align">
 				<p class="title">Genius</p>
 				<img src="/assets/img/genius-logo-anim.gif">
 			</div>
 			<div class="bottom-align">
-				<select class="login" name="user" onchange="login_user($(this).val())" required>
-					<option value="">Select User</option>
-			        {% for user in users %}
-			            <option value="{{user.email}}">{{user.display_string}}</option>
-			        {% endfor %}
-			    </select>
+			    <div class="detail-box">
+			    	<span class="img-helper"></span>
+			    	<select class="login" name="user" onchange="login_user($(this).val())" required>
+						<option value="">Select User</option>
+				        {% for user in users %}
+				            <option value="{{user.email}}">{{user.display_string}}</option>
+				        {% endfor %}
+				    </select>
+	            </div>
 			</div>
 		</div>
 	</div>
-	<div class="col-sm-2 col-xs-1"></div>
+	<div class="col-md-4 col-xs-1"></div>
 </div>
 {% endblock %}
 {% block Scripts %}
