@@ -76,8 +76,8 @@ class WorkOrder(db.Model):
             {'name':'appliance_status','content':remarks},
             {'name':'service_type','content':priority},
             {'name':'provider_name','content':self.provider_obj.name},
-            {'name':'accept_link','content':'<a class="mcnButton " title="ACCEPT" href="' + estimation_link + '" target="_blank" style="font-weight: bold;letter-spacing: normal;line-height: 100%;text-align: center;text-decoration: none;color: #FFFFFF;">ACCEPT</a>'},
-            {'name':'reject_link','content':'<a class="mcnButton " title="REJECT" href="' + estimation_link + '" target="_blank" style="font-weight: bold;letter-spacing: normal;line-height: 100%;text-align: center;text-decoration: none;color: #FFFFFF;">REJECT</a>'},
+            {'name':'accept_link','content':'<a class="mcnButton " title="ACCEPT" href="' + estimation_link + '&action=accept' + '" target="_blank" style="font-weight: bold;letter-spacing: normal;line-height: 100%;text-align: center;text-decoration: none;color: #FFFFFF;">ACCEPT</a>'},
+            {'name':'reject_link','content':'<a class="mcnButton " title="REJECT" href="' + estimation_link + '&action=reject' + '" target="_blank" style="font-weight: bold;letter-spacing: normal;line-height: 100%;text-align: center;text-decoration: none;color: #FFFFFF;">REJECT</a>'},
         ]
         to = [{'email':self.provider_user.key().name(),'name':self.provider_user.name,'type':'to'},
               {'email':self.owner_user.key().name(),'name':self.owner_user.name,'type':'cc'},

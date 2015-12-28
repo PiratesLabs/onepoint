@@ -11,7 +11,10 @@ import logging
 class EstimateHandler(WebRequestHandler):
     def get(self):
         path = 'work_order_estimate.html'
-        template_values = {'work_order':self['work_order']}
+        action = ''
+        if self['action']:
+            action = self['action']
+        template_values = {'work_order':self['work_order'], 'action':action}
         self.write(self.get_rendered_html(path, template_values), 200)
 
 class CompletedHandler(WebRequestHandler):
