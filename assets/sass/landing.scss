@@ -4,55 +4,38 @@
 
 html {
     body {
-    	background: linear-gradient(#579EDE, #000000);
+    	background: #ffffff;
     	text-align: center;
+        color: #579EDE;
+        font-size: 40px;
+        font-weight: bold;
 
-    	&>div:first-child {
-    		margin: auto;
-    		padding-top: 100px;
-    		div, button, img {
-    			margin: auto;
-    		}
+        .login {
+        }
 
-    		div, button {
-    			color: #ffffff;
-    			border: none;
-    			border-radius: 25px;
-    			width: 250px;
-    			height: 40px;
-    			margin-top: 20px;
-    		}
+        .img-helper {
+            height: 100vh;
+        }
 
-    		button {
-    			background-color: #579EDE;
-    		}
-    		
-    		div {
-    			text-align: left;
-    			background-color: rgba(255, 255, 255, 0.1);
-    			span {
-    				display: inline-block;
-    				height: 100%;
-    				vertical-align: middle;
-    				width: 20px;
-    			}
+        .vertical-middle {
+            height: 100vh;
+            position: relative;
+        }
 
-    			img {
-    				height: 30px;
-    				width: 30px;
-    				vertical-align: middle;
-    			}
+        .top-align {
+            top: 15%;
+            position: absolute;
+            width: 100%;
 
-    			input {
-    				background-color: transparent;
-    				color: #ffffff;
-    				border: none;
-    			}
-    		}
+            img {
+                max-width: 35%;
+            }
+        }
 
-    		a {
-    			color: #ffffff;
-    		}
-    	}
+        .bottom-align {
+            bottom: 10%;
+            position: absolute;
+            width: 100%;
+        }
     }
 }
