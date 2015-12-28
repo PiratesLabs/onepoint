@@ -157,6 +157,24 @@ class WorkOrder(db.Model):
               {'email':self.manager_user.key().name(),'name':self.provider_user.name,'type':'cc'}]
         send_mandrill_email('work-order-rejected', template_content, to)
 
+    def send_wo_auto_approved_email(self, estimate, service_date):
+        template_content = [
+            {'name':'work_order_id','content':self.key().id()},
+            {'name':'store_name','content':self.store.name},
+            {'name':'provider_name','content':self.provider_obj.name},
+            {'name':'appliance_name','content':self.appliance_obj.name},
+            {'name':'manufacturer','content':self.appliance_obj.manufacturer},
+            {'name':'model','content':self.appliance_obj.model},
+            {'name':'serial_num','content':self.appliance_obj.serial_num},
+            {'name':'warranty','content':self.appliance_obj.warranty},
+            {'name':'estimate','content':estimate},
+            {'name':'service_date','content':service_date},
+        ]
+        to = [{'email':self.provider_user.key().name(),'name':self.provider_user.name,'type':'cc'},
+              {'email':self.owner_user.key().name(),'name':self.owner_user.name,'type':'cc'},
+              {'email':self.manager_user.key().name(),'name':self.provider_user.name,'type':'to'}]
+        send_mandrill_email('work-order-auto-approved', template_content, to)
+
     def store_login(self, role):
         if role == 'manager' or role == 'owner':
             return True
@@ -209,7 +227,7 @@ class WorkOrder(db.Model):
             self.send_wo_completed_email(self.key().id())
         return ret_val
 
-    def estimate(self, notes, approval_str):
+    def estimate(self, notes, approval_str, service_date):
         ret_val = {'status':'success'}
         if self.curr_state != 'CREATED':
             ret_val = {'status':'error', 'message':'Only a work order in created state can be estimated'}
@@ -223,8 +241,7 @@ class WorkOrder(db.Model):
                 self.send_wo_approval_email(notes, self.key().id())
             else:
                 self.curr_state = 'APPROVED'
-                self.create_wo_history(None)
-                self.send_wo_approved_email(self.key().id())
+                self.send_wo_auto_approved_email(notes, service_date)
         else:
             self.curr_state = "REJECTED"
             self.send_wo_rejected_email(notes)

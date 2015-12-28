@@ -18,6 +18,10 @@
                     <label for="estimate">Estimate:</label>
                     <input type="text" class="form-control" id="estimate" name="estimate">
                 </div>
+                <div class="form-group">
+                    <label for="service_date">Service date:</label>
+                    <input type="text" class="form-control" id="service_date" name="service_date">
+                </div>
                 <button id="estimate-btn" onclick="submit_estimate();return false;" class="btn btn-default">Accept</button>
             </form>
         </div>
@@ -28,10 +32,12 @@
 {% block BarScripts %}
 <script>
     function submit_estimate() {
-        $.post("/rest/work_order/estimate", {'estimate':$('#estimate').val(),'approval':'1','work_order':{{work_order}}}).done(function( data ) {
+        console.log('In submit estimate')
+        $.post("/rest/work_order/estimate", {'service_date':$('#service_date').val(),'estimate':$('#estimate').val(),'approval':'1','work_order':{{work_order}}}).done(function( data ) {
             data = JSON.parse(data);
             if(data.status == 'success') {
                 alert('Thank you for the estimate, the store will be notified');
+                window.location = '/'
             }
             else if(data.status == 'error') {
                 alert(data.message);

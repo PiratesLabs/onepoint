@@ -49,7 +49,7 @@ class EstimateWorkOrderHandler(WebRequestHandler):
         notes = self['estimate']
         if not notes:
             notes = self['remarks']
-        ret_val = wo.estimate(notes, self['approval'])
+        ret_val = wo.estimate(notes, self['approval'], self['service_date'])
         self.write(json.dumps(ret_val))
 
 app = webapp2.WSGIApplication([
