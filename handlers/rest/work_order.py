@@ -22,7 +22,7 @@ class CreateWorkOrderHandler(WebRequestHandler):
         ret_val = {}
         if(self.does_user_own_appliance()):
             wo = WorkOrder()
-            wo.update_state({'appliance':self['appliance'], 'provider':self['provider']}, self.session['role'])
+            wo.update_state({'appliance':self['appliance'], 'provider':self['provider'], 'remarks':self['remarks'], 'priority':self['priority']}, self.session['role'])
             ret_val = {'status':'success','work_order_id':wo.key().id()}
         else:
             ret_val = {'status':'error','message':'User does not own the appliance'}

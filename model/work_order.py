@@ -6,6 +6,7 @@ from model.member import Member
 from model.provider import Provider
 
 work_order_states = ["CREATED", ["ESTIMATED", "REJECTED"], ["APPROVED", "DISAPPROVED"], "PROVIDER_CHECKED_IN", "COMPLETED"]
+separator = '~~##'
 
 class WorkOrderHistory(db.Model):
 	time = db.DateTimeProperty(auto_now=True)
@@ -66,7 +67,11 @@ class WorkOrder(db.Model):
             {'name':'store_manager_name','content':self.manager_user.name},
             {'name':'store_manager_phone','content':self.manager_user.phone},
             {'name':'store_address','content':self.store.address},
-            {'name':'appliance_type','content':self.appliance_obj.manufacturer+':'+self.appliance_obj.model},
+            {'name':'appliance_name','content':self.appliance_obj.name},
+            {'name':'manufacturer','content':self.appliance_obj.manufacturer},
+            {'name':'model','content':self.appliance_obj.model},
+            {'name':'serial_num','content':self.appliance_obj.serial_num},
+            {'name':'warranty','content':self.appliance_obj.warranty},
             {'name':'provider_name','content':self.provider_obj.name},
             {'name':'estimate_link','content':'<a href="http://onepointapp.appspot.com/work_order/provide_estimate?work_order='+str(wo_id)+'">here</a>'}
         ]
@@ -165,7 +170,8 @@ class WorkOrder(db.Model):
             self.curr_state = work_order_states[0]
             self.appliance = params['appliance']
             self.provider = params['provider']
-            self.create_wo_history(None)
+            notes = params['remarks'] + separator + params['priority']
+            self.create_wo_history(notes)
             self.put()
             self.send_wo_created_email(self.key().id())
         elif self.curr_state == 'ESTIMATED':
