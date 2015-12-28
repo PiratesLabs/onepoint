@@ -137,7 +137,7 @@ class WorkOrder(db.Model):
               {'email':self.manager_user.key().name(),'name':self.provider_user.name,'type':'to'}]
         send_mandrill_email('work-order-completed', template_content, to)
 
-    def send_wo_rejected_email(self):
+    def send_wo_rejected_email(self, remarks):
         template_content = [
             {'name':'store_name','content':self.store.name},
             {'name':'appliance_type','content':self.appliance_obj.manufacturer+':'+self.appliance_obj.model},
@@ -200,25 +200,25 @@ class WorkOrder(db.Model):
             self.send_wo_completed_email(self.key().id())
         return ret_val
 
-    def estimate(self, estimate_str, approval_str):
+    def estimate(self, notes, approval_str):
         ret_val = {'status':'success'}
         if self.curr_state != 'CREATED':
             ret_val = {'status':'error', 'message':'Only a work order in created state can be estimated'}
             return ret_val
         approval = int(approval_str)
-        self.create_wo_history(estimate_str)
+        self.create_wo_history(notes)
         if approval == 1:
-            estimate = long(estimate_str)
+            estimate = long(notes)
             if estimate > 250:
                 self.curr_state = "ESTIMATED"
-                self.send_wo_approval_email(estimate_str, self.key().id())
+                self.send_wo_approval_email(notes, self.key().id())
             else:
                 self.curr_state = 'APPROVED'
                 self.create_wo_history(None)
                 self.send_wo_approved_email(self.key().id())
         else:
             self.curr_state = "REJECTED"
-            self.send_wo_rejected_email()
+            self.send_wo_rejected_email(notes)
         self.put()
         return ret_val
 

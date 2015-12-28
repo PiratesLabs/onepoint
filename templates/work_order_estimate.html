@@ -10,6 +10,8 @@
         <div class="col-xs-4">
             <form role="form" id="estimate-form">
                 <div class="form-group">
+                    <label for="rejection_remarks">Remarks:</label>
+                    <input type="text" class="form-control" id="rejection_remarks" name="rejection_remarks">
                     <button id="reject-btn" onclick="reject_workorder();return false;" class="btn btn-default">Reject</button>
                 </div>
                 <div class="form-group">
@@ -37,7 +39,7 @@
         });
     }
     function reject_workorder() {
-        $.post("/rest/work_order/estimate", {'work_order':{{work_order}}, 'approval':'0'}).done(function( data ) {
+        $.post("/rest/work_order/estimate", {'work_order':{{work_order}}, 'approval':'0', 'remarks':$('#rejection_remarks').val()}).done(function( data ) {
             data = JSON.parse(data);
             if(data.status == 'success') {
                 alert('Too bad you could not accept this work order. The store will be notified!');
