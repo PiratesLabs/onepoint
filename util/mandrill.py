@@ -8,7 +8,7 @@ def send_mandrill_email(template_slug, template_content, to):
         "template_content": template_content,
         "message": {
             "from_email": "russ@hirepirates.com",
-            "from_name": "Russ Wolf",
+            "from_name": "Genius Admin",
             "to": to,
         },
     }

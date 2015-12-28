@@ -5,7 +5,7 @@ from model.store import Store
 from model.member import Member
 from model.provider import Provider
 
-work_order_states = ["CREATED", "ESTIMATED", ["APPROVED", "DISAPPROVED"], "PROVIDER_CHECKED_IN", "COMPLETED"]
+work_order_states = ["CREATED", ["ESTIMATED", "REJECTED"], ["APPROVED", "DISAPPROVED"], "PROVIDER_CHECKED_IN", "COMPLETED"]
 
 class WorkOrderHistory(db.Model):
 	time = db.DateTimeProperty(auto_now=True)
@@ -125,6 +125,17 @@ class WorkOrder(db.Model):
               {'email':self.manager_user.key().name(),'name':self.provider_user.name,'type':'to'}]
         send_mandrill_email('work-order-completed', template_content, to)
 
+    def send_wo_rejected_email(self):
+        template_content = [
+            {'name':'store_name','content':self.store.name},
+            {'name':'appliance_type','content':self.appliance_obj.manufacturer+':'+self.appliance_obj.model},
+            {'name':'provider_name','content':self.provider_obj.name}
+        ]
+        to = [{'email':self.provider_user.key().name(),'name':self.provider_user.name,'type':'to'},
+              {'email':self.owner_user.key().name(),'name':self.owner_user.name,'type':'cc'},
+              {'email':self.manager_user.key().name(),'name':self.provider_user.name,'type':'cc'}]
+        send_mandrill_email('work-order-rejected', template_content, to)
+
     def store_login(self, role):
         if role == 'manager' or role == 'owner':
             return True
@@ -153,7 +164,6 @@ class WorkOrder(db.Model):
             self.put()
             self.send_wo_created_email(self.key().id())
         elif self.curr_state == 'ESTIMATED':
-            print role
             if not self.owner_login(role):
                 ret_val = {'status':'error', 'message':'Only a store owner can approve a work order'}
                 return ret_val
@@ -176,20 +186,25 @@ class WorkOrder(db.Model):
             self.send_wo_completed_email(self.key().id())
         return ret_val
 
-    def estimate(self, estimate_str):
+    def estimate(self, estimate_str, approval_str):
         ret_val = {'status':'success'}
         if self.curr_state != 'CREATED':
             ret_val = {'status':'error', 'message':'Only a work order in created state can be estimated'}
             return ret_val
-        estimate = long(estimate_str)
+        approval = int(approval_str)
         self.create_wo_history(estimate_str)
-        if estimate > 250:
-            self.curr_state = work_order_states[work_order_states.index(self.curr_state) + 1]
-            self.send_wo_approval_email(estimate_str, self.key().id())
+        if approval == 1:
+            estimate = long(estimate_str)
+            if estimate > 250:
+                self.curr_state = "ESTIMATED"
+                self.send_wo_approval_email(estimate_str, self.key().id())
+            else:
+                self.curr_state = 'APPROVED'
+                self.create_wo_history(None)
+                self.send_wo_approved_email(self.key().id())
         else:
-            self.curr_state = 'APPROVED'
-            self.create_wo_history(None)
-            self.send_wo_approved_email(self.key().id())
+            self.curr_state = "REJECTED"
+            self.send_wo_rejected_email()
         self.put()
         return ret_val
 

@@ -34,7 +34,6 @@ def get_work_orders_for_logged_in_user(self):
         store = Store.all().filter(self.session['role'] + ' =', email).get()
         appliances = [appliance.id for appliance in Appliance.all().filter('store =', store).fetch(100)]
         for appliance in appliances:
-            print appliance
             workorders.extend([wo for wo in WorkOrder.all().filter('appliance =', str(appliance))])
     elif is_provider_login(self):
         providers = [p for p in Provider.all().fetch(100) if p.owner.key().name() == email]

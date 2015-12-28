@@ -26,7 +26,6 @@ class RequestHandlerMixin(object):
 
 class RequestHandler(webapp2.RequestHandler, RequestHandlerMixin):
     def dispatch(self):
-        print('In dispatch')
         self.session_store = sessions.get_store(request=self.request)
         try:
             webapp2.RequestHandler.dispatch(self)

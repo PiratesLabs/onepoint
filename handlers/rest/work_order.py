@@ -41,13 +41,12 @@ class UpdateWorkOrderHandler(WebRequestHandler):
                 entry = entry_str.split(':')
                 params[entry[0]] = entry[1]
         ret_val = wo.update_state(params, self.session['role'])
-        print ret_val
         self.write(json.dumps(ret_val))
 
 class EstimateWorkOrderHandler(WebRequestHandler):
     def post(self):
         wo = WorkOrder.get_by_id(long(self['work_order']))
-        ret_val = wo.estimate(self['estimate'])
+        ret_val = wo.estimate(self['estimate'], self['approval'])
         self.write(json.dumps(ret_val))
 
 app = webapp2.WSGIApplication([

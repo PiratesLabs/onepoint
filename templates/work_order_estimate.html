@@ -10,10 +10,13 @@
         <div class="col-xs-4">
             <form role="form" id="estimate-form">
                 <div class="form-group">
+                    <button id="reject-btn" onclick="reject_workorder();return false;" class="btn btn-default">Reject</button>
+                </div>
+                <div class="form-group">
                     <label for="estimate">Estimate:</label>
                     <input type="text" class="form-control" id="estimate" name="estimate">
                 </div>
-                <button id="estimate-btn" onclick="submit_estimate();return false;" class="btn btn-default">Submit</button>
+                <button id="estimate-btn" onclick="submit_estimate();return false;" class="btn btn-default">Accept</button>
             </form>
         </div>
         <div class="col-xs-4"></div>
@@ -27,6 +30,17 @@
             data = JSON.parse(data);
             if(data.status == 'success') {
                 alert('Thank you for the estimate, the store will be notified');
+            }
+            else if(data.status == 'error') {
+                alert(data.message);
+            }
+        });
+    }
+    function reject_workorder() {
+        $.post("/rest/work_order/estimate", {'work_order':{{work_order}}, 'approval':'0'}).done(function( data ) {
+            data = JSON.parse(data);
+            if(data.status == 'success') {
+                alert('Too bad you could not accept this work order. The store will be notified!');
             }
             else if(data.status == 'error') {
                 alert(data.message);
