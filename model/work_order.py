@@ -138,9 +138,14 @@ class WorkOrder(db.Model):
 
     def send_wo_completed_email(self, wo_id):
         template_content = [
+            {'name':'work_order_id','content':self.key().id()},
+            {'name':'provider_name','content':self.provider_obj.name},
             {'name':'store_name','content':self.store.name},
-            {'name':'appliance_type','content':self.appliance_obj.manufacturer+':'+self.appliance_obj.model},
-            {'name':'provider_name','content':self.provider_obj.name}
+            {'name':'appliance_name','content':self.appliance_obj.name},
+            {'name':'manufacturer','content':self.appliance_obj.manufacturer},
+            {'name':'model','content':self.appliance_obj.model},
+            {'name':'serial_num','content':self.appliance_obj.serial_num},
+            {'name':'warranty','content':self.appliance_obj.warranty},
         ]
         to = [{'email':self.provider_user.key().name(),'name':self.provider_user.name,'type':'cc'},
               {'email':self.owner_user.key().name(),'name':self.owner_user.name,'type':'to'},
