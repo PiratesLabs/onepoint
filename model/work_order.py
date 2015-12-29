@@ -59,7 +59,7 @@ class WorkOrder(db.Model):
         self.history.append(woh.key().id())
         return woh
 
-    def send_wo_created_email(self, wo_id, remarks, priority):
+    def send_wo_created_email(self, wo_id, remarks, priority, fix_by):
         estimation_link = "http://onepointapp.appspot.com/work_order/provide_estimate?work_order="+str(wo_id)
         template_content = [
             {'name':'work_order_id','content':self.key().id()},
@@ -78,6 +78,7 @@ class WorkOrder(db.Model):
             {'name':'provider_name','content':self.provider_obj.name},
             {'name':'accept_link','content':'<a class="mcnButton " title="ACCEPT" href="' + estimation_link + '&action=accept' + '" target="_blank" style="font-weight: bold;letter-spacing: normal;line-height: 100%;text-align: center;text-decoration: none;color: #FFFFFF;">ACCEPT</a>'},
             {'name':'reject_link','content':'<a class="mcnButton " title="REJECT" href="' + estimation_link + '&action=reject' + '" target="_blank" style="font-weight: bold;letter-spacing: normal;line-height: 100%;text-align: center;text-decoration: none;color: #FFFFFF;">REJECT</a>'},
+            {'name':'fix_by','content':fix_by},
         ]
         to = [{'email': self.provider_user.key().name(),'name':self.provider_user.name,'type':'to'}]
         send_mandrill_email('work-order-created-2', template_content, to)
@@ -210,10 +211,10 @@ class WorkOrder(db.Model):
             self.curr_state = work_order_states[0]
             self.appliance = params['appliance']
             self.provider = params['provider']
-            notes = params['remarks'] + separator + params['priority']
+            notes = params['remarks'] + separator + params['priority'] + separator + params['fix_by']
             self.create_wo_history(notes)
             self.put()
-            self.send_wo_created_email(self.key().id(), params['remarks'], params['priority'])
+            self.send_wo_created_email(self.key().id(), params['remarks'], params['priority'], params['fix_by'])
         elif self.curr_state == 'ESTIMATED':
             if not self.owner_login(role):
                 ret_val = {'status':'error', 'message':'Only a store owner can approve a work order'}
