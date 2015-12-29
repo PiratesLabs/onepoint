@@ -26,6 +26,10 @@ class Provider(db.Model):
         return self.key().id()
 
     @property
+    def abbr_name(self):
+        return (''.join([part[0] for part in self.name.split(' ')])).upper()
+
+    @property
     def template_format(self):
         return [('OWNER',self.owner.name),
                 ('EMAIL',self.owner.key().name),

@@ -2,14 +2,14 @@ import webapp2
 from handlers.web import WebRequestHandler
 from auth import login_required
 from model.provider import Provider
-from util.util import convert_to_grid_format, get_appliances_for_logged_in_user
+from util.util import convert_to_tabbed_format, get_appliances_for_logged_in_user
 import json
 import logging
 
 class ProvidersPage(WebRequestHandler):
     def load_manager_view(self):
         providers = [provider for provider in Provider.all().fetch(100)]
-        providers_dict = convert_to_grid_format(providers, ['starred'])
+        providers_dict = convert_to_tabbed_format(providers, ['starred'])
         path = 'providers.html'
         markers = []
         for provider in providers:

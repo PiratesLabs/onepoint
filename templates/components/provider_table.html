@@ -1,0 +1,25 @@
+{% for provider in items %}
+	<div class="row">
+        <div class="col-lg-4 col-sm-2"></div>
+		<div class="col-lg-4 col-sm-8 col-xs-12">
+            <a href="{{provider.details_url}}">
+                <div class="row table-row">
+                    <div class="col-xs-1"></div>
+                    <div class="col-sm-3 col-xs-2"><span class="img-helper"></span><div class="abbr">{{provider.abbr_name}}</div></div>
+                    <div class="col-xs-4" style="text-align:left;">
+                        <span class="img-helper"></span>
+                        <div class="appliance">
+                            <div class="container">
+                                <div class="row title">{{provider.name}}</div>
+                                <div class="row sub-title">{{provider.owner.name}}</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-3 col-xs-4 store">{{provider.phone_num}}</div>
+                    <div class="col-xs-1"></div>
+                </div>
+            </a>
+        </div>
+        <div class="col-lg-4 col-sm-2"></div>
+    </div>
+{% endfor %}
