@@ -9,12 +9,9 @@ import logging
 class ProvidersPage(WebRequestHandler):
     def load_manager_view(self):
         providers = [provider for provider in Provider.all().fetch(100)]
-        providers_dict = convert_to_tabbed_format(providers, ['starred'])
         path = 'providers.html'
-        markers = []
-        for provider in providers:
-            markers.append([provider.name, provider.location.lat,provider.location.lon])
-        template_values = {'providers':providers_dict,'count':len(providers),'markers':markers}
+        markers = [[provider.name, provider.location.lat,provider.location.lon] for provider in providers]
+        template_values = {'providers':providers,'count':len(providers),'markers':markers}
         self.write(self.get_rendered_html(path, template_values), 200)
 
     @login_required
