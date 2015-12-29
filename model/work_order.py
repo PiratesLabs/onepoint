@@ -79,10 +79,8 @@ class WorkOrder(db.Model):
             {'name':'accept_link','content':'<a class="mcnButton " title="ACCEPT" href="' + estimation_link + '&action=accept' + '" target="_blank" style="font-weight: bold;letter-spacing: normal;line-height: 100%;text-align: center;text-decoration: none;color: #FFFFFF;">ACCEPT</a>'},
             {'name':'reject_link','content':'<a class="mcnButton " title="REJECT" href="' + estimation_link + '&action=reject' + '" target="_blank" style="font-weight: bold;letter-spacing: normal;line-height: 100%;text-align: center;text-decoration: none;color: #FFFFFF;">REJECT</a>'},
         ]
-        to = [{'email':self.provider_user.key().name(),'name':self.provider_user.name,'type':'to'},
-              {'email':self.owner_user.key().name(),'name':self.owner_user.name,'type':'cc'},
-              {'email':self.manager_user.key().name(),'name':self.provider_user.name,'type':'cc'}]
-        send_mandrill_email('work-order-created', template_content, to)
+        to = [{'email': self.provider_user.key().name(),'name':self.provider_user.name,'type':'to'}]
+        send_mandrill_email('work-order-created-2', template_content, to)
 
     def send_wo_approval_email(self, estimate):
         link = 'http://onepointapp.appspot.com/work_order/list?work_order='+str(self.key().id())
