@@ -20,6 +20,12 @@ def convert_to_grid_format(items, tabs):
         items_dict[tab] = rows
     return items_dict
 
+def convert_to_tabbed_format(items, tabs):
+    items_dict = {}
+    for tab in tabs:
+        items_dict[tab] = [item for idx,item in enumerate(items)]
+    return items_dict
+
 def get_appliances_for_logged_in_user(self):
     email = self.session['email']
     role = self.session['role']

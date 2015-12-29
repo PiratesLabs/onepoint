@@ -1,11 +1,19 @@
 @import "bar_base.scss";
 
+$abbr_font_size: 25px;
+$abbr_line_height: 60px;
+$abbr_font_size_small: 14px;
+$abbr_line_height_small: 40px;
+$appliance_row_height: 80px;
+$appliance_row_height_small: 60px;
+
 html {
     body {
     	.content {
     		text-align:center;
             color: #579EDE;
             font-weight: bold;
+            margin-top: 0px;
 
     		button {
     			margin: auto;
@@ -19,11 +27,67 @@ html {
     			background-color: #579EDE;
     		}
 
-            .row {
-                min-height: 300px;
+            .table-row {
+                border: 1px solid lightgray;
+                border-top-width: 0px;
 
-                [class*=col-] {
-                    min-height: 300px;
+                .appliance {
+                    text-align: left;
+                    display: inline-block;
+                    vertical-align: middle;
+                    max-width: 90%;
+
+                    .container {
+                        width: 100%;
+                    }
+
+                    .title {
+                        font-size: 12px;
+                        line-height: 18px;
+                        color: #333333;
+                        @media (max-width: 767px) {
+                            font-size: 10px;
+                        }
+                    }
+                    .sub-title {
+                        font-size: 10px;
+                        line-height: 18px;
+                        color: #aab4bd;
+                        @media (max-width: 767px) {
+                            font-size: 8px;
+                        }
+                    }
+                }
+
+                .store {
+                    text-align: right;
+                    font-size: 12px;
+                    line-height: $appliance_row_height;
+                    color: #f75946;
+
+                    @media (max-width: 767px) {
+                        font-size: 8px;
+                        line-height: $appliance_row_height_small;
+                    }
+                }
+
+                @media (max-width: 767px) {
+                    [class*=col-] {
+                        padding: 0px;
+                    }
+                    height: $appliance_row_height_small;
+                    line-height: $appliance_row_height_small;
+                    [class*=col-] {
+                        height: $appliance_row_height_small;
+                    }
+                }
+
+                @media (min-width: 768px) {
+                    height: $appliance_row_height;
+                    line-height: $appliance_row_height;
+                    [class*=col-] {
+                        height: $appliance_row_height;
+                    }
                 }
             }
 
@@ -46,6 +110,26 @@ html {
                 a {
                     color: #579EDE;
                     border: none;
+                }
+            }
+
+            .abbr {
+                display: inline-block;
+                vertical-align: middle;
+                border-radius: 50%;
+                background-color: #579EDE;
+                color: #FFFFFF;
+                font-size: $abbr_font_size;
+                line-height: $abbr_line_height;
+                font-weight: bold;
+                height: $abbr_line_height;
+                width: $abbr_line_height;
+
+                @media (max-width: 767px) {
+                    font-size: $abbr_font_size_small;
+                    line-height: $abbr_line_height_small;
+                    height: $abbr_line_height_small;
+                    width: $abbr_line_height_small;
                 }
             }
     	}

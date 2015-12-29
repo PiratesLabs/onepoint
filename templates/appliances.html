@@ -8,13 +8,13 @@
 	<div class="tabbable tabs-below">
 		<div class="tab-content">
 			<div class="tab-pane active" id="starred">
-				{% include "components/grid_rows.html" with items=appliances.starred %}
+				{% include "components/appliance_table.html" with items=appliances.starred %}
 			</div> 
 			<div class="tab-pane" id="newest">
-				{% include "components/grid_rows.html" with items=appliances.newest %}
+				{% include "components/appliance_table.html" with items=appliances.newest %}
 			</div>
 			<div class="tab-pane" id="oldest">
-				{% include "components/grid_rows.html" with items=appliances.oldest %}
+				{% include "components/appliance_table.html" with items=appliances.oldest %}
 			</div>
 		</div>
 		<ul class="nav nav-tabs">
