@@ -3,25 +3,7 @@
 <link href="/assets/css/sass_out/appliances.css" type="text/css" rel="stylesheet">
 {% endblock %}
 {% block BarContent%}
-<div class="bartwo">{{count}} APPLIANCES</div>
 <div class="content">
-	<div class="tabbable tabs-below">
-		<div class="tab-content">
-			<div class="tab-pane active" id="starred">
-				{% include "components/appliance_table.html" with items=appliances.starred %}
-			</div> 
-			<div class="tab-pane" id="newest">
-				{% include "components/appliance_table.html" with items=appliances.newest %}
-			</div>
-			<div class="tab-pane" id="oldest">
-				{% include "components/appliance_table.html" with items=appliances.oldest %}
-			</div>
-		</div>
-		<ul class="nav nav-tabs">
-			<li class="col-xs-4 active" style="background-color: #5A9DE6;"><a href="#starred" data-toggle="tab">Starred</a></li>
-			<li class="col-xs-4" style="background-color: #488AD6;"><a href="#newest" data-toggle="tab">Newest</a></li>
-			<li class="col-xs-4" style="background-color: #5A9DE6;"><a href="#oldest" data-toggle="tab">Oldest</a></li>
-		</ul>
-	</div>
+	{% include "components/appliance_table.html" with items=appliances %}
 </div>
 {% endblock %}
