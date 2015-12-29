@@ -19,7 +19,7 @@
                         {% endfor %}
                     </select>
                 {% else %}
-                    <input type="text" name="{{detail.name}}" value="{% if forloop.counter == 1 %}{{detail.value}}" id="{{detail.id}}{% endif %}" placeholder="{{detail.value}}" {% if not forloop.last %}readonly{% endif %}>
+                    <input type="text" name="{{detail.name}}" value="{% if forloop.counter == 1 %}{{detail.value}}" id="{{detail.id}}{% endif %}" placeholder="{{detail.value}}" {{detail.readonly}}>
                 {% endif %}
             </div>
         </div>
@@ -71,12 +71,13 @@
             remarks = $("input[name='remarks']").val();
             provider = $("select[name='provider']").val();
             priority = $(".priority.selected").text()
+            fix_by = $("input[name='fix_by']").val()
             if(!provider) {
                 $("select[name='provider']").addClass('has-error');
                 $("select[name='provider']").focus();
                 return false;
             }
-            $.get('/rest/work_order/create',{'provider':provider, 'appliance':appliance, 'remarks':remarks, 'priority':priority})
+            $.get('/rest/work_order/create',{'fix_by':fix_by, 'provider':provider, 'appliance':appliance, 'remarks':remarks, 'priority':priority})
             .done(function(data){
                 data = JSON.parse(data);
                 if(data.work_order_id) {

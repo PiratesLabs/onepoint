@@ -37,24 +37,34 @@ class ApplianceScheduleRepairPage(WebRequestHandler):
             {
                 'name':'appliance',
                 'value':appliance.name,
-                'id':appliance.id
+                'id':appliance.id,
+                'readonly':'readonly'
             },
             {
                 'name':'provider',
                 'value':'Choose Provider',
-                'providers':provider_array
+                'providers':provider_array,
+                'readonly':'readonly'
             },
             {
                 'name':'provider_owner',
-                'value':'Provider Owner'
+                'value':'Provider Owner',
+                'readonly':'readonly'
             },
             {
                 'name':'provider_phone',
-                'value':'Provider Phone Number'
+                'value':'Provider Phone Number',
+                'readonly':'readonly'
+            },
+            {
+                'name':'fix_by',
+                'value':'Fix by date',
+                'readonly':''
             },
             {
                 'name':'remarks',
-                'value':'Remarks'
+                'value':'Remarks',
+                'readonly':''
             }
         ]
         priorities = ['Critical', 'Normal', 'Routine']
