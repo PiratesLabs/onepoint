@@ -4,6 +4,8 @@
 {% endblock %}
 {% block BarContent%}
 <div class="content">
-	{% include "components/appliance_table.html" with items=appliances %}
+	<div class="container" style="width:100vw;">
+		{% include "components/appliance_table.html" with items=appliances %}
+	</div>
 </div>
 {% endblock %}

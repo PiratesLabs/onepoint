@@ -5,51 +5,53 @@
 {% block BarContent%}
 <div class="bartwo"><a href="{{details_url}}" style="float:left;"> <-- </a>{{name}}</div>
 <div class="content">
-    {% for detail in details %}
-    <div class="order-details row">
-        <div class="col-md-4 col-xs-1"></div>
-        <div class="col-md-4 col-xs-10">
-            <div class="detail-box">
-                <span></span>
-                {% if forloop.counter == 2 %}
-                    <select name="{{detail.name}}" onchange="fetch_apply_appliance($(this).val())" required>
-                        <option value="">{{detail.value}}</option>
-                        {% for appliance in detail.appliances %}
-                            <option value="{{appliance.0}}">{{appliance.1}}</option>
-                        {% endfor %}
-                    </select>
-                {% else %}
-                    <input type="text" name="{{detail.name}}" value="{% if forloop.counter == 1 %}{{detail.value}}" id="{{detail.id}}{% endif %}" placeholder="{{detail.value}}" {% if not forloop.last %}readonly{% endif %}>
-                {% endif %}
-            </div>
-        </div>
-        <div class="col-md-4 col-xs-1"></div>
-    </div>
-    {% endfor %}
-    <div class="row">
-        <div class="col-md-4 col-xs-1"></div>
-        <div class="col-md-4 col-xs-10">
-            <div class="row">
-                {% for priority in priorities %}
-                <div class="col-xs-4 ">
-                    <div class="row">
-                        <div class="col-xs-2"></div>
-                        <div class="col-xs-8 priority">{{priority}}</div>
-                        <div class="col-xs-2"></div>
-                    </div>
+    <div class="container">
+        {% for detail in details %}
+        <div class="order-details row">
+            <div class="col-md-4 col-xs-1"></div>
+            <div class="col-md-4 col-xs-10">
+                <div class="detail-box">
+                    <span></span>
+                    {% if forloop.counter == 2 %}
+                        <select name="{{detail.name}}" onchange="fetch_apply_appliance($(this).val())" required>
+                            <option value="">{{detail.value}}</option>
+                            {% for appliance in detail.appliances %}
+                                <option value="{{appliance.0}}">{{appliance.1}}</option>
+                            {% endfor %}
+                        </select>
+                    {% else %}
+                        <input type="text" name="{{detail.name}}" value="{% if forloop.counter == 1 %}{{detail.value}}" id="{{detail.id}}{% endif %}" placeholder="{{detail.value}}" {% if not forloop.last %}readonly{% endif %}>
+                    {% endif %}
                 </div>
-                {% endfor %}
             </div>
+            <div class="col-md-4 col-xs-1"></div>
         </div>
-        <div class="col-md-4 col-xs-1"></div>
-    </div>
-    <div class="row">
-        <div class="col-md-4 col-xs-1"></div>
-        <div class="col-md-4 col-xs-10">
-            <button id="create-wo-btn" onclick="create_work_order()">Create Work Order</button><br>
-            <p id='wo-creation-result'></p>
+        {% endfor %}
+        <div class="row">
+            <div class="col-md-4 col-xs-1"></div>
+            <div class="col-md-4 col-xs-10">
+                <div class="row">
+                    {% for priority in priorities %}
+                    <div class="col-xs-4 ">
+                        <div class="row">
+                            <div class="col-xs-2"></div>
+                            <div class="col-xs-8 priority">{{priority}}</div>
+                            <div class="col-xs-2"></div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="col-md-4 col-xs-1"></div>
         </div>
-        <div class="col-md-4 col-xs-1"></div>
+        <div class="row">
+            <div class="col-md-4 col-xs-1"></div>
+            <div class="col-md-4 col-xs-10">
+                <button id="create-wo-btn" onclick="create_work_order()">Create Work Order</button><br>
+                <p id='wo-creation-result'></p>
+            </div>
+            <div class="col-md-4 col-xs-1"></div>
+        </div>
     </div>
 </div>
 {% endblock %}
