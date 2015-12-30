@@ -2,7 +2,7 @@ import webapp2
 from handlers.web import WebRequestHandler
 from auth import provider_login_required, login_required
 from model.provider import Provider
-from model.work_order import WorkOrder
+from model.work_order import WorkOrder, WorkOrderHistory
 from model.appliance import Appliance
 from util.util import get_work_orders_for_logged_in_user
 import json
@@ -10,11 +10,17 @@ import logging
 
 class EstimateHandler(WebRequestHandler):
     def get(self):
+        separator = '~~##'
         path = 'work_order_estimate.html'
         action = ''
         if self['action']:
             action = self['action']
-        template_values = {'work_order':self['work_order'], 'action':action}
+        wo = WorkOrder.get_by_id(long(self['work_order']))
+        details = WorkOrderHistory.get_by_id(wo.history[0]).details.split(separator)
+        service_date = ''
+        if len(details) > 2:
+            service_date = details[2]
+        template_values = {'work_order':self['work_order'], 'action':action, 'service_date':service_date}
         self.write(self.get_rendered_html(path, template_values), 200)
 
 class CompletedHandler(WebRequestHandler):
