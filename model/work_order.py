@@ -82,7 +82,7 @@ class WorkOrder(db.Model):
         ]
         to = [{'email': self.provider_user.key().name(),'name':self.provider_user.name,'type':'to'},
               {'email':self.owner_user.key().name(),'name':self.owner_user.name,'type':'cc'},
-              {'email':self.manager_user.key().name(),'name':self.provider_user.name,'type':'cc'}]
+              {'email':self.manager_user.key().name(),'name':self.manager_user.name,'type':'cc'}]
         merge_vars = [{"rcpt": self.provider_user.key().name(),"vars": [{"name":"ROLE", "content":"provider"}]},
                       {"rcpt": self.owner_user.key().name(),"vars": [{"name":"ROLE", "content":"owner"}]},
                       {"rcpt": self.manager_user.key().name(),"vars": [{"name":"ROLE", "content":"manager"}]}]
@@ -93,6 +93,7 @@ class WorkOrder(db.Model):
         template_content = [
             {'name':'work_order_id','content':self.key().id()},
             {'name':'provider_name','content':self.provider_obj.name},
+            {'name':'owner_name','content':self.owner_user.name},
             {'name':'estimate','content':estimate},
             {'name':'store_name','content':self.store.name},
             {'name':'appliance_name','content':self.appliance_obj.name},
@@ -100,13 +101,13 @@ class WorkOrder(db.Model):
             {'name':'model','content':self.appliance_obj.model},
             {'name':'serial_num','content':self.appliance_obj.serial_num},
             {'name':'warranty','content':self.appliance_obj.warranty},
-            {'name':'accept_link','content':'<a class="mcnButton " title="ACCEPT" href="'+ link + '" target="_blank" style="font-weight: bold;letter-spacing: normal;line-height: 100%;text-align: center;text-decoration: none;color: #FFFFFF;">ACCEPT</a>'},
-            {'name':'reject_link','content':'<a class="mcnButton " title="REJECT" href="'+ link + '" target="_blank" style="font-weight: bold;letter-spacing: normal;line-height: 100%;text-align: center;text-decoration: none;color: #FFFFFF;">REJECT</a>'},
+            {'name':'action_link','content':'<a class="mcnButton " title="TAKE ACTION" href="'+ link + '" target="_blank" style="font-weight: bold;letter-spacing: normal;line-height: 100%;text-align: center;text-decoration: none;color: #FFFFFF;">TAKE ACTION</a>'},
         ]
-        to = [{'email':self.provider_user.key().name(),'name':self.provider_user.name,'type':'cc'},
-              {'email':self.owner_user.key().name(),'name':self.owner_user.name,'type':'to'},
-              {'email':self.manager_user.key().name(),'name':self.provider_user.name,'type':'cc'}]
-        send_mandrill_email('approve-work-order', template_content, to)
+        to = [{'email':self.owner_user.key().name(),'name':self.owner_user.name,'type':'to'},
+              {'email':self.manager_user.key().name(),'name':self.manager_user.name,'type':'cc'}]
+        merge_vars = [{"rcpt": self.owner_user.key().name(),"vars": [{"name":"ROLE", "content":"owner"}]},
+                      {"rcpt": self.manager_user.key().name(),"vars": [{"name":"ROLE", "content":"manager"}]}]
+        send_mandrill_email('approve-work-order-2', template_content, to, merge_vars)
 
     def send_wo_disapproved_email(self):
         template_content = [
