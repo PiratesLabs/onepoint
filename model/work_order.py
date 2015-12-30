@@ -244,7 +244,6 @@ class WorkOrder(db.Model):
             ret_val = {'status':'error', 'message':'Only a work order in created state can be estimated'}
             return ret_val
         approval = int(approval_str)
-        self.create_wo_history(notes)
         if approval == 1:
             estimate = long(notes)
             if estimate > 250:
@@ -253,9 +252,11 @@ class WorkOrder(db.Model):
             else:
                 self.curr_state = 'APPROVED'
                 self.send_wo_auto_approved_email(notes, service_date)
+            notes = notes + separator + str(service_date)
         else:
             self.curr_state = "REJECTED"
             self.send_wo_rejected_email(notes)
+        self.create_wo_history(notes)
         self.put()
         return ret_val
 

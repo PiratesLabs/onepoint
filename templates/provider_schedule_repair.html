@@ -20,7 +20,7 @@
                             {% endfor %}
                         </select>
                     {% else %}
-                        <input type="text" name="{{detail.name}}" value="{% if forloop.counter == 1 %}{{detail.value}}" id="{{detail.id}}{% endif %}" placeholder="{{detail.value}}" {% if not forloop.last %}readonly{% endif %}>
+                        <input type="text" name="{{detail.name}}" value="{% if forloop.counter == 1 %}{{detail.value}}" id="{{detail.id}}{% endif %}" placeholder="{{detail.value}}" {{detail.readonly}} {% if detail.type == 'date' %}onfocus="(this.type='date')" onblur="(this.type='text')"{% endif %}>
                     {% endif %}
                 </div>
             </div>
@@ -71,12 +71,15 @@
             $('#wo-creation-result').html('');
             provider = $("input[name='provider']").attr("id");
             appliance = $("select[name='appliance']").val();
+            remarks = $("input[name='remarks']").val();
+            priority = $(".priority.selected").text();
+            fix_by = $("input[name='fix_by']").val();
             if(!appliance) {
                 $("select[name='appliance']").addClass('has-error');
                 $("select[name='appliance']").focus();
                 return false;
             }
-            $.get('/rest/work_order/create',{'provider':provider, 'appliance':appliance})
+            $.get('/rest/work_order/create',{'provider':provider, 'appliance':appliance, 'fix_by':fix_by, 'remarks':remarks, 'priority':priority})
             .done(function(data){
                 data = JSON.parse(data);
                 if(data.work_order_id) {

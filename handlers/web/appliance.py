@@ -44,7 +44,7 @@ class ApplianceScheduleRepairPage(WebRequestHandler):
                 'name':'provider',
                 'value':'Choose Provider',
                 'providers':provider_array,
-                'readonly':'readonly'
+                'readonly':''
             },
             {
                 'name':'provider_owner',
