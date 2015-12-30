@@ -81,7 +81,7 @@ class WorkOrder(db.Model):
             {'name':'fix_by','content':fix_by},
         ]
         to = [{'email': self.provider_user.key().name(),'name':self.provider_user.name,'type':'to'},
-              {'email':self.owner_user.key().name(),'name':self.owner_user.name,'type':'cc'},
+              {'email':self.owner_user.key().name(),'name':self.owner_user.name,'type':'to'},
               {'email':self.manager_user.key().name(),'name':self.manager_user.name,'type':'cc'}]
         merge_vars = [{"rcpt": self.provider_user.key().name(),"vars": [{"name":"ROLE", "content":"provider"}]},
                       {"rcpt": self.owner_user.key().name(),"vars": [{"name":"ROLE", "content":"owner"}]},

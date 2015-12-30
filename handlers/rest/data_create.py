@@ -33,9 +33,9 @@ class ApplianceCreationHandler(WebRequestHandler):
 
 class TestDataCreationHandler(WebRequestHandler):
     def create_users(self):
-        Member(key_name='rsalimath@gmail.com', name='Rajiv Salimath', role='owner', phone='(617)-840-0716').put()
-        Member(key_name='rajiv@hirepirates.com', name='Rajiv Salimath', role='manager', phone='(617)-840-0716').put()
-        Member(key_name='rajiv@beagleslabs.com', name='Ranju Salimath', role='provider', phone='(617)-840-0716').put()
+        Member(key_name='niranjan.salimath@gmail.com', name='Rajiv Owner', role='owner', phone='(617)-840-0716').put()
+        Member(key_name='ranju@hirepirates.com', name='Rajiv Manager', role='manager', phone='(617)-840-0716').put()
+        Member(key_name='ranju@beagleslabs.com', name='Ranju Provider', role='provider', phone='(617)-840-0716').put()
 
     def create_stores(self):
         store = Store(name="Store1", location=db.GeoPt(40.7131116,-74.015359), manager="rajiv@hirepirates.com", owner="rsalimath@gmail.com", address="40 Harrison Street, New York, NY, United States")
