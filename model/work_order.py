@@ -156,7 +156,7 @@ class WorkOrder(db.Model):
         to = [{'email':self.provider_user.key().name(),'name':self.provider_user.name,'type':'cc'},
               {'email':self.owner_user.key().name(),'name':self.owner_user.name,'type':'to'},
               {'email':self.manager_user.key().name(),'name':self.provider_user.name,'type':'to'}]
-        send_mandrill_email('work-order-completed', template_content, to)
+        send_mandrill_email('work-order-completed-2', template_content, to)
 
     def send_wo_rejected_email(self, remarks):
         template_content = [
