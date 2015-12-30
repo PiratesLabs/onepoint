@@ -31,42 +31,13 @@ html {
                 border: 1px solid lightgray;
                 border-top-width: 0px;
 
-                .appliance {
-                    text-align: left;
-                    display: inline-block;
-                    vertical-align: middle;
-                    max-width: 90%;
-
-                    .container {
-                        width: 100%;
-                    }
-
-                    .title {
-                        font-size: 12px;
-                        line-height: 18px;
-                        color: #333333;
-                        @media (max-width: 767px) {
-                            font-size: 10px;
-                        }
-                    }
-                    .sub-title {
-                        font-size: 10px;
-                        line-height: 18px;
-                        color: #aab4bd;
-                        @media (max-width: 767px) {
-                            font-size: 8px;
-                        }
-                    }
-                }
-
-                .store {
-                    text-align: right;
-                    font-size: 12px;
+                .title {
+                    font-size: $abbr_font_size;
                     line-height: $appliance_row_height;
-                    color: #f75946;
-
+                    color: #333333;
+                    overflow: hidden;
                     @media (max-width: 767px) {
-                        font-size: 8px;
+                        font-size: $abbr_font_size_small;
                         line-height: $appliance_row_height_small;
                     }
                 }
