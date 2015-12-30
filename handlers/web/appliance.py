@@ -59,6 +59,7 @@ class ApplianceScheduleRepairPage(WebRequestHandler):
             {
                 'name':'fix_by',
                 'value':'Fix by date',
+                'type':'date',
                 'readonly':''
             },
             {

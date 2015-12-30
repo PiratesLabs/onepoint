@@ -20,7 +20,7 @@
                             {% endfor %}
                         </select>
                     {% else %}
-                        <input type="text" name="{{detail.name}}" value="{% if forloop.counter == 1 %}{{detail.value}}" id="{{detail.id}}{% endif %}" placeholder="{{detail.value}}" {{detail.readonly}}>
+                        <input type="text" name="{{detail.name}}" value="{% if forloop.counter == 1 %}{{detail.value}}" id="{{detail.id}}{% endif %}" placeholder="{{detail.value}}" {{detail.readonly}} {% if detail.type == 'date' %}onfocus="(this.type='date')" onblur="(this.type='text')"{% endif %}>
                     {% endif %}
                 </div>
             </div>
