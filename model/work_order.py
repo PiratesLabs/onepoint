@@ -185,12 +185,12 @@ class WorkOrder(db.Model):
             {'name':'serial_num','content':self.appliance_obj.serial_num},
             {'name':'warranty','content':self.appliance_obj.warranty},
             {'name':'estimate','content':estimate},
-            {'name':'service_date','content':service_date},
+            {'name':'fix_by','content':service_date},
         ]
-        to = [{'email':self.provider_user.key().name(),'name':self.provider_user.name,'type':'cc'},
+        to = [{'email':self.provider_user.key().name(),'name':self.provider_user.name,'type':'to'},
               {'email':self.owner_user.key().name(),'name':self.owner_user.name,'type':'cc'},
-              {'email':self.manager_user.key().name(),'name':self.provider_user.name,'type':'to'}]
-        send_mandrill_email('work-order-auto-approved', template_content, to)
+              {'email':self.manager_user.key().name(),'name':self.provider_user.name,'type':'cc'}]
+        send_mandrill_email('work-order-auto-approved-2', template_content, to)
 
     def store_login(self, role):
         if role == 'manager' or role == 'owner':
