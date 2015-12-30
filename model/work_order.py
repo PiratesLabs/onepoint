@@ -159,7 +159,7 @@ class WorkOrder(db.Model):
     def send_wo_rejected_email(self, remarks):
         template_content = [
             {'name':'work_order_id','content':self.key().id()},
-            {'name':'store_address','content':self.store.address},
+            {'name':'manager_name','content':self.manager_user.name},
             {'name':'store_name','content':self.store.name},
             {'name':'provider_name','content':self.provider_obj.name},
             {'name':'appliance_name','content':self.appliance_obj.name},
@@ -169,10 +169,9 @@ class WorkOrder(db.Model):
             {'name':'warranty','content':self.appliance_obj.warranty},
             {'name':'reject_remarks','content':remarks},
         ]
-        to = [{'email':self.provider_user.key().name(),'name':self.provider_user.name,'type':'to'},
-              {'email':self.owner_user.key().name(),'name':self.owner_user.name,'type':'cc'},
-              {'email':self.manager_user.key().name(),'name':self.provider_user.name,'type':'cc'}]
-        send_mandrill_email('work-order-rejected', template_content, to)
+        to = [{'email':self.owner_user.key().name(),'name':self.owner_user.name,'type':'cc'},
+              {'email':self.manager_user.key().name(),'name':self.provider_user.name,'type':'to'}]
+        send_mandrill_email('work-order-rejected-2', template_content, to)
 
     def send_wo_auto_approved_email(self, estimate, service_date):
         template_content = [
