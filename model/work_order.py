@@ -40,6 +40,10 @@ class WorkOrder(db.Model):
     def manager_user(self):
         return Member.get_by_key_name(self.store.manager)
     @property
+    def fix_by_date(self):
+        details = WorkOrderHistory.get_by_id(self.history[work_order_states.index('CREATED')]).details.split(separator)
+        return details[2] if len(details) > 2 else ''
+    @property
     def action_url(self):
         if self.curr_state == 'CREATED':
             return [('ESTIMATE','')]

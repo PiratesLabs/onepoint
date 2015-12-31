@@ -10,17 +10,10 @@ import logging
 
 class EstimateHandler(WebRequestHandler):
     def get(self):
-        separator = '~~##'
         path = 'work_order_estimate.html'
-        action = ''
-        if self['action']:
-            action = self['action']
+        action = self['action'] if self['action'] else ''
         wo = WorkOrder.get_by_id(long(self['work_order']))
-        details = WorkOrderHistory.get_by_id(wo.history[0]).details.split(separator)
-        service_date = ''
-        if len(details) > 2:
-            service_date = details[2]
-        template_values = {'work_order':self['work_order'], 'action':action, 'service_date':service_date}
+        template_values = {'work_order':self['work_order'], 'action':action, 'service_date':wo.fix_by_date}
         self.write(self.get_rendered_html(path, template_values), 200)
 
 class CompletedHandler(WebRequestHandler):
