@@ -44,6 +44,18 @@ class WorkOrder(db.Model):
         details = WorkOrderHistory.get_by_id(self.history[work_order_states.index('CREATED')]).details.split(separator)
         return details[2] if len(details) > 2 else ''
     @property
+    def time_to_service(self):
+        time_to_service = ''
+        if self.curr_state == 'COMPLETED':
+            start = WorkOrderHistory.get_by_id(self.history[work_order_states.index('PROVIDER_CHECKED_IN')]).time
+            end = WorkOrderHistory.get_by_id(self.history[work_order_states.index('COMPLETED')]).time
+            time_delta = end - start
+            s = time_delta.seconds
+            hours, remainder = divmod(s, 3600)
+            minutes, seconds = divmod(remainder, 60)
+            time_to_service = '%s hours %s minutes' % (hours, minutes)
+        return time_to_service
+    @property
     def action_url(self):
         if self.curr_state == 'CREATED':
             return [('ESTIMATE','')]
@@ -145,7 +157,7 @@ class WorkOrder(db.Model):
               {'email':self.manager_user.key().name(),'name':self.manager_user.name,'type':'to'}]
         send_mandrill_email('work-order-approved-2', template_content, to)
 
-    def send_wo_completed_email(self, wo_id):
+    def send_wo_completed_email(self, wo_id, notes):
         template_content = [
             {'name':'work_order_id','content':self.key().id()},
             {'name':'provider_name','content':self.provider_obj.name},
@@ -155,6 +167,8 @@ class WorkOrder(db.Model):
             {'name':'model','content':self.appliance_obj.model},
             {'name':'serial_num','content':self.appliance_obj.serial_num},
             {'name':'warranty','content':self.appliance_obj.warranty},
+            {'name':'completion_notes','content':notes},
+            {'name':'time_to_service','content':self.time_to_service}
         ]
         to = [{'email':self.provider_user.key().name(),'name':self.provider_user.name,'type':'to'},
               {'email':self.owner_user.key().name(),'name':self.owner_user.name,'type':'to'},
@@ -243,7 +257,7 @@ class WorkOrder(db.Model):
             self.curr_state = work_order_states[work_order_states.index('PROVIDER_CHECKED_IN') + 1]
             self.create_wo_history(params['notes'])
             self.put()
-            self.send_wo_completed_email(self.key().id())
+            self.send_wo_completed_email(self.key().id(), params['notes'])
         return ret_val
 
     def estimate(self, notes, approval_str, service_date):
