@@ -3,37 +3,47 @@
 <link href="/assets/css/sass_out/landing.css" type="text/css" rel="stylesheet">
 {% endblock %}
 {% block Content %}
-<div class="row">
-	<div class="col-md-4 col-xs-1"></div>
-	<div class="col-md-4 col-xs-10">
-		<div class="vertical-middle">
-			<div class="top-align">
-				<p class="title">Genius</p>
-				<img src="/assets/img/genius-logo-anim.gif">
-			</div>
-			<div class="bottom-align">
-			    <div class="detail-box">
-			    	<span class="img-helper"></span>
-			    	<select class="login" name="user" onchange="login_user($(this).val())" required>
-						<option value="">Select User</option>
-				        {% for user in users %}
-				            <option value="{{user.email}}">{{user.display_string}}</option>
-				        {% endfor %}
-				    </select>
-	            </div>
+<div class="container">
+	<div class="row">
+		<div class="col-sm-2 col-xs-1"></div>
+		<div class="col-sm-8 col-xs-10">
+			<div class="vertical-middle">
+				<div class="top-align">
+					<p class="title">Genius</p>
+					<img src="/assets/img/genius-logo-anim.gif">
+				</div>
+				<div class="bottom-align">
+				    <form onsubmit="return login_user()">
+				    	<div class="row">
+				            <div class="col-xs-12">
+				                <div class="detail-box">
+				                    <input type="email" name="user" placeholder="User Email" required>
+				                </div>
+				            </div>
+				        </div>
+				        <div class="row">
+				            <div class="col-xs-12">
+				                <button type="submit">Login</button>
+				            </div>
+				        </div>
+				    </form>
+				</div>
 			</div>
 		</div>
+		<div class="col-sm-2 col-xs-1"></div>
 	</div>
-	<div class="col-md-4 col-xs-1"></div>
 </div>
 {% endblock %}
 {% block Scripts %}
 <script>
-	function login_user(email_id) {
+	function login_user() {
+		var email_id = $("input[name='user']").val();
 		var params = {"email":email_id}
-		$.post( "/rest/temp_login", params, function() {
-			window.location="/appliance/list"
-		})
+		$.post( "/rest/temp_login", params).done(function(data) {
+			data = JSON.parse(data);
+			window.location=data.url
+		});
+		return false;
 	}
 	function showFBLoginDialog() {
 		FB.login(function(response) {

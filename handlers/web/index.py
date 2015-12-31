@@ -31,7 +31,7 @@ class IndexPage(WebRequestHandler):
         session_id = self.session['email'] if 'email' in self.session else None
         if not session_id:
             path = 'landing.html'
-            template_values = {'users':self.fetch_users()}
+            template_values = {}
             self.write(self.get_rendered_html(path, template_values), 200)
         else:
             self.redirect('/appliance/list')

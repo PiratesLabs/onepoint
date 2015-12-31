@@ -38,11 +38,17 @@ class LogoutHandler(WebRequestHandler):
 
 class TempLoginHandler(WebRequestHandler):
     def post(self):
+        success = False
+        url = '/'
         member = Member.get_by_key_name(self['email'])
-        self.session['email'] = member.key().name()
-        self.session['name'] = member.name
-        self.session['fb_id'] = "123"
-        self.session['role'] = member.role
+        if member:
+            self.session['email'] = member.key().name()
+            self.session['name'] = member.name
+            self.session['fb_id'] = "123"
+            self.session['role'] = member.role
+            success = True
+            url = '/appliance/list'
+        self.write(json.dumps({'success':success, 'url':url}))
 
 app = webapp2.WSGIApplication([
     ('/rest/fb_login', FacebookLoginHandler),
