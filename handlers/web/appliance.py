@@ -69,7 +69,7 @@ class ApplianceScheduleRepairPage(WebRequestHandler):
             }
         ]
         priorities = ['Critical', 'Normal', 'Routine']
-        template_values = {'details':details,'name':'WORK ORDER #12-345', 'details_url':appliance.details_url, 'priorities':priorities}
+        template_values = {'details':details,'name':'New Work Order', 'details_url':appliance.details_url, 'priorities':priorities}
         self.write(self.get_rendered_html(path, template_values), 200)
 
 app = webapp2.WSGIApplication(
