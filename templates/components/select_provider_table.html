@@ -1,0 +1,17 @@
+{% for provider in items %}
+	<div class="row">
+		<div class="col-xs-12">
+            <a href="{{provider.details_url}}&appliance_id={{appliance_id}}">
+                <div class="row table-row">
+                    <div class="col-xs-1"></div>
+                    <div class="col-sm-3 col-xs-2"><span class="img-helper"></span><div class="abbr">{{provider.abbr_name}}</div></div>
+                    <div class="col-xs-1 visible-xs-block"></div>
+                    <div class="col-xs-7 title" style="text-align:left;">
+                        {{provider.name}}
+                    </div>
+                    <div class="col-xs-1"></div>
+                </div>
+            </a>
+        </div>
+    </div>
+{% endfor %}

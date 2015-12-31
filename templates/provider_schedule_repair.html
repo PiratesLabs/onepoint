@@ -4,6 +4,7 @@
 {% endblock %}
 {% block BarContent%}
 <div class="bartwo"><a href="{{details_url}}" style="float:left;"> <-- </a>{{name}}</div>
+<input type="hidden" id="appliance-id" value="{{appliance_id}}">
 <div class="content">
     <div class="container">
         {% for detail in details %}
@@ -16,7 +17,7 @@
                         <select name="{{detail.name}}" onchange="fetch_apply_appliance($(this).val())" required>
                             <option value="">{{detail.value}}</option>
                             {% for appliance in detail.appliances %}
-                                <option value="{{appliance.0}}">{{appliance.1}}</option>
+                                <option value="{{appliance.0}}" {% if appliance.0|upper == appliance_id|upper %}selected{% endif %}>{{appliance.1}}</option>
                             {% endfor %}
                         </select>
                     {% else %}
@@ -97,6 +98,11 @@
                 });
                 $(this).addClass('selected');
             });
+
+            if($('#appliance-id').val()) {
+                fetch_apply_appliance($('#appliance-id').val());
+                $("select[name='appliance']").attr('disabled', 'disabled');
+            }
         });
     </script>
 {% endblock%}

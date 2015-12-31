@@ -19,6 +19,10 @@ class Appliance(db.Model):
         return 'appliances/'+self.model+'.png'
 
     @property
+    def select_provider_url(self):
+        return '/appliance/select_provider?id='+str(self.key().id())
+
+    @property
     def schedule_repair_url(self):
         return '/appliance/schedule_repair?id='+str(self.key().id())
 

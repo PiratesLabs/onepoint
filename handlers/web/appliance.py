@@ -23,8 +23,23 @@ class ApplianceDetailsPage(WebRequestHandler):
     def get(self):
         path = 'appliance_details.html'
         appliance = Appliance.get_by_id(long(self['id']))
-        template_values = {'details':appliance.template_format,'name':appliance.name,'schedule_repair_url':appliance.schedule_repair_url}
+        template_values = {'details':appliance.template_format,'name':appliance.name,'select_provider_url':appliance.select_provider_url}
         self.write(self.get_rendered_html(path, template_values), 200)
+
+class ApplianceSelectProviderPage(WebRequestHandler):
+    def load_manager_view(self, appliance_id):
+        providers = [provider for provider in Provider.all().fetch(100)]
+        path = 'select_provider.html'
+        markers = [[provider.name, provider.location.lat,provider.location.lon] for provider in providers]
+        template_values = {'providers':providers,'count':len(providers),'markers':markers, 'appliance_id':appliance_id}
+        self.write(self.get_rendered_html(path, template_values), 200)
+
+    @login_required
+    def get(self):
+        role = self.session['role']
+        if role == 'owner' or role == 'manager':
+            appliance_id = self['id']
+            self.load_manager_view(appliance_id)
 
 class ApplianceScheduleRepairPage(WebRequestHandler):
     @login_required
@@ -76,6 +91,7 @@ app = webapp2.WSGIApplication(
     [
         ('/appliance/list', AppliancesPage),
         ('/appliance/details', ApplianceDetailsPage),
+        ('/appliance/select_provider', ApplianceSelectProviderPage),
         ('/appliance/schedule_repair', ApplianceScheduleRepairPage)
     ]
 )
