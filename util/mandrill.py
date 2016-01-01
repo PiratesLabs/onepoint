@@ -9,7 +9,7 @@ def send_mandrill_email(template_slug, template_content, to, merge_vars=[]):
         "template_name": template_slug,
         "template_content": template_content,
         "message": {
-            "from_email": "russ@hirepirates.com",
+            "from_email": "workorder@genius.repair",
             "from_name": "Genius Admin",
             "to": to,
             "merge_vars": merge_vars,
