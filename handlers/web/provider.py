@@ -37,47 +37,49 @@ class ProviderScheduleRepairPage(WebRequestHandler):
     def get(self):
         path = 'provider_schedule_repair.html'
         provider = Provider.get_by_id(long(self['id']))
-        appliance_id = self['appliance_id']
-        appliances = get_appliances_for_logged_in_user(self)
-        appliance_array = [(appliance.id, appliance.name) for appliance in appliances]
+        appliance = Appliance.get_by_id(long(self['appliance_id']))
         details = [
             {
                 'name':'provider',
+                'title':'Provider',
                 'value':provider.name,
                 'id':provider.id,
                 'readonly':'readonly'
             },
             {
                 'name':'appliance',
-                'value':'Choose Appliance',
-                'appliances':appliance_array,
-                'readonly':''
+                'title':'Appliance',
+                'value':appliance.name,
+                'readonly':'readonly'
             },
             {
                 'name':'appliance_serial',
-                'value':'Appliance Serial Number',
+                'title':'Serial Number',
+                'value':appliance.serial_num,
                 'readonly':'readonly'
             },
             {
                 'name':'appliance_manufacturer',
-                'value':'Appliance Manufacturer',
+                'title':'Manufacturer',
+                'value':appliance.manufacturer,
                 'readonly':'readonly'
             },
             {
                 'name':'fix_by',
-                'value':'Fix by date',
+                'value':'Select date',
+                'title':'Fix by date',
                 'type':'date',
                 'readonly':''
             },
             {
                 'name':'remarks',
-                'value':'Remarks',
+                'value':'',
+                'title':'Remarks',
                 'readonly':''
             }
         ]
         priorities = ['Critical', 'Normal', 'Routine']
-        details_url = provider.details_url+'&appliance_id='+appliance_id if appliance_id else provider.details_url
-        template_values = {'details':details,'name':'New Work Order', 'ratings':[x for x in range(1,6)], 'details_url':details_url, 'priorities':priorities, 'appliance_id':appliance_id}
+        template_values = {'details':details,'name':'New Work Order', 'ratings':[x for x in range(1,6)], 'priorities':priorities, 'appliance_id':self['appliance_id']}
         self.write(self.get_rendered_html(path, template_values), 200)
 
 app = webapp2.WSGIApplication(

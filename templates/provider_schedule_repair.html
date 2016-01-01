@@ -3,7 +3,9 @@
 <link href="/assets/css/sass_out/schedule_repair.css" type="text/css" rel="stylesheet">
 {% endblock %}
 {% block BarContent%}
+<!--
 <div class="bartwo"><a href="{{details_url}}" style="float:left;"> <-- </a>{{name}}</div>
+-->
 <input type="hidden" id="appliance-id" value="{{appliance_id}}">
 <div class="content">
     <div class="container">
@@ -11,18 +13,10 @@
         <div class="order-details row">
             <div class="col-md-4 col-xs-1"></div>
             <div class="col-md-4 col-xs-10">
+                <label for="{{detail.name}}" style="text-align:left;color:#000000">{{detail.title}}:</label>
                 <div class="detail-box">
                     <span></span>
-                    {% if forloop.counter == 2 %}
-                        <select name="{{detail.name}}" onchange="fetch_apply_appliance($(this).val())" required>
-                            <option value="">{{detail.value}}</option>
-                            {% for appliance in detail.appliances %}
-                                <option value="{{appliance.0}}" {% if appliance.0|upper == appliance_id|upper %}selected{% endif %}>{{appliance.1}}</option>
-                            {% endfor %}
-                        </select>
-                    {% else %}
-                        <input type="text" name="{{detail.name}}" value="{% if forloop.counter == 1 %}{{detail.value}}" id="{{detail.id}}{% endif %}" placeholder="{{detail.value}}" {{detail.readonly}} {% if detail.type == 'date' %}onfocus="(this.type='date')" onblur="(this.type='text')"{% endif %}>
-                    {% endif %}
+                    <input type="text" name="{{detail.name}}" value="{{detail.value}}" id="{{detail.id}}" placeholder="{{detail.value}}" {{detail.readonly}} {% if detail.type == 'date' %}onfocus="(this.type='date')" onblur="(this.type='text')"{% endif %}>
                 </div>
             </div>
             <div class="col-md-4 col-xs-1"></div>
@@ -71,15 +65,11 @@
         function create_work_order() {
             $('#wo-creation-result').html('');
             provider = $("input[name='provider']").attr("id");
-            appliance = $("select[name='appliance']").val();
+            appliance = $("input[id='appliance-id']").val();
             remarks = $("input[name='remarks']").val();
             priority = $(".priority.selected").text();
             fix_by = $("input[name='fix_by']").val();
-            if(!appliance) {
-                $("select[name='appliance']").addClass('has-error');
-                $("select[name='appliance']").focus();
-                return false;
-            }
+            console.log('Here...')
             $.get('/rest/work_order/create',{'provider':provider, 'appliance':appliance, 'fix_by':fix_by, 'remarks':remarks, 'priority':priority})
             .done(function(data){
                 data = JSON.parse(data);
@@ -98,11 +88,6 @@
                 });
                 $(this).addClass('selected');
             });
-
-            if($('#appliance-id').val()) {
-                fetch_apply_appliance($('#appliance-id').val());
-                $("select[name='appliance']").attr('disabled', 'disabled');
-            }
         });
     </script>
 {% endblock%}
