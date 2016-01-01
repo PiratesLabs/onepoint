@@ -3,22 +3,10 @@
 <link href="/assets/css/sass_out/appliances.css" type="text/css" rel="stylesheet">
 {% endblock %}
 {% block BarContent%}
+<div class="bartwo">Select Provider</div>
 <div class="content" style="margin-top: 0px;">
-	<div class="tabbable tabs-below">
-		<div class="tab-content">
-			<div class="tab-pane active" id="starred">
-				<div class="container" style="width:100vw;">
-					{% include "components/select_provider_table.html" with items=providers appliance_id=appliance_id %}
-				</div>
-			</div> 
-			<div class="tab-pane" id="oldest">
-				{% include "components/map.html" with markers=markers %}
-			</div>
-		</div>
-		<ul class="nav nav-tabs">
-			<li class="col-xs-6 active" style="background-color: #5A9DE6;"><a href="#starred" data-toggle="tab">Starred</a></li>
-			<li class="col-xs-6" style="background-color: #5A9DE6;" onclick="initialize_map()"><a href="#oldest" data-toggle="tab">Map</a></li>
-		</ul>
+	<div class="container" style="width:100vw;">
+		{% include "components/select_provider_table.html" with items=providers appliance_id=appliance_id %}
 	</div>
 </div>
 {% endblock %}
