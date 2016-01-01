@@ -43,12 +43,12 @@ class WorkOrder(db.Model):
     def fix_by_date(self):
         details = WorkOrderHistory.get_by_id(self.history[work_order_states.index('CREATED')]).details.split(separator)
         return details[2] if len(details) > 2 else ''
-    @property
-    def time_to_service(self):
+    
+    def time_to_service(self, end_woh):
         time_to_service = ''
         if self.curr_state == 'COMPLETED':
             start = WorkOrderHistory.get_by_id(self.history[work_order_states.index('PROVIDER_CHECKED_IN')]).time
-            end = WorkOrderHistory.get_by_id(self.history[work_order_states.index('COMPLETED')]).time
+            end = end_woh.time
             time_delta = end - start
             s = time_delta.seconds
             hours, remainder = divmod(s, 3600)
@@ -96,9 +96,7 @@ class WorkOrder(db.Model):
             {'name':'reject_link','content':'<a class="mcnButton " title="REJECT" href="' + estimation_link + '&action=reject' + '" target="_blank" style="font-weight: bold;letter-spacing: normal;line-height: 100%;text-align: center;text-decoration: none;color: #FFFFFF;">REJECT</a>'},
             {'name':'fix_by','content':fix_by},
         ]
-        to = [{'email': self.provider_user.key().name(),'name':self.provider_user.name,'type':'to'},
-              {'email':self.owner_user.key().name(),'name':self.owner_user.name,'type':'to'},
-              {'email':self.manager_user.key().name(),'name':self.manager_user.name,'type':'cc'}]
+        to = [{'email': self.provider_user.key().name(),'name':self.provider_user.name,'type':'to'}]
         merge_vars = [{"rcpt": self.provider_user.key().name(),"vars": [{"name":"ROLE", "content":"provider"}]},
                       {"rcpt": self.owner_user.key().name(),"vars": [{"name":"ROLE", "content":"owner"}]},
                       {"rcpt": self.manager_user.key().name(),"vars": [{"name":"ROLE", "content":"manager"}]}]
@@ -119,8 +117,7 @@ class WorkOrder(db.Model):
             {'name':'warranty','content':self.appliance_obj.warranty},
             {'name':'action_link','content':'<a class="mcnButton " title="TAKE ACTION" href="'+ link + '" target="_blank" style="font-weight: bold;letter-spacing: normal;line-height: 100%;text-align: center;text-decoration: none;color: #FFFFFF;">TAKE ACTION</a>'},
         ]
-        to = [{'email':self.owner_user.key().name(),'name':self.owner_user.name,'type':'to'},
-              {'email':self.manager_user.key().name(),'name':self.manager_user.name,'type':'to'}]
+        to = [{'email':self.owner_user.key().name(),'name':self.owner_user.name,'type':'to'}]
         merge_vars = [{"rcpt": self.owner_user.key().name(),"vars": [{"name":"ROLE", "content":"owner"}]},
                       {"rcpt": self.manager_user.key().name(),"vars": [{"name":"ROLE", "content":"manager"}]}]
         send_mandrill_email('approve-work-order-2', template_content, to, merge_vars)
@@ -157,7 +154,7 @@ class WorkOrder(db.Model):
               {'email':self.manager_user.key().name(),'name':self.manager_user.name,'type':'to'}]
         send_mandrill_email('work-order-approved-2', template_content, to)
 
-    def send_wo_completed_email(self, wo_id, notes):
+    def send_wo_completed_email(self, wo_id, notes, woh):
         template_content = [
             {'name':'work_order_id','content':self.key().id()},
             {'name':'provider_name','content':self.provider_obj.name},
@@ -168,10 +165,9 @@ class WorkOrder(db.Model):
             {'name':'serial_num','content':self.appliance_obj.serial_num},
             {'name':'warranty','content':self.appliance_obj.warranty},
             {'name':'completion_notes','content':notes},
-            {'name':'time_to_service','content':self.time_to_service}
+            {'name':'time_to_service','content':self.time_to_service(woh)}
         ]
         to = [{'email':self.provider_user.key().name(),'name':self.provider_user.name,'type':'to'},
-              {'email':self.owner_user.key().name(),'name':self.owner_user.name,'type':'to'},
               {'email':self.manager_user.key().name(),'name':self.manager_user.name,'type':'to'}]
         send_mandrill_email('work-order-completed-2', template_content, to)
 
@@ -188,8 +184,7 @@ class WorkOrder(db.Model):
             {'name':'warranty','content':self.appliance_obj.warranty},
             {'name':'reject_remarks','content':remarks},
         ]
-        to = [{'email':self.owner_user.key().name(),'name':self.owner_user.name,'type':'to'},
-              {'email':self.manager_user.key().name(),'name':self.manager_user.name,'type':'to'}]
+        to = [{'email':self.manager_user.key().name(),'name':self.manager_user.name,'type':'to'}]
         send_mandrill_email('work-order-rejected-2', template_content, to)
 
     def send_wo_auto_approved_email(self, estimate, service_date):
@@ -234,7 +229,7 @@ class WorkOrder(db.Model):
             self.appliance = params['appliance']
             self.provider = params['provider']
             notes = params['remarks'] + separator + params['priority'] + separator + params['fix_by']
-            self.create_wo_history(notes)
+            woh = self.create_wo_history(notes)
             self.put()
             self.send_wo_created_email(self.key().id(), params['remarks'], params['priority'], params['fix_by'])
         elif self.curr_state == 'ESTIMATED':
@@ -255,9 +250,9 @@ class WorkOrder(db.Model):
             self.put()
         elif self.curr_state == 'PROVIDER_CHECKED_IN':
             self.curr_state = work_order_states[work_order_states.index('PROVIDER_CHECKED_IN') + 1]
-            self.create_wo_history(params['notes'])
+            woh = self.create_wo_history(params['notes'])
             self.put()
-            self.send_wo_completed_email(self.key().id(), params['notes'])
+            self.send_wo_completed_email(self.key().id(), params['notes'], woh)
         return ret_val
 
     def estimate(self, notes, approval_str, service_date):

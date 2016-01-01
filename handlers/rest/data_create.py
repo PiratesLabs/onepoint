@@ -40,8 +40,8 @@ class ApplianceCreationHandler(WebRequestHandler):
 
 class TestDataCreationHandler(WebRequestHandler):
     def create_users(self):
-        owner = Member(key_name='brandon.bell@partners.mcd.com', name='Brandon Bell', role='owner', phone='(617)-840-0716')
-        manager = Member(key_name='jose.martinez@us.stores.mcd.com', name='Jose Martinez', role='manager', phone='(617)-840-0716')
+        owner = Member(key_name='rsalimath@gmail.com', name='Brandon Bell', role='owner', phone='(617)-840-0716')
+        manager = Member(key_name='rajiv@hirepirates.com', name='Jose Martinez', role='manager', phone='(617)-840-0716')
         owner.put()
         manager.put()
         return [owner, manager]
@@ -97,7 +97,7 @@ def pull_airtable_data():
     if response.content and 'records' in response.content:
         r = json.loads(response.content)
         providers = r['records']
-        provider_user = tdc.create_provider('cpshankar@me.com', 'C.P', '(617)-840-0716')
+        provider_user = tdc.create_provider('rajiv@latticefund.com', 'C.P', '(617)-840-0716')
         for provider in providers:
             provider_obj = Provider()
             fields = provider['fields']

@@ -2,8 +2,6 @@ from google.appengine.api import urlfetch
 import json
 
 def send_mandrill_email(template_slug, template_content, to, merge_vars=[]):
-    print(to)
-    print(merge_vars)
     json_mandrill = {
         "key": "rwb7RGauJGM5H1hhTI9vFw",
         "template_name": template_slug,
