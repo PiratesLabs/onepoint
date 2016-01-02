@@ -123,13 +123,17 @@ class WorkOrder(db.Model):
         to = [{'email':self.owner_user.key().name(),'name':self.owner_user.name,'type':'to'}]
         merge_vars = [{"rcpt": self.owner_user.key().name(),"vars": [{"name":"ROLE", "content":"owner"}]},
                       {"rcpt": self.manager_user.key().name(),"vars": [{"name":"ROLE", "content":"manager"}]}]
-        send_mandrill_email('approve-work-order-2', template_content, to, merge_vars)
+        send_mandrill_email('approve-work-order-3', template_content, to, merge_vars)
 
     def send_wo_disapproved_email(self):
         template_content = [
             {'name':'work_order_id','content':self.key().id()},
             {'name':'provider_name','content':self.provider_obj.name},
+            {'name':'fix_by','content':self.fix_by.strftime('%Y-%m-%d')},
             {'name':'store_name','content':self.store.name},
+            {'name':'store_manager_name','content':self.manager_user.name},
+            {'name':'store_manager_phone','content':self.manager_user.phone},
+            {'name':'store_address','content':self.store.address},
             {'name':'owner_name','content':self.owner_user.name},
             {'name':'appliance_name','content':self.appliance_obj.name},
             {'name':'manufacturer','content':self.appliance_obj.manufacturer},
@@ -139,7 +143,7 @@ class WorkOrder(db.Model):
         ]
         to = [{'email':self.provider_user.key().name(),'name':self.provider_user.name,'type':'to'},
               {'email':self.manager_user.key().name(),'name':self.manager_user.name,'type':'to'}]
-        send_mandrill_email('work-order-disapproved-2', template_content, to)
+        send_mandrill_email('work-order-disapproved-3', template_content, to)
 
     def send_wo_approved_email(self):
         template_content = [
@@ -177,6 +181,11 @@ class WorkOrder(db.Model):
     def send_wo_rejected_email(self, remarks):
         template_content = [
             {'name':'work_order_id','content':self.key().id()},
+            {'name':'fix_by','content':self.fix_by.strftime('%Y-%m-%d')},
+            {'name':'provider_address','content':self.provider_obj.address},
+            {'name':'store_manager_name','content':self.manager_user.name},
+            {'name':'store_manager_phone','content':self.manager_user.phone},
+            {'name':'store_address','content':self.store.address},
             {'name':'manager_name','content':self.manager_user.name},
             {'name':'store_name','content':self.store.name},
             {'name':'provider_name','content':self.provider_obj.name},
@@ -188,7 +197,7 @@ class WorkOrder(db.Model):
             {'name':'reject_remarks','content':remarks},
         ]
         to = [{'email':self.manager_user.key().name(),'name':self.manager_user.name,'type':'to'}]
-        send_mandrill_email('work-order-rejected-2', template_content, to)
+        send_mandrill_email('work-order-rejected-3', template_content, to)
 
     def send_wo_auto_approved_email(self, estimate, service_date):
         template_content = [
