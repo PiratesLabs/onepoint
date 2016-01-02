@@ -105,19 +105,25 @@ class WorkOrder(db.Model):
                       {"rcpt": self.manager_user.key().name(),"vars": [{"name":"ROLE", "content":"manager"}]}]
         send_mandrill_email('work-order-created-3', template_content, to, merge_vars)
 
-    def send_wo_approval_email(self, estimate):
+    def send_wo_approval_email(self, estimate, service_date, technician):
         link = 'http://onepointapp.appspot.com/work_order/list?work_order='+str(self.key().id())
         template_content = [
             {'name':'work_order_id','content':self.key().id()},
+            {'name':'fix_by','content':service_date},
             {'name':'provider_name','content':self.provider_obj.name},
+            {'name':'provider_address','content':self.provider_obj.address},
             {'name':'owner_name','content':self.owner_user.name},
             {'name':'estimate','content':estimate},
             {'name':'store_name','content':self.store.name},
+            {'name':'store_manager_name','content':self.manager_user.name},
+            {'name':'store_manager_phone','content':self.manager_user.phone},
+            {'name':'store_address','content':self.store.address},
             {'name':'appliance_name','content':self.appliance_obj.name},
             {'name':'manufacturer','content':self.appliance_obj.manufacturer},
             {'name':'model','content':self.appliance_obj.model},
             {'name':'serial_num','content':self.appliance_obj.serial_num},
             {'name':'warranty','content':self.appliance_obj.warranty},
+            {'name':'technician','content':technician},
             {'name':'action_link','content':'<a class="mcnButton " title="TAKE ACTION" href="'+ link + '" target="_blank" style="font-weight: bold;letter-spacing: normal;line-height: 100%;text-align: center;text-decoration: none;color: #FFFFFF;">TAKE ACTION</a>'},
         ]
         to = [{'email':self.owner_user.key().name(),'name':self.owner_user.name,'type':'to'}]
@@ -268,25 +274,25 @@ class WorkOrder(db.Model):
             self.send_wo_completed_email(self.key().id(), params['notes'], woh)
         return ret_val
 
-    def estimate(self, notes, approval_str, service_date):
+    def estimate(self, approval_str, params):
         ret_val = {'status':'success'}
         if self.curr_state != 'CREATED':
             ret_val = {'status':'error', 'message':'Only a work order in created state can be estimated'}
             return ret_val
         approval = int(approval_str)
         if approval == 1:
-            estimate = long(notes)
+            service_date, estimate_str, technician = params.split(separator)
+            estimate = long(estimate_str)
             if estimate > 250:
                 self.curr_state = "ESTIMATED"
-                self.send_wo_approval_email(notes)
+                self.send_wo_approval_email(estimate_str, service_date, technician)
             else:
                 self.curr_state = 'APPROVED'
                 self.send_wo_auto_approved_email(notes, service_date)
-            notes = notes + separator + str(service_date)
         else:
             self.curr_state = "REJECTED"
-            self.send_wo_rejected_email(notes)
-        self.create_wo_history(notes)
+            self.send_wo_rejected_email(params)
+        self.create_wo_history(params)
         self.put()
         return ret_val
 

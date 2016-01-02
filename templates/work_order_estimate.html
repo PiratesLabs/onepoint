@@ -58,7 +58,8 @@
         }
     });
     function submit_estimate() {
-        $.post("/rest/work_order/estimate", {'service_date':$('#service_date').val(),'estimate':$('#estimate').val(),'approval':'1','work_order':{{work_order}}}).done(function( data ) {
+        var params = $('#service_date').val() + '~~##' + $('#estimate').val() + '~~##' + $('#technician').val()
+        $.post("/rest/work_order/estimate", {'params':params,'approval':'1','work_order':{{work_order}}}).done(function( data ) {
             data = JSON.parse(data);
             if(data.status == 'success') {
                 alert('Thank you for the estimate, the store will be notified');
@@ -70,7 +71,8 @@
         });
     }
     function reject_workorder() {
-        $.post("/rest/work_order/estimate", {'work_order':{{work_order}}, 'approval':'0', 'remarks':$('#rejection_remarks').val()}).done(function( data ) {
+        var params = $('#rejection_remarks').val()
+        $.post("/rest/work_order/estimate", {'work_order':{{work_order}}, 'approval':'0', 'params':params}).done(function( data ) {
             data = JSON.parse(data);
             if(data.status == 'success') {
                 alert('Too bad you could not accept this work order. The store will be notified!');

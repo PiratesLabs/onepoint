@@ -46,10 +46,8 @@ class UpdateWorkOrderHandler(WebRequestHandler):
 class EstimateWorkOrderHandler(WebRequestHandler):
     def post(self):
         wo = WorkOrder.get_by_id(long(self['work_order']))
-        notes = self['estimate']
-        if not notes:
-            notes = self['remarks']
-        ret_val = wo.estimate(notes, self['approval'], self['service_date'])
+        print(self['params'])
+        ret_val = wo.estimate(self['approval'], self['params'])
         self.write(json.dumps(ret_val))
 
 app = webapp2.WSGIApplication([
