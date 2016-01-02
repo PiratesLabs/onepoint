@@ -134,6 +134,7 @@ class WorkOrder(db.Model):
     def send_wo_disapproved_email(self):
         template_content = [
             {'name':'work_order_id','content':self.key().id()},
+            {'name':'provider_address','content':self.provider_obj.address},
             {'name':'provider_name','content':self.provider_obj.name},
             {'name':'fix_by','content':self.fix_by.strftime('%Y-%m-%d')},
             {'name':'store_name','content':self.store.name},
