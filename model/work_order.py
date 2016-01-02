@@ -79,6 +79,7 @@ class WorkOrder(db.Model):
         estimation_link = "http://onepointapp.appspot.com/work_order/provide_estimate?work_order="+str(wo_id)
         template_content = [
             {'name':'work_order_id','content':self.key().id()},
+            {'name':'provider_address','content':self.provider_obj.address},
             {'name':'store_address','content':self.store.address},
             {'name':'store_name','content':self.store.name},
             {'name':'store_manager_name','content':self.manager_user.name},
@@ -100,7 +101,7 @@ class WorkOrder(db.Model):
         merge_vars = [{"rcpt": self.provider_user.key().name(),"vars": [{"name":"ROLE", "content":"provider"}]},
                       {"rcpt": self.owner_user.key().name(),"vars": [{"name":"ROLE", "content":"owner"}]},
                       {"rcpt": self.manager_user.key().name(),"vars": [{"name":"ROLE", "content":"manager"}]}]
-        send_mandrill_email('work-order-created-2', template_content, to, merge_vars)
+        send_mandrill_email('work-order-created-3', template_content, to, merge_vars)
 
     def send_wo_approval_email(self, estimate):
         link = 'http://onepointapp.appspot.com/work_order/list?work_order='+str(self.key().id())
