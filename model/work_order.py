@@ -220,22 +220,28 @@ class WorkOrder(db.Model):
         to = [{'email':self.manager_user.key().name(),'name':self.manager_user.name,'type':'to'}]
         send_mandrill_email('work-order-rejected-3', template_content, to)
 
-    def send_wo_auto_approved_email(self, estimate, service_date):
+    def send_wo_auto_approved_email(self, estimate_str, service_date, technician):
         template_content = [
             {'name':'work_order_id','content':self.key().id()},
-            {'name':'store_name','content':self.store.name},
+            {'name':'provider_address','content':self.provider_obj.address},
+            {'name':'fix_by','content':self.fix_by.strftime('%Y-%m-%d')},
+            {'name':'owner_name','content':self.owner_user.name},
             {'name':'provider_name','content':self.provider_obj.name},
+            {'name':'store_name','content':self.store.name},
+            {'name':'store_manager_name','content':self.manager_user.name},
+            {'name':'store_manager_phone','content':self.manager_user.phone},
+            {'name':'store_address','content':self.store.address},
             {'name':'appliance_name','content':self.appliance_obj.name},
             {'name':'manufacturer','content':self.appliance_obj.manufacturer},
             {'name':'model','content':self.appliance_obj.model},
             {'name':'serial_num','content':self.appliance_obj.serial_num},
             {'name':'warranty','content':self.appliance_obj.warranty},
-            {'name':'estimate','content':estimate},
-            {'name':'fix_by','content':service_date},
+            {'name':'technician','content':technician},
+            {'name':'estimate','content':estimate_str},
         ]
         to = [{'email':self.provider_user.key().name(),'name':self.provider_user.name,'type':'to'},
               {'email':self.manager_user.key().name(),'name':self.manager_user.name,'type':'to'}]
-        send_mandrill_email('work-order-auto-approved-2', template_content, to)
+        send_mandrill_email('work-order-approved-3', template_content, to)
 
     def store_login(self, role):
         if role == 'manager' or role == 'owner':
@@ -303,7 +309,7 @@ class WorkOrder(db.Model):
                 self.send_wo_approval_email(estimate_str, service_date, technician)
             else:
                 self.curr_state = 'APPROVED'
-                self.send_wo_auto_approved_email(notes, service_date)
+                self.send_wo_auto_approved_email(estimate_str, service_date, technician)
         else:
             self.curr_state = "REJECTED"
             self.send_wo_rejected_email(params)
