@@ -180,19 +180,24 @@ class WorkOrder(db.Model):
     def send_wo_completed_email(self, wo_id, notes, woh):
         template_content = [
             {'name':'work_order_id','content':self.key().id()},
+            {'name':'fix_by','content':self.fix_by.strftime('%Y-%m-%d')},
+            {'name':'provider_address','content':self.provider_obj.address},
             {'name':'provider_name','content':self.provider_obj.name},
             {'name':'store_name','content':self.store.name},
+            {'name':'store_manager_name','content':self.manager_user.name},
+            {'name':'store_manager_phone','content':self.manager_user.phone},
+            {'name':'store_address','content':self.store.address},
             {'name':'appliance_name','content':self.appliance_obj.name},
             {'name':'manufacturer','content':self.appliance_obj.manufacturer},
             {'name':'model','content':self.appliance_obj.model},
             {'name':'serial_num','content':self.appliance_obj.serial_num},
             {'name':'warranty','content':self.appliance_obj.warranty},
-            {'name':'completion_notes','content':notes},
-            {'name':'time_to_service','content':self.time_to_service(woh)}
+            {'name':'remarks','content':notes},
+            {'name':'time_taken','content':self.time_to_service(woh)}
         ]
         to = [{'email':self.provider_user.key().name(),'name':self.provider_user.name,'type':'to'},
               {'email':self.manager_user.key().name(),'name':self.manager_user.name,'type':'to'}]
-        send_mandrill_email('work-order-completed-2', template_content, to)
+        send_mandrill_email('work-order-completed-3', template_content, to)
 
     def send_wo_rejected_email(self, remarks):
         template_content = [
