@@ -4,6 +4,7 @@ from model.appliance import Appliance
 from model.store import Store
 from model.member import Member
 from model.provider import Provider
+from datetime import datetime
 
 work_order_states = ["CREATED", ["ESTIMATED", "REJECTED"], ["APPROVED", "DISAPPROVED"], "PROVIDER_CHECKED_IN", "COMPLETED"]
 separator = '~~##'
@@ -17,6 +18,7 @@ class WorkOrder(db.Model):
     provider = db.StringProperty(indexed=True)
     history = db.ListProperty(long)
     curr_state = db.StringProperty(indexed=True)
+    fix_by = db.DateTimeProperty(indexed=False)
 
     @property
     def id(self):
@@ -229,6 +231,7 @@ class WorkOrder(db.Model):
             self.curr_state = work_order_states[0]
             self.appliance = params['appliance']
             self.provider = params['provider']
+            self.fix_by = datetime.strptime(params['fix_by'], '%Y-%m-%d')
             notes = params['remarks'] + separator + params['priority'] + separator + params['fix_by']
             woh = self.create_wo_history(notes)
             self.put()
