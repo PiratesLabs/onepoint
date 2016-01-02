@@ -152,20 +152,29 @@ class WorkOrder(db.Model):
         send_mandrill_email('work-order-disapproved-3', template_content, to)
 
     def send_wo_approved_email(self):
+        woh = WorkOrderHistory.get_by_id(self.history[work_order_states.index(["ESTIMATED", "REJECTED"])]).details
+        service_date, estimate_str, technician = woh.split(separator)
         template_content = [
             {'name':'work_order_id','content':self.key().id()},
+            {'name':'provider_address','content':self.provider_obj.address},
+            {'name':'fix_by','content':self.fix_by.strftime('%Y-%m-%d')},
             {'name':'owner_name','content':self.owner_user.name},
             {'name':'provider_name','content':self.provider_obj.name},
             {'name':'store_name','content':self.store.name},
+            {'name':'store_manager_name','content':self.manager_user.name},
+            {'name':'store_manager_phone','content':self.manager_user.phone},
+            {'name':'store_address','content':self.store.address},
             {'name':'appliance_name','content':self.appliance_obj.name},
             {'name':'manufacturer','content':self.appliance_obj.manufacturer},
             {'name':'model','content':self.appliance_obj.model},
             {'name':'serial_num','content':self.appliance_obj.serial_num},
             {'name':'warranty','content':self.appliance_obj.warranty},
+            {'name':'technician','content':technician},
+            {'name':'estimate','content':estimate_str},
         ]
         to = [{'email':self.provider_user.key().name(),'name':self.provider_user.name,'type':'to'},
               {'email':self.manager_user.key().name(),'name':self.manager_user.name,'type':'to'}]
-        send_mandrill_email('work-order-approved-2', template_content, to)
+        send_mandrill_email('work-order-approved-3', template_content, to)
 
     def send_wo_completed_email(self, wo_id, notes, woh):
         template_content = [
