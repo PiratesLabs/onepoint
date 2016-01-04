@@ -49,14 +49,20 @@ class WorkOrder(db.Model):
     def time_to_service(self, end_woh):
         time_to_service = ''
         if self.curr_state == 'COMPLETED':
-            start = WorkOrderHistory.get_by_id(self.history[work_order_states.index('PROVIDER_CHECKED_IN')]).time
+            print(len(self.history) - 2)
+            start = WorkOrderHistory.get_by_id(self.history[(len(self.history) - 2)]).time
             end = end_woh.time
+            print(self.history[(len(self.history) - 2)], end_woh.key().id()) 
+            print(start, end)
             time_delta = end - start
+            print(time_delta)
             s = time_delta.seconds
             hours, remainder = divmod(s, 3600)
             minutes, seconds = divmod(remainder, 60)
             time_to_service = '%s hours %s minutes' % (hours, minutes)
+        print(time_to_service)
         return time_to_service
+
     @property
     def action_url(self):
         if self.curr_state == 'CREATED':
