@@ -52,6 +52,14 @@
 {% endblock %}
 {% block BarScripts %}
     <script type="text/javascript">
+        $(function() {
+            if (!Modernizr.inputtypes['date']) {
+                $('input[name=fix_by]').datepicker({
+                    dateFormat: 'yy-mm-dd'
+                });
+            }
+        });
+        
         function fetch_apply_appliance(appliance_id) {
             $("input[name='appliance_serial']").val('');
             $("input[name='appliance_manufacturer']").val('');
