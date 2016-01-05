@@ -37,6 +37,13 @@
 {% endblock %}
 {% block BarScripts %}
 <script>
+    $(function() {
+        if (!Modernizr.inputtypes['date']) {
+            $('input[name=service_date]').datepicker({
+                dateFormat: 'yy-mm-dd'
+            });
+        }
+    });
     $(document).ready(function(){
         var action = $('#action').val();
         if(action == 'accept') {
