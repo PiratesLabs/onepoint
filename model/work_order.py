@@ -165,8 +165,7 @@ class WorkOrder(db.Model):
             {'name':'serial_num','content':self.appliance_obj.serial_num},
             {'name':'warranty','content':self.appliance_obj.warranty},
         ]
-        to = [{'email':self.provider_user.key().name(),'name':self.provider_user.name,'type':'to'},
-              {'email':self.manager_user.key().name(),'name':self.manager_user.name,'type':'to'}]
+        to = [{'email':self.provider_user.key().name(),'name':self.provider_user.name,'type':'to'}]
         send_mandrill_email('work-order-disapproved-3', template_content, to)
 
     def send_wo_approved_email(self):
@@ -190,8 +189,7 @@ class WorkOrder(db.Model):
             {'name':'technician','content':technician},
             {'name':'estimate','content':estimate_str},
         ]
-        to = [{'email':self.provider_user.key().name(),'name':self.provider_user.name,'type':'to'},
-              {'email':self.manager_user.key().name(),'name':self.manager_user.name,'type':'to'}]
+        to = [{'email':self.provider_user.key().name(),'name':self.provider_user.name,'type':'to'}]
         send_mandrill_email('work-order-approved-3', template_content, to)
 
     def send_wo_completed_email(self, wo_id, notes, woh):
@@ -212,8 +210,7 @@ class WorkOrder(db.Model):
             {'name':'remarks','content':notes},
             {'name':'time_taken','content':self.time_to_service(woh)}
         ]
-        to = [{'email':self.provider_user.key().name(),'name':self.provider_user.name,'type':'to'},
-              {'email':self.manager_user.key().name(),'name':self.manager_user.name,'type':'to'}]
+        to = [{'email':self.provider_user.key().name(),'name':self.provider_user.name,'type':'to'}]
         send_mandrill_email('work-order-completed-3', template_content, to)
 
     def send_wo_rejected_email(self, remarks):
@@ -234,7 +231,7 @@ class WorkOrder(db.Model):
             {'name':'warranty','content':self.appliance_obj.warranty},
             {'name':'reject_remarks','content':remarks},
         ]
-        to = [{'email':self.manager_user.key().name(),'name':self.manager_user.name,'type':'to'}]
+        to = [{'email':self.owner_user.key().name(),'name':self.owner_user.name,'type':'to'}]
         send_mandrill_email('work-order-rejected-3', template_content, to)
 
     def send_wo_auto_approved_email(self, estimate_str, service_date, technician):
@@ -256,8 +253,7 @@ class WorkOrder(db.Model):
             {'name':'technician','content':technician},
             {'name':'estimate','content':estimate_str},
         ]
-        to = [{'email':self.provider_user.key().name(),'name':self.provider_user.name,'type':'to'},
-              {'email':self.manager_user.key().name(),'name':self.manager_user.name,'type':'to'}]
+        to = [{'email':self.provider_user.key().name(),'name':self.provider_user.name,'type':'to'}]
         send_mandrill_email('work-order-approved-3', template_content, to)
 
     def store_login(self, role):
