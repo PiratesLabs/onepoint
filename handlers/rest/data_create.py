@@ -40,8 +40,8 @@ class ApplianceCreationHandler(WebRequestHandler):
 
 class TestDataCreationHandler(WebRequestHandler):
     def create_users(self):
-        owner = Member(key_name='owner@americangrid.com', name='Brandon Bell', role='owner', phone='(617)-840-0716')
-        manager = Member(key_name='manager@americangrid.com', name='Jose Martinez', role='manager', phone='(617)-840-0716')
+        owner = Member(key_name='brandon.bell@partners.mcd.com', name='Brandon Bell', role='owner', phone='(617)-840-0716')
+        manager = Member(key_name='jose.martinez@us.stores.mcd.com', name='Jose Martinez', role='manager', phone='(617)-840-0716')
         owner.put()
         manager.put()
         return [owner, manager]
@@ -97,7 +97,7 @@ def pull_airtable_data():
     if response.content and 'records' in response.content:
         r = json.loads(response.content)
         providers = r['records']
-        provider_user = tdc.create_provider('provider@americangrid.com', 'C.P', '(617)-840-0716')
+        #provider_user = tdc.create_provider('provider@americangrid.com', 'C.P', '(617)-840-0716')
         for provider in providers:
             provider_obj = Provider()
             fields = provider['fields']
@@ -106,7 +106,7 @@ def pull_airtable_data():
             provider_obj.name = fields['Vendor Name']
             provider_obj.phone_num = fields['Phone - Business Hours']
             dispatch_email = fields['Dispatch Email'] if 'Dispatch Email' in fields else 'rajiv@beagleslabs.com'
-            #provider_user = tdc.create_provider(dispatch_email, fields['Primary Contact Name'], fields['Phone - Business Hours'])
+            provider_user = tdc.create_provider(dispatch_email, fields['Primary Contact Name'], fields['Phone - Business Hours'])
             provider_obj.owner = provider_user
             provider_obj.location = map_address(fields['Address'])
             provider_obj.address = fields['Address']
