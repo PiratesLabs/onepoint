@@ -82,6 +82,7 @@
                 return false;
             }
             console.log('Here...')
+            $(".spinner-container").show();
             $.get('/rest/work_order/create',{'provider':provider, 'appliance':appliance, 'fix_by':fix_by, 'remarks':remarks, 'priority':priority})
             .done(function(data){
                 data = JSON.parse(data);
@@ -89,6 +90,7 @@
                     window.location = window.location.origin + '/work_order/list?new_wo=' + data.work_order_id;
                 } else {
                     $('#wo-creation-result').html('Work Order Creation Error: '+data.message);
+                    $(".spinner-container").hide();
                 }
             });
         }

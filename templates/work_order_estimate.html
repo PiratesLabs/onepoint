@@ -58,27 +58,33 @@
         }
     });
     function submit_estimate() {
-        var params = $('#service_date').val() + '~~##' + $('#estimate').val() + '~~##' + $('#technician').val()
+        var params = $('#service_date').val() + '~~##' + $('#estimate').val() + '~~##' + $('#technician').val();
+        $(".spinner-container").show();
         $.post("/rest/work_order/estimate", {'params':params,'approval':'1','work_order':{{work_order}}}).done(function( data ) {
             data = JSON.parse(data);
             if(data.status == 'success') {
+                $(".spinner-container").hide();
                 alert('Thank you for the estimate, the store will be notified');
                 window.location = '/'
             }
             else if(data.status == 'error') {
+                $(".spinner-container").hide();
                 alert(data.message);
             }
         });
     }
     function reject_workorder() {
-        var params = $('#rejection_remarks').val()
+        var params = $('#rejection_remarks').val();
+        $(".spinner-container").show();
         $.post("/rest/work_order/estimate", {'work_order':{{work_order}}, 'approval':'0', 'params':params}).done(function( data ) {
             data = JSON.parse(data);
             if(data.status == 'success') {
+                $(".spinner-container").hide();
                 alert('Too bad you could not accept this work order. The store will be notified!');
                 window.location = '/'
             }
             else if(data.status == 'error') {
+                $(".spinner-container").hide();
                 alert(data.message);
             }
         });

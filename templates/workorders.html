@@ -84,10 +84,13 @@
     });
     function submit_estimate(wo_id) {
         var params="estimate:" + $('#estimate'+wo_id).val();
+        $(".spinner-container").show();
         $.post("/rest/work_order/update", {'params':params,'work_order':wo_id}).done(function( data ) {
             data = JSON.parse(data);
             if(data.status == 'success') {
               setTimeout(load_workorders(), 3000);
+            } else {
+              $(".spinner-container").hide();
             }
         });
     }
@@ -97,10 +100,13 @@
         if(args) {
           params = params + ';' + args;
         }
+        $(".spinner-container").show();
         $.post("/rest/work_order/update", {'params':params,'work_order':wo_id}).done(function( data ) {
             data = JSON.parse(data);
             if(data.status == 'success') {
               setTimeout(load_workorders(), 3000);
+            } else {
+              $(".spinner-container").hide();
             }
         });
     }
