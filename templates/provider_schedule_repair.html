@@ -16,7 +16,7 @@
                 <label for="{{detail.name}}" style="text-align:left;color:#000000">{{detail.title}}:</label>
                 <div class="detail-box">
                     <span></span>
-                    <input type="text" name="{{detail.name}}" value="{{detail.value}}" id="{{detail.id}}" placeholder="{{detail.value}}" {{detail.readonly}} {% if detail.type == 'date' %}onfocus="(this.type='date')" onblur="(this.type='text')"{% endif %}>
+                    <input type="text" name="{{detail.name}}" value="{% if not detail.type == 'date' %}{{detail.value}}{% endif %}" id="{{detail.id}}" placeholder="{{detail.value}}" {{detail.readonly}} {% if detail.type == 'date' %}onfocus="(this.type='date')" {% endif %}>
                 </div>
             </div>
             <div class="col-md-4 col-xs-1"></div>
@@ -77,6 +77,10 @@
             remarks = $("input[name='remarks']").val();
             priority = $(".priority.selected").text();
             fix_by = $("input[name='fix_by']").val();
+            if(!fix_by) {
+                $("input[name='fix_by']").focus();
+                return false;
+            }
             console.log('Here...')
             $.get('/rest/work_order/create',{'provider':provider, 'appliance':appliance, 'fix_by':fix_by, 'remarks':remarks, 'priority':priority})
             .done(function(data){
