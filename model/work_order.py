@@ -7,6 +7,15 @@ from model.provider import Provider
 from datetime import datetime
 
 work_order_states = ["CREATED", ["ESTIMATED", "REJECTED"], ["APPROVED", "DISAPPROVED"], "PROVIDER_CHECKED_IN", "COMPLETED"]
+work_order_display_names = {
+        "CREATED":"CREATED", 
+        "ESTIMATED":"PENDING", 
+        "REJECTED":"REJECTED", 
+        "APPROVED":"SCHEDULED", 
+        "DISAPPROVED":"DISAPPROVED", 
+        "PROVIDER_CHECKED_IN":"PROVIDER_CHECKED_IN", 
+        "COMPLETED":"COMPLETED"
+}
 separator = '~~##'
 
 class WorkOrderHistory(db.Model):
@@ -45,6 +54,13 @@ class WorkOrder(db.Model):
     def fix_by_date(self):
         details = WorkOrderHistory.get_by_id(self.history[work_order_states.index('CREATED')]).details.split(separator)
         return details[2] if len(details) > 2 else ''
+    @property
+    def curr_state_display_name(self):
+        return self.get_state_display_name()
+
+    def get_state_display_name(self, state=None):
+        state = self.curr_state if not state else state
+        return work_order_display_names[state]
     
     def time_to_service(self, end_woh):
         time_to_service = ''
