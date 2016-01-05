@@ -19,14 +19,12 @@ html {
     			border: none;
     			border-radius: 25px;
     			height: 40px;
-                width: 250px;
+                width: 100%;
     			background-color: #579EDE;
                 @media (max-width: 850px) {
-                    width: 125px;
                     height: 30px;
                 }
                 @media (max-width: 767px) {
-                    width: 60px;
                     height: 20px;
                 }
     		}
