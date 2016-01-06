@@ -47,7 +47,7 @@ class TestDataCreationHandler(WebRequestHandler):
         return [owner, manager]
 
     def create_stores(self, manager, owner):
-        store = Store(name="Store1", location=db.GeoPt(40.7131116,-74.015359), manager=manager.key().name(), owner=owner.key().name(), address="40 Harrison Street, New York, NY, United States")
+        store = Store(name="Store1", location=db.GeoPt(40.7131116,-74.015359), manager=manager.key().name(), owner=owner.key().name(), address="McDonald's, Logn Gate Shopping Center, 4396 Montgomery Rd, Ellicott City, MD 21043", billing_address="Brdancat Enterprises, Inc., 9107 Mendenhall Ct., Unit B, Columbia, MD 21045")
         store.put()
         return [store]
 

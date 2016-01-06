@@ -6,3 +6,4 @@ class Store(db.Model):
     manager = db.StringProperty(indexed=True)
     owner = db.StringProperty(indexed=True)
     address = db.StringProperty(indexed=False)
+    billing_address = db.StringProperty(indexed=False)
