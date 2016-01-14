@@ -263,6 +263,27 @@ class WorkOrder(db.Model):
         to = [{'email':self.provider_user.key().name(),'name':self.provider_user.name,'type':'to'}]
         send_mandrill_email('work-order-approved-3', template_content, to)
 
+    def send_wo_cancelled_email(self):
+        template_content = [
+            {'name':'work_order_id','content':self.key().id()},
+            {'name':'provider_address','content':self.provider_obj.address},
+            {'name':'fix_by','content':self.fix_by.strftime('%Y-%m-%d')},
+            {'name':'owner_name','content':self.owner_user.name},
+            {'name':'provider_name','content':self.provider_obj.name},
+            {'name':'store_name','content':self.store.name},
+            {'name':'store_manager_name','content':self.manager_user.name},
+            {'name':'store_manager_phone','content':self.manager_user.phone},
+            {'name':'store_address','content':self.store.address},
+            {'name':'store_billing_address','content':self.store.billing_address},
+            {'name':'appliance_name','content':self.appliance_obj.name},
+            {'name':'manufacturer','content':self.appliance_obj.manufacturer},
+            {'name':'model','content':self.appliance_obj.model},
+            {'name':'serial_num','content':self.appliance_obj.serial_num},
+            {'name':'warranty','content':self.appliance_obj.warranty},
+        ]
+        to = [{'email':self.provider_user.key().name(),'name':self.provider_user.name,'type':'to'}]
+        send_mandrill_email('work-order-cancelled-3', template_content, to)
+
     def store_login(self, role):
         if role == 'manager' or role == 'owner':
             return True
@@ -341,6 +362,7 @@ class WorkOrder(db.Model):
         self.curr_state = "CANCELLED"
         self.create_wo_history(None)
         self.put()
+        self.send_wo_cancelled_email()
 
     def get_action_url(self, role):
         if self.curr_state == 'CANCELLED':
