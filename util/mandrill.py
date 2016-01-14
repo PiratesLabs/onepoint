@@ -17,5 +17,6 @@ def send_mandrill_email(template_slug, template_content, to, merge_vars=[]):
     result = urlfetch.fetch(url=url,
         payload=json.dumps(json_mandrill),
         method=urlfetch.POST,
-        headers={'Content-Type': 'application/x-www-form-urlencoded'})
+        headers={'Content-Type': 'application/x-www-form-urlencoded'},
+        deadline=30)
     return result
