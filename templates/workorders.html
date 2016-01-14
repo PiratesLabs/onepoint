@@ -50,10 +50,10 @@
                             </form>
                           {% endif %}
                         {% endif %}
-                        {% if role != 'provider' %}
-                        <form role="form">
-                          <button onclick="cancel_wo('{{wo.0.id}}');return false;">CANCEL</button><br><br>
-                        </form>
+                        {% if role != 'provider' and wo.0.curr_state != 'CANCELLED' and wo.0.curr_state != 'REJECTED' %}
+                          <form role="form">
+                            <button onclick="cancel_wo('{{wo.0.id}}');return false;">CANCEL</button><br><br>
+                          </form>
                         {% endif %}
                       </div>
                     </div>
@@ -91,6 +91,18 @@
         var params="estimate:" + $('#estimate'+wo_id).val();
         $(".spinner-container").show();
         $.post("/rest/work_order/update", {'params':params,'work_order':wo_id}).done(function( data ) {
+            data = JSON.parse(data);
+            if(data.status == 'success') {
+              setTimeout(load_workorders(), 3000);
+            } else {
+              $(".spinner-container").hide();
+            }
+        });
+    }
+
+    function cancel_wo(wo_id) {
+      $(".spinner-container").show();
+      $.post("/rest/work_order/cancel", {'work_order':wo_id}).done(function( data ) {
             data = JSON.parse(data);
             if(data.status == 'success') {
               setTimeout(load_workorders(), 3000);

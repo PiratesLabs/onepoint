@@ -43,6 +43,13 @@ class UpdateWorkOrderHandler(WebRequestHandler):
         ret_val = wo.update_state(params, self.session['role'])
         self.write(json.dumps(ret_val))
 
+class CancelWorkOrderHandler(WebRequestHandler):
+    @login_required
+    def post(self):
+        wo = WorkOrder.get_by_id(long(self['work_order']))
+        wo.cancel()
+        self.write(json.dumps({'status':'success'}))
+
 class EstimateWorkOrderHandler(WebRequestHandler):
     def post(self):
         wo = WorkOrder.get_by_id(long(self['work_order']))
@@ -53,5 +60,6 @@ class EstimateWorkOrderHandler(WebRequestHandler):
 app = webapp2.WSGIApplication([
     ('/rest/work_order/create', CreateWorkOrderHandler),
     ('/rest/work_order/update', UpdateWorkOrderHandler),
+    ('/rest/work_order/cancel', CancelWorkOrderHandler),
     ('/rest/work_order/estimate', EstimateWorkOrderHandler)
 ])

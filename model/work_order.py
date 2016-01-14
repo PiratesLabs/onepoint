@@ -337,8 +337,15 @@ class WorkOrder(db.Model):
         self.put()
         return ret_val
 
+    def cancel(self):
+        self.curr_state = "CANCELLED"
+        self.create_wo_history(None)
+        self.put()
+
     def get_action_url(self, role):
-        if self.curr_state == 'CREATED':
+        if self.curr_state == 'CANCELLED':
+            return None
+        elif self.curr_state == 'CREATED':
             return self.action_url if role == 'provider' else None
         elif self.curr_state == 'ESTIMATED':
             return self.action_url if role == 'owner' else None
