@@ -42,6 +42,7 @@ class ListHandler(WebRequestHandler):
             template_values['active_wo'] = wo_id
         if new_wo:
             template_values['new_wo'] = new_wo
+        template_values['role'] = self.session['role']
         self.write(self.get_rendered_html(path, template_values), 200)
 
 app = webapp2.WSGIApplication(

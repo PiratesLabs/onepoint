@@ -6,7 +6,7 @@ from model.member import Member
 from model.provider import Provider
 from datetime import datetime
 
-work_order_states = ["CREATED", ["ESTIMATED", "REJECTED"], ["APPROVED", "DISAPPROVED"], "PROVIDER_CHECKED_IN", "COMPLETED"]
+work_order_states = ["CREATED", ["ESTIMATED", "REJECTED"], ["APPROVED", "DISAPPROVED"], "PROVIDER_CHECKED_IN", "COMPLETED", "CANCELLED"]
 work_order_display_names = {
         "CREATED":"CREATED", 
         "ESTIMATED":"PENDING", 
@@ -14,7 +14,8 @@ work_order_display_names = {
         "APPROVED":"SCHEDULED", 
         "DISAPPROVED":"DISAPPROVED", 
         "PROVIDER_CHECKED_IN":"PROVIDER_CHECKED_IN", 
-        "COMPLETED":"COMPLETED"
+        "COMPLETED":"COMPLETED",
+        "CANCELLED":"CANCELLED"
 }
 separator = '~~##'
 
