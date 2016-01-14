@@ -52,7 +52,7 @@
                         {% endif %}
                         {% if role != 'provider' and wo.0.curr_state != 'CANCELLED' and wo.0.curr_state != 'REJECTED' and wo.0.curr_state != 'COMPLETED' and wo.0.curr_state != 'DISAPPROVED' %}
                           <form role="form">
-                            <button onclick="cancel_wo('{{wo.0.id}}');return false;">CANCEL</button><br><br>
+                            <button class="cancel" onclick="cancel_wo('{{wo.0.id}}');return false;">CANCEL</button><br><br>
                           </form>
                         {% endif %}
                       </div>

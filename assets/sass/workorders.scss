@@ -27,6 +27,10 @@ html {
                 @media (max-width: 767px) {
                     height: 20px;
                 }
+
+                &.cancel {
+                    background-color: red;
+                }
     		}
 
             .row {
