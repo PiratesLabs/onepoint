@@ -41,7 +41,7 @@ class ApplianceCreationHandler(WebRequestHandler):
 class TestDataCreationHandler(WebRequestHandler):
     def create_users(self):
         owner = Member(key_name='brandon.bell@partners.mcd.com', name='Brandon Bell', role='owner', phone='(617)-840-0716')
-        manager = Member(key_name='jose.martinez@us.stores.mcd.com', name='Jose Martinez', role='manager', phone='(617)-840-0716')
+        manager = Member(key_name='jose.martinez@us.stores.mcd.com', name='Jose Martinez', role='manager', phone='(410)-245-7053')
         owner.put()
         manager.put()
         return [owner, manager]
