@@ -13,10 +13,13 @@ class AppliancesPage(WebRequestHandler):
     def get(self):
         email = self.session['email']
         role = self.session['role']
-        store = Store.all().filter(role + ' =', email).get()
-        appliances = [appliance for appliance in Appliance.all().filter('store =', store).fetch(100)]
+        stores = Store.all().filter(role + ' =', email)
+        store_appliances = {}
+        for store in stores:
+            appliances = [appliance for appliance in Appliance.all().filter('store =', store).fetch(100)]
+            store_appliances[store] = appliances
         path = 'appliances.html'
-        template_values = {'appliances':appliances, 'count':len(appliances)}
+        template_values = {'store_appliances':store_appliances}
         self.write(self.get_rendered_html(path, template_values), 200)
 
 class ApplianceDetailsPage(WebRequestHandler):

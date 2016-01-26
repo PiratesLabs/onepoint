@@ -5,7 +5,24 @@
 {% block BarContent%}
 <div class="content">
 	<div class="container" style="width:100vw;">
-		{% include "components/appliance_table.html" with items=appliances %}
+		<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+			{% for store,appliances in store_appliances.items %}
+			  <div class="panel panel-default">
+			    <div class="panel-heading heading" role="tab" id="store-heading-{{forloop.counter}}">
+			      <a role="button" data-toggle="collapse" data-parent="#accordion" href="#store-{{forloop.counter}}" aria-expanded="true" aria-controls="store-{{forloop.counter}}">
+			      <h4 class="panel-title">
+			        {{store.name}}
+			      </h4>
+			      </a>
+			    </div>
+			    <div id="store-{{forloop.counter}}" class="panel-collapse collapse workorder" role="tabpanel" aria-labelledby="store-heading-{{forloop.counter}}">
+			      <div class="panel-body">
+			        {% include "components/appliance_table.html" with items=appliances %}
+			      </div>
+			    </div>
+			  </div>
+			{% endfor %}
+		</div>
 	</div>
 </div>
 {% endblock %}
