@@ -344,7 +344,7 @@ class WorkOrder(db.Model):
         approval = int(approval_str)
         if approval == 1:
             service_date, estimate_str, technician = params.split(separator)
-            estimate = long(estimate_str)
+            estimate = long(estimate_str) if estimate_str != 'TBD' else 0
             if estimate > 250:
                 self.curr_state = "ESTIMATED"
                 self.send_wo_approval_email(estimate_str, service_date, technician)
