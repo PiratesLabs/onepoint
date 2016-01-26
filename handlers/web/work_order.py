@@ -37,7 +37,12 @@ class ListHandler(WebRequestHandler):
         wo_id = str(self['work_order']) if self['work_order'] else ''
         new_wo = str(self['new_wo']) if self['new_wo'] else ''
         workorders = get_work_orders_for_logged_in_user(self)
-        template_values = {'workorders': [(wo, wo.get_action_url(self.session['role'])) for wo in workorders], 'count': len(workorders)}
+        workorders_by_state = {}
+        for workorder in workorders:
+            if not workorder.curr_state in workorders_by_state:
+                workorders_by_state[workorder.curr_state] = []
+            workorders_by_state[workorder.curr_state].append((workorder, workorder.get_action_url(self.session['role'])))
+        template_values = {'workorders_by_state': workorders_by_state, 'count': len(workorders)}
         if wo_id:
             template_values['active_wo'] = wo_id
         if new_wo:
