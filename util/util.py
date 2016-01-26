@@ -29,16 +29,20 @@ def convert_to_tabbed_format(items, tabs):
 def get_appliances_for_logged_in_user(self):
     email = self.session['email']
     role = self.session['role']
-    store = Store.all().filter(role + ' =', email).get()
-    appliances = [appliance for appliance in Appliance.all().filter('store =', store).fetch(100)]
+    appliances = []
+    stores = Store.all().filter(role + ' =', email)
+    for store in stores:
+        appliances.extend([appliance for appliance in Appliance.all().filter('store =', store).fetch(100)])
     return appliances
 
 def get_work_orders_for_logged_in_user(self):
     email = self.session['email']
     workorders = []
     if is_store_login(self):
-        store = Store.all().filter(self.session['role'] + ' =', email).get()
-        appliances = [appliance.id for appliance in Appliance.all().filter('store =', store).fetch(100)]
+        appliances = []
+        stores = Store.all().filter(self.session['role'] + ' =', email)
+        for store in stores:
+            appliances.extend([appliance.id for appliance in Appliance.all().filter('store =', store).fetch(100)])
         for appliance in appliances:
             workorders.extend([wo for wo in WorkOrder.all().filter('appliance =', str(appliance))])
     elif is_provider_login(self):

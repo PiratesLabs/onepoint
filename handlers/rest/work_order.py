@@ -11,10 +11,11 @@ class CreateWorkOrderHandler(WebRequestHandler):
     def does_user_own_appliance(self):
         email = self.session['email']
         role = self.session['role']
-        store = Store.all().filter(role + ' =', email).get()
+        stores = Store.all().filter(role + ' =', email)
         appliance = Appliance.get_by_id(long(self['appliance']))
-        if appliance.store.key().id() == store.key().id():
-            return True
+        for store in stores:
+            if appliance.store.key().id() == store.key().id():
+                return True
         return False
 
     @login_required
