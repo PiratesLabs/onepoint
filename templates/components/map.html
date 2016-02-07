@@ -27,12 +27,9 @@ function loadMap(position) {
         title: 'You!'
     });
     {% for marker in markers %}
+        var pinImage = new google.maps.MarkerImage("http://www.googlemapsmarkers.com/v1/579ede/");
         new google.maps.Marker({
-            icon: {
-                path: google.maps.SymbolPath.CIRCLE,
-                strokeColor: "blue",
-                scale: 5
-            },
+            icon: pinImage,
             position: {lat: {{marker.1}}, lng: {{marker.2}}},
             map: map,
             title: "{{marker.0}}"

@@ -1,0 +1,82 @@
+.img-helper {
+  min-width: 1px;
+  display: inline-block;
+  height: 100%;
+  vertical-align: middle; }
+
+.img-helper {
+  min-width: 1px;
+  display: inline-block;
+  height: 100%;
+  vertical-align: middle; }
+
+body {
+  font-size: 16px;
+  font-family: "Montserrat", sans-serif; }
+  @media (max-width: 767px) {
+    body {
+      font-size: 12px; } }
+
+.spinner-container {
+  background-color: rgba(255, 255, 255, 0.7);
+  width: 100vw;
+  height: 100vh;
+  margin: auto;
+  position: fixed;
+  top: 0%;
+  left: 0%;
+  display: none;
+  text-align: center; }
+  .spinner-container .spinner {
+    width: 60px;
+    height: 60px;
+    display: inline-block;
+    vertical-align: middle;
+    margin: auto;
+    -webkit-animation: spin 4s linear infinite;
+    -moz-animation: spin 4s linear infinite;
+    animation: spin 4s linear infinite; }
+    .spinner-container .spinner .quarter {
+      height: 25%;
+      width: 25%;
+      border-radius: 50%;
+      position: absolute; }
+    .spinner-container .spinner .quarter-first {
+      top: 25%;
+      left: 25%;
+      background-color: #579EDE; }
+    .spinner-container .spinner .quarter-second {
+      top: 25%;
+      left: 51%;
+      border: 1px solid #579EDE; }
+    .spinner-container .spinner .quarter-third {
+      top: 51%;
+      left: 25%;
+      border: 1px solid #579EDE; }
+    .spinner-container .spinner .quarter-fourth {
+      top: 51%;
+      left: 51%;
+      background-color: #579EDE; }
+@-moz-keyframes spin {
+  100% {
+    -moz-transform: rotate(360deg); } }
+@-webkit-keyframes spin {
+  100% {
+    -webkit-transform: rotate(360deg); } }
+@keyframes spin {
+  100% {
+    -webkit-transform: rotate(360deg);
+    transform: rotate(360deg); } }
+html {
+  overflow: -moz-scrollbars-vertical;
+  overflow-x: hidden; }
+  html body {
+    -webkit-font-smoothing: antialiased;
+    -webkit-text-size-adjust: none;
+    margin: 0px; }
+
+@media (max-width: 767px) {
+  .hide-mobile {
+    display: none !important; } }
+
+/*# sourceMappingURL=base.css.map */

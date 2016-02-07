@@ -1,0 +1,42 @@
+html body .content {
+  text-align: center;
+  color: #579EDE;
+  font-weight: bold; }
+  html body .content .workorder {
+    color: #000000; }
+  html body .content .new {
+    outline: 2px solid lightgreen; }
+  html body .content button {
+    margin: auto;
+    color: #ffffff;
+    border: none;
+    border-radius: 25px;
+    height: 40px;
+    width: 100%;
+    background-color: #579EDE; }
+    @media (max-width: 850px) {
+      html body .content button {
+        height: 30px; } }
+    @media (max-width: 767px) {
+      html body .content button {
+        height: 20px; } }
+    html body .content button.cancel {
+      background-color: red; }
+  html body .content .row {
+    margin-bottom: 30px; }
+  html body .content .nav-tabs {
+    position: fixed;
+    bottom: 50px;
+    width: 100vw; }
+  html body .content .nav-tabs > li {
+    padding: 0px; }
+    html body .content .nav-tabs > li a {
+      color: #ffffff; }
+  html body .content .nav-tabs > li.active {
+    background-color: #ffffff;
+    border-top: 1px solid lightgray; }
+    html body .content .nav-tabs > li.active a {
+      color: #579EDE;
+      border: none; }
+
+/*# sourceMappingURL=workorders.css.map */
