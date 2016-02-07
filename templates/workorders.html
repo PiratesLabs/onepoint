@@ -7,41 +7,32 @@
 <input type="hidden" id="new-wo" value="{{new_wo}}">
 <div class="bartwo">{{count}} WORK ORDERS</div>
 <div class="content">
-	<div class="tabbable tabs-below">
-		<div class="tab-content">
-			<div class="tab-pane active" id="all">
-        <div class="container">
-          <div class="row">
-            <div class="col-sm-3 col-xs-1"></div>
-            <div class="col-sm-6 col-xs-10">
-              <div class="panel-group" id="accordion-outer" role="tablist" aria-multiselectable="true">
-                {% for state, workorders in workorders_by_state.items %}
-                  <div class="panel panel-default">
-                    <div class="panel-heading heading" role="tab" id="state-heading-{{forloop.counter}}">
-                      <a role="button" data-toggle="collapse" data-parent="#accordion-outer" href="#state-{{forloop.counter}}" aria-expanded="true" aria-controls="state-{{forloop.counter}}">
-                      <h4 class="panel-title">
-                        {{state}}
-                      </h4>
-                      </a>
-                    </div>
-                    <div id="state-{{forloop.counter}}" class="panel-collapse collapse workorder" role="tabpanel" aria-labelledby="state-heading-{{forloop.counter}}">
-                      <div class="panel-body">
-                        {% include "components/workorders_table.html" with workorders=workorders state=state %}
-                      </div>
-                    </div>
-                  </div>
-                {% endfor %}
+	<div class="container">
+    <div class="row">
+      <div class="col-sm-3 col-xs-1"></div>
+      <div class="col-sm-6 col-xs-10">
+        <div class="panel-group" id="accordion-outer" role="tablist" aria-multiselectable="true">
+          {% for state, workorders in workorders_by_state.items %}
+            <div class="panel panel-default">
+              <div class="panel-heading heading" role="tab" id="state-heading-{{forloop.counter}}">
+                <a role="button" data-toggle="collapse" data-parent="#accordion-outer" href="#state-{{forloop.counter}}" aria-expanded="true" aria-controls="state-{{forloop.counter}}">
+                <h4 class="panel-title">
+                  {{state}}
+                </h4>
+                </a>
+              </div>
+              <div id="state-{{forloop.counter}}" class="panel-collapse collapse workorder" role="tabpanel" aria-labelledby="state-heading-{{forloop.counter}}">
+                <div class="panel-body">
+                  {% include "components/workorders_table.html" with workorders=workorders state=state %}
+                </div>
               </div>
             </div>
-            <div class="col-sm-3 col-xs-1"></div>
-          </div>
+          {% endfor %}
         </div>
-			</div>
-		</div>
-		<ul class="nav nav-tabs">
-			<li class="col-xs-12 active" style="background-color: #5A9DE6;"><a href="#all" data-toggle="tab">All</a></li>
-		</ul>
-	</div>
+      </div>
+      <div class="col-sm-3 col-xs-1"></div>
+    </div>
+  </div>
 </div>
 {% endblock %}
 
