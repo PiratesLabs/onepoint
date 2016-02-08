@@ -20,7 +20,12 @@
 				.logo {
 					margin:auto;
 					vertical-align: middle;
-					max-height: 30px;
+					font-size: 25px;
+    				line-height: 100%;
+    				font-weight: bold;
+    				@media (max-width: 767px) {
+                        font-size: 14px;
+                    }
 				}
 			}			
 		}
