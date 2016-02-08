@@ -68,18 +68,30 @@ html {
             .nav-tabs>li {
                 a {
                     color: #ffffff;
+                    border: none;
                 }
                 padding: 0px;
+                border: none;
             }
 
-            .nav-tabs>li.active {
+            .nav-tabs>li:hover, .nav-tabs>li:focus {
+                background-color: inherit;
+                a {
+                    background-color: inherit;
+                    border: none;
+                }
+            }
+
+            .nav-tabs>li.active, .nav-tabs>li.active:hover, .nav-tabs>li.active:focus {
                 background-color: #ffffff;
                 border-top: 1px solid lightgray;
                 a {
+                    background-color: #ffffff;
                     color: #579EDE;
                     border: none;
                 }
             }
+            
 
             .abbr {
                 display: inline-block;
