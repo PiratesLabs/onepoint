@@ -6,7 +6,7 @@
 <div class="content">
 	<div class="container" style="width:100vw;">
 		<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
-			{% for store,appliances in store_appliances.items %}
+			{% for store,appliances in store_appliances %}
 			  <div class="panel panel-default">
 			    <div class="panel-heading heading" role="tab" id="store-heading-{{forloop.counter}}">
 			      <a role="button" data-toggle="collapse" data-parent="#accordion" href="#store-{{forloop.counter}}" aria-expanded="true" aria-controls="store-{{forloop.counter}}">

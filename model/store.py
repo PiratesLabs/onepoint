@@ -1,7 +1,7 @@
 from google.appengine.ext import db
 
 class Store(db.Model):
-    name = db.StringProperty(indexed=False)
+    name = db.StringProperty(indexed=True)
     location = db.GeoPtProperty(indexed=True)
     manager = db.StringProperty(indexed=True)
     owner = db.StringProperty(indexed=True)
