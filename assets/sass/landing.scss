@@ -12,6 +12,9 @@ html {
         .vertical-middle {
             height: 100vh;
             position: relative;
+            @media (max-width: 767px) {
+                height: 80vh;
+            }
         }
 
         .top-align {
@@ -27,7 +30,7 @@ html {
         }
 
         .bottom-align {
-            bottom: 10%;
+            bottom: 15%;
             position: absolute;
             width: 100%;
 
