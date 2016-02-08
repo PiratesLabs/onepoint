@@ -66,7 +66,7 @@ class ProviderScheduleRepairPage(WebRequestHandler):
             },
             {
                 'name':'fix_by',
-                'value':'Select date',
+                'value':'Select date (mm/dd/yy)',
                 'title':'Fix by date',
                 'type':'date',
                 'readonly':''

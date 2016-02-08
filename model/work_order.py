@@ -244,7 +244,7 @@ class WorkOrder(db.Model):
         template_content = [
             {'name':'work_order_id','content':self.key().id()},
             {'name':'provider_address','content':self.provider_obj.address},
-            {'name':'fix_by','content':self.fix_by.strftime('%Y-%m-%d')},
+            {'name':'fix_by','content':service_date},
             {'name':'owner_name','content':self.owner_user.name},
             {'name':'provider_name','content':self.provider_obj.name},
             {'name':'store_name','content':self.store.name},
@@ -308,7 +308,7 @@ class WorkOrder(db.Model):
             self.curr_state = work_order_states[0]
             self.appliance = params['appliance']
             self.provider = params['provider']
-            self.fix_by = datetime.strptime(params['fix_by'], '%Y-%m-%d')
+            self.fix_by = datetime.strptime(params['fix_by'], '%m/%d/%y')
             notes = params['remarks'] + separator + params['priority'] + separator + params['fix_by']
             woh = self.create_wo_history(notes)
             self.put()
@@ -351,6 +351,7 @@ class WorkOrder(db.Model):
             else:
                 self.curr_state = 'APPROVED'
                 self.send_wo_auto_approved_email(estimate_str, service_date, technician)
+            self.fix_by = datetime.strptime(service_date, '%m/%d/%y')
         else:
             self.curr_state = "REJECTED"
             self.send_wo_rejected_email(params)

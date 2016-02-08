@@ -22,7 +22,7 @@
                         <input type="number" min="0" class="form-control" id="estimate" name="estimate" placeholder="TBD">
                         <br>
                         <label for="service_date">Service date:</label>
-                        <input type="date" class="form-control" id="service_date" name="service_date" value="{{service_date}}">
+                        <input type="text" class="form-control" id="service_date" name="service_date" value="{{service_date}}" placeholder="mm/dd/yy">
                         <br>
                         <label for="technician">Technician:</label>
                         <input type="text" class="form-control" id="technician" name="technician">
@@ -38,11 +38,10 @@
 {% block BarScripts %}
 <script>
     $(function() {
-        if (!Modernizr.inputtypes['date']) {
-            $('input[name=service_date]').datepicker({
-                dateFormat: 'yy-mm-dd'
-            });
-        }
+        $('input[name=service_date]').datepicker({
+            dateFormat: 'mm/dd/y'
+        });
+        $('input[name=service_date]').val($.datepicker.formatDate( "mm/dd/y", new Date($('input[name=service_date]').val()) ));
     });
     $(document).ready(function(){
         var action = $('#action').val();
