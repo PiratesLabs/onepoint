@@ -5,16 +5,16 @@ html {
     	.content {
 
             margin-top: 50px;
-            
-    		button {
-                max-width: 100%;
-    		}
 
     		.row {
                 min-height: 50px;
 
                 [class*=col-] {
                     min-height: 50px;
+                }
+
+                button {
+                    margin-top: 20px;
                 }
             }
     	}

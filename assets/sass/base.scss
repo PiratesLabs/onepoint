@@ -22,6 +22,18 @@ html {
                 font-size: $font_size_big_mobile;
             }
         }
+
+        button {
+            margin: auto;
+            color: #ffffff;
+            border: none;
+            border-radius: 25px;
+            width: $button_width;
+            height: 40px;
+            margin-top: 0px;
+            margin-bottom: 20px;
+            background-color: #579EDE;
+        }
     }
 }
 
