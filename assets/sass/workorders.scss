@@ -1,9 +1,18 @@
+@import "bar_base.scss";
+
 html {
     body {
     	.content {
     		text-align:center;
             color: #579EDE;
-            font-weight: bold;
+
+            .panel-title {
+                font-size: $font_size_small;
+                font-weight: $font_weight_small;
+                @media (max-width: 767px) {
+                    font-size: $font_size_small_mobile;
+                }
+            }
 
             .workorder {
                 color: #000000;

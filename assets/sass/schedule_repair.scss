@@ -5,7 +5,7 @@ html {
     	.content {
     		text-align:center;
             color: #579EDE;
-            font-weight: bold;
+            font-weight: $font_weight_big;
 
             input[type="date"]::-webkit-inner-spin-button {
                 display: none;

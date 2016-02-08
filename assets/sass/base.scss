@@ -10,6 +10,18 @@ html {
         -webkit-font-smoothing: antialiased;
         -webkit-text-size-adjust: none;
         margin: 0px;
+
+        *:focus {
+            outline: none;
+        }
+
+        .panel-title {
+            font-size: $font_size_big;
+            font-weight: $font_weight_big;
+            @media (max-width: 767px) {
+                font-size: $font_size_big_mobile;
+            }
+        }
     }
 }
 

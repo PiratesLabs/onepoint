@@ -20,11 +20,11 @@
 				.logo {
 					margin:auto;
 					vertical-align: middle;
-					font-size: 25px;
+					font-size: $font_size_big;
     				line-height: 100%;
-    				font-weight: bold;
+    				font-weight: $font_weight_big;
     				@media (max-width: 767px) {
-                        font-size: 14px;
+                        font-size: $font_size_big_mobile;
                     }
 				}
 			}			
@@ -36,7 +36,11 @@
     background-color: #6BAFEB;
     height: 50px;
     width: 100%;
-    font-weight: 900;
+    font-weight: $font_weight_big;
+    font-size: $font_size_big;
+    @media (max-width: 767px) {
+        font-size: $font_size_big_mobile;
+    }
 }
 
 .barone, .bartwo {

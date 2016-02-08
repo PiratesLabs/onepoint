@@ -1,8 +1,6 @@
 @import "bar_base.scss";
 
-$abbr_font_size: 25px;
 $abbr_line_height: 60px;
-$abbr_font_size_small: 14px;
 $abbr_line_height_small: 40px;
 $appliance_row_height: 80px;
 $appliance_row_height_small: 60px;
@@ -12,7 +10,7 @@ html {
     	.content {
     		text-align:center;
             color: #579EDE;
-            font-weight: bold;
+            font-weight: $font_weight_big;
 
     		button {
     			margin: auto;
@@ -31,12 +29,12 @@ html {
                 border-top-width: 0px;
 
                 .title {
-                    font-size: $abbr_font_size;
+                    font-size: $font_size_big;
                     line-height: $appliance_row_height;
                     color: #333333;
                     overflow: hidden;
                     @media (max-width: 767px) {
-                        font-size: $abbr_font_size_small;
+                        font-size: $font_size_big_mobile;
                         line-height: $appliance_row_height_small;
                     }
                 }
@@ -89,14 +87,14 @@ html {
                 border-radius: 50%;
                 background-color: #579EDE;
                 color: #FFFFFF;
-                font-size: $abbr_font_size;
+                font-size: $font_size_big;
                 line-height: $abbr_line_height;
                 font-weight: bold;
                 height: $abbr_line_height;
                 width: $abbr_line_height;
 
                 @media (max-width: 767px) {
-                    font-size: $abbr_font_size_small;
+                    font-size: $font_size_big_mobile;
                     line-height: $abbr_line_height_small;
                     height: $abbr_line_height_small;
                     width: $abbr_line_height_small;

@@ -19,10 +19,16 @@ html {
 
             .details {
                 text-align: left;
-                font-weight: bold;
+                font-weight: $font_weight_big;
+                font-size: $font_size_big;
+
+                @media (max-width: 767px) {
+                    font-size: $font_size_big_mobile;
+                }
 
                 .row {
                     min-height: 60px;
+                    margin-bottom: 15px;
                 }
 
                 .row-title {
