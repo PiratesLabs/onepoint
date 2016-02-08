@@ -63,12 +63,15 @@ html {
                 position: fixed;
                 bottom: 50px;
                 width: 100vw;
+                border: none;
             }
 
             .nav-tabs>li {
                 a {
                     color: #ffffff;
                     border: none;
+                    padding-top: 20px;
+                    padding-bottom: 20px;
                 }
                 padding: 0px;
                 border: none;
