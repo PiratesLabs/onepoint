@@ -12,6 +12,11 @@ html {
             color: #579EDE;
             font-weight: $font_weight_big;
 
+            .panel-body {
+                padding-top: 0px;
+                padding-bottom: 0px;
+            }
+
     		button {
     			margin: auto;
     			color: #ffffff;
