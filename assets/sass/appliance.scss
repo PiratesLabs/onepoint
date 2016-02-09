@@ -9,6 +9,7 @@ html {
                 text-align: left;
                 font-weight: $font_weight_big;
                 font-size: $font_size_big;
+                word-wrap: break-word;
 
                 @media (max-width: 767px) {
                     font-size: $font_size_big_mobile;
