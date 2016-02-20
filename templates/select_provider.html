@@ -3,7 +3,7 @@
 <link href="/assets/css/sass_out/appliances.css" type="text/css" rel="stylesheet">
 {% endblock %}
 {% block BarContent%}
-<div class="bartwo">Select Provider</div>
+<div class="bartwo">{{store_name}} :: Select Provider</div>
 <div class="content" style="margin-top: 0px;">
 	<div class="container" style="width:100vw;">
 		{% include "components/select_provider_table.html" with items=providers appliance_id=appliance_id %}

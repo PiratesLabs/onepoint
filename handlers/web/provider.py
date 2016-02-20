@@ -27,9 +27,11 @@ class ProviderDetailsPage(WebRequestHandler):
         path = 'provider_details.html'
         provider = Provider.get_by_id(long(self['id']))
         appliance_id = self['appliance_id']
+        appliance = Appliance.for_id(long(appliance_id))
+        store_name = appliance.store.name if appliance else ''
         schedule_repair_url = provider.schedule_repair_url
         schedule_repair_url = schedule_repair_url + '&appliance_id='+ appliance_id if appliance_id else schedule_repair_url
-        template_values = {'details':provider.template_format,'name':provider.name, 'ratings':[x for x in range(1,6)], 'schedule_repair_url':schedule_repair_url, 'appliance_id':appliance_id}
+        template_values = {'details':provider.template_format,'name':provider.name, 'ratings':[x for x in range(1,6)], 'schedule_repair_url':schedule_repair_url, 'appliance_id':appliance_id, 'store_name':store_name}
         self.write(self.get_rendered_html(path, template_values), 200)
 
 class ProviderScheduleRepairPage(WebRequestHandler):
@@ -44,6 +46,12 @@ class ProviderScheduleRepairPage(WebRequestHandler):
                 'title':'Provider',
                 'value':provider.name,
                 'id':provider.id,
+                'readonly':'readonly'
+            },
+            {
+                'name':'store',
+                'title':'Store',
+                'value':appliance.store.name,
                 'readonly':'readonly'
             },
             {

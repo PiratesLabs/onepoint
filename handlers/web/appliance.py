@@ -26,7 +26,7 @@ class ApplianceDetailsPage(WebRequestHandler):
     def get(self):
         path = 'appliance_details.html'
         appliance = Appliance.get_by_id(long(self['id']))
-        template_values = {'details':appliance.template_format,'name':appliance.name,'select_provider_url':appliance.select_provider_url}
+        template_values = {'details':appliance.template_format,'name':appliance.name,'select_provider_url':appliance.select_provider_url,'store_name':appliance.store.name}
         self.write(self.get_rendered_html(path, template_values), 200)
 
 class ApplianceSelectProviderPage(WebRequestHandler):
@@ -34,7 +34,9 @@ class ApplianceSelectProviderPage(WebRequestHandler):
         providers = [provider for provider in Provider.all().fetch(100)]
         path = 'select_provider.html'
         markers = [[provider.name, provider.location.lat,provider.location.lon] for provider in providers]
-        template_values = {'providers':providers,'count':len(providers),'markers':markers, 'appliance_id':appliance_id}
+        appliance = Appliance.for_id(long(appliance_id))
+        store_name = appliance.store.name if appliance else ''
+        template_values = {'providers':providers,'count':len(providers),'markers':markers, 'appliance_id':appliance_id, 'store_name':store_name}
         self.write(self.get_rendered_html(path, template_values), 200)
 
     @login_required
