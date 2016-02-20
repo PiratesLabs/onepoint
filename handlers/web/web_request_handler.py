@@ -18,4 +18,23 @@ class WebRequestHandler(RequestHandler):
     	if not template_values:
     		template_values = {}
     	template_values['session'] = self.session
+    	if self.session:
+	    	bottom_menuitems = [
+	    		{
+	    			'link': '/appliance/list',
+	    			'img': '/assets/img/appliances.png',
+	    			'title': 'Appliances'
+	    		},
+	    		{
+	    			'link': '/provider/list',
+	    			'img': '/assets/img/providers.png',
+	    			'title': 'Providers'
+	    		},
+	    		{
+	    			'link': '/work_order/list',
+	    			'img': '/assets/img/workorders.png',
+	    			'title': 'Work Orders'
+	    		}
+	    	]
+	    	template_values['bottom_menuitems'] = bottom_menuitems
         return loader.render_to_string(template_name, template_values)

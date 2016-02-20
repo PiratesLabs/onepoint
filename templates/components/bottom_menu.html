@@ -1,18 +1,22 @@
 <div class="barthree">
 	<div class="container-fluid">
 		<div class="row">
-			<a href="/appliance/list">
-				<div class="col-xs-4" style="background-image:url('/assets/img/appliances.png');">	
+			{% for menuitem in bottom_menuitems %}
+			<a href="{{ menuitem.link }}">
+				<div class="col-xs-4">
+					<div class="row">
+						<div class="col-xs-12">
+							<img src="{{ menuitem.img }}">
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-xs-12">
+							<p>{{ menuitem.title }}</p>
+						</div>
+					</div>
 				</div>
 			</a>
-			<a href="/provider/list">
-				<div class="col-xs-4" style="background-image:url('/assets/img/providers.png');">	
-				</div>
-			</a>
-			<a href="/work_order/list">
-				<div class="col-xs-4" style="background-image:url('/assets/img/workorders.png');">
-				</div>
-			</a>
+			{% endfor %}
 		</div>
 	</div>
 </div>

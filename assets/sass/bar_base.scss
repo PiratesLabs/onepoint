@@ -59,23 +59,21 @@
 
 .barthree {
 	background-color: #424242;
-	height: 50px;
+	height: 65px;
 	width: 100%;
 	text-align: center;
 	position: fixed;
 	bottom: 0px;
+
+	a {
+		color: #ffffff;
+	}
 	
 	img {
 		margin: auto;
-		max-height: 100%;
-
-		@media (max-width: 767px) {
-			width: 80%;
-		}
 	}
 
 	.container-fluid, .row {
-		height: 100%;
 
 		[class*=col-] {
             height: 100%;
