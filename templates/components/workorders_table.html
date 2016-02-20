@@ -11,6 +11,7 @@
       <div id="c{{wo.0.id}}" class="panel-collapse collapse workorder" role="tabpanel" aria-labelledby="{{wo.0.id}}">
         <div class="panel-body">
           <p>ID: {{ wo.0.id }}</p>
+          <p>STORE: {{wo.0.appliance_obj.store.name}}</p>
           <p>APPLIANCE: {{wo.0.appliance_obj.name}}</p>
           <p>PROVIDER: {{wo.0.provider_obj.name}}</p>
           {% if wo.1 %}
