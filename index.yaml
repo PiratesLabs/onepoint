@@ -12,5 +12,10 @@ indexes:
 
 - kind: Store
   properties:
+  - name: manager
+  - name: name
+
+- kind: Store
+  properties:
   - name: owner
   - name: name
