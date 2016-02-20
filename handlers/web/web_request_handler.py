@@ -23,7 +23,7 @@ class WebRequestHandler(RequestHandler):
 	    		{
 	    			'link': '/appliance/list',
 	    			'img': '/assets/img/appliances.png',
-	    			'title': 'Appliances'
+	    			'title': 'Stores'
 	    		},
 	    		{
 	    			'link': '/provider/list',
