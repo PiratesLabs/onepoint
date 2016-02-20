@@ -4,6 +4,7 @@ import urllib
 import json
 import logging
 import airtable_config as airtable
+import random
 from model.member import Member
 from model.work_order import WorkOrder, WorkOrderHistory
 from model.store import Store
@@ -40,16 +41,30 @@ class ApplianceCreationHandler(WebRequestHandler):
 
 class TestDataCreationHandler(WebRequestHandler):
     def create_users(self):
-        owner = Member(key_name='brandon.bell@partners.mcd.com', name='Brandon Bell', role='owner', phone='(617)-840-0716')
-        manager = Member(key_name='jose.martinez@us.stores.mcd.com', name='Jose Martinez', role='manager', phone='(410)-245-7053')
+        owner = Member(key_name='owner@americangrid.com', name='Brandon Bell', role='owner', phone='(617)-840-0716')
+        manager = Member(key_name='manager@americangrid.com', name='Jose Martinez', role='manager', phone='(410)-245-7053')
         owner.put()
         manager.put()
         return [owner, manager]
 
     def create_stores(self, manager, owner):
-        store = Store(name="Store1", location=db.GeoPt(40.7131116,-74.015359), manager=manager.key().name(), owner=owner.key().name(), address="McDonald's, Logn Gate Shopping Center, 4396 Montgomery Rd, Ellicott City, MD 21043", billing_address="Brdancat Enterprises, Inc., 9107 Mendenhall Ct., Unit B, Columbia, MD 21045")
+        stores = []
+        store = Store(name="McDonald's", location=db.GeoPt(40.7131116,-74.015359), manager=manager.key().name(), owner=owner.key().name(), address="McDonald's, Logn Gate Shopping Center, 4396 Montgomery Rd, Ellicott City, MD 21043", billing_address="Brdancat Enterprises, Inc., 9107 Mendenhall Ct., Unit B, Columbia, MD 21045")
         store.put()
-        return [store]
+        stores.append(store)
+        store = Store(name="Starbucks", location=db.GeoPt(40.7131116,-83.015359), manager=manager.key().name(), owner=owner.key().name(), address="Starbucks, Shrt Gate Shopping Center, 6392 Gregory Rd, Kingston City, NV 52552", billing_address="Fieldcat Enterprises, Inc., 1822 Radcliffe St., Unit B, Durby, DL 62611")
+        store.put()
+        stores.append(store)
+        store = Store(name="Friendly's", location=db.GeoPt(37.7131116,-96.015359), manager=manager.key().name(), owner=owner.key().name(), address="Friendly's, North Wall Shopping Center, 4319 Desmond St, Riverside, CA 92503", billing_address="Redwood Services, Inc., 6777 Brook Av., Lansing, PA 48912")
+        store.put()
+        stores.append(store)
+        store = Store(name="Hardrock Cafe", location=db.GeoPt(41.4291638,-76.215929), manager=manager.key().name(), owner=owner.key().name(), address="Hardrock Cafe, 100 Broadway, New York City, NY 10001", billing_address="Rose Inc., 4193 Manning Dr., Richmond, VA 23420")
+        store.put()
+        stores.append(store)
+        store = Store(name="Tavern", location=db.GeoPt(40.6192436,-77.819237), manager=manager.key().name(), owner=owner.key().name(), address="Tavern, 297 Clark St., Chicago, IL 60604", billing_address="The Billers, 78 University Rd., Syracuse, NY 13205")
+        store.put()
+        stores.append(store)
+        return stores
 
     def create_provider(self, email, name, phone):
         provider = Member(key_name = email, name = name, role = 'provider', phone = phone)
@@ -69,7 +84,7 @@ def map_address(address):
 def pull_airtable_data():
     tdc = TestDataCreationHandler()
     [owner, manager] = tdc.create_users()
-    [store] = tdc.create_stores(manager, owner)
+    stores = tdc.create_stores(manager, owner)
 
     payload = {'view': airtable.config['view']}
     encoded_payload = urllib.urlencode(payload)
@@ -89,7 +104,7 @@ def pull_airtable_data():
             appliance_obj.serial_num = fields['Serial #']
             appliance_obj.model = fields['Model #']
             appliance_obj.manufacturer = fields['Manufacturer'][0]
-            appliance_obj.store = store
+            appliance_obj.store = stores[random.randint(1, 100)%5];
             appliance_obj.put()
     
     url = 'https://api.airtable.com/v0/'+airtable.config['app_id']+'/Vendors'

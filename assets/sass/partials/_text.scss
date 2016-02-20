@@ -1,19 +1,20 @@
 $montserrat_font: 'Montserrat', sans-serif;
+$helvetica_font: 'Helvetica Neue';
 
-$font_size_big: 24px;
+$font_size_big: 20px;
 $font_size_small: 16px;
 $login_logo_font_size: 40px;
 
 $font_size_big_mobile: 14px;
-$font_size_small_mobile: 12px;
+$font_size_small_mobile: 13px;
 
-$font_weight_big: bold;
+$font_weight_big: normal;
 $font_weight_small: normal;
 
 body {
 	font-size: $font_size_small;
 	font-weight: $font_weight_small;
-	font-family: $montserrat_font;
+	font-family: $helvetica_font;
 
 	@media (max-width: 767px) {
 		font-size: $font_size_small_mobile;
