@@ -27,7 +27,7 @@ class ProviderDetailsPage(WebRequestHandler):
         path = 'provider_details.html'
         provider = Provider.get_by_id(long(self['id']))
         appliance_id = self['appliance_id']
-        appliance = Appliance.for_id(long(appliance_id))
+        appliance = Appliance.for_id(long(appliance_id)) if appliance_id else None
         store_name = appliance.store.name if appliance else ''
         schedule_repair_url = provider.schedule_repair_url
         schedule_repair_url = schedule_repair_url + '&appliance_id='+ appliance_id if appliance_id else schedule_repair_url

@@ -3,7 +3,7 @@
 <link href="/assets/css/sass_out/appliance.css" type="text/css" rel="stylesheet">
 {% endblock %}
 {% block BarContent%}
-<div class="bartwo">{{store_name}} :: {{name}}</div>
+<div class="bartwo">{% if store_name %}{{store_name}} :: {% endif %}{{name}}</div>
 <div class="content">
     <div class="details">
         <div class="container">
