@@ -11,6 +11,7 @@ html {
                 font-weight: $font_weight_small;
                 @media (max-width: 767px) {
                     font-size: $font_size_small_mobile;
+                    font-weight: $font_weight_ultra_small;
                 }
             }
 

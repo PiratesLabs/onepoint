@@ -6,8 +6,6 @@ html {
     body {
     	background: #ffffff;
     	text-align: center;
-        color: #579EDE;
-        font-weight: bold;
 
         .vertical-middle {
             height: 100vh;
@@ -21,11 +19,17 @@ html {
             top: 15%;
             position: absolute;
             width: 100%;
-            font-size: $login_logo_font_size;
+            font-size: $font_size_big;
+            color: $font_color_logo;
+            font-weight: $font_weight_medium;
 
             img {
                 max-width: 100px;
                 max-height: 100px;
+            }
+
+            @media (max-width: 767px) {
+                font-size: $font_size_big_mobile;
             }
         }
 

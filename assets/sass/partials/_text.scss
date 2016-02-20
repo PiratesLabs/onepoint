@@ -8,15 +8,21 @@ $login_logo_font_size: 40px;
 $font_size_big_mobile: 14px;
 $font_size_small_mobile: 13px;
 
-$font_weight_big: normal;
-$font_weight_small: normal;
+$font_weight_big: 900;
+$font_weight_medium: 700;
+$font_weight_normal: 500;
+$font_weight_small: 300;
+$font_weight_ultra_small: 100;
+
+$font_color_logo: #0596ff;
 
 body {
 	font-size: $font_size_small;
 	font-weight: $font_weight_small;
-	font-family: $helvetica_font;
+	font-family: $montserrat_font;
 
 	@media (max-width: 767px) {
 		font-size: $font_size_small_mobile;
+		font-weight: $font_weight_ultra_small;
 	}
 }
