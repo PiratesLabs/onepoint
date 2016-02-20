@@ -33,7 +33,7 @@ class WebRequestHandler(RequestHandler):
 	    		{
 	    			'link': '/work_order/list',
 	    			'img': '/assets/img/workorders.png',
-	    			'title': 'Work Orders'
+	    			'title': 'Service Orders'
 	    		}
 	    	]
 	    	template_values['bottom_menuitems'] = bottom_menuitems
