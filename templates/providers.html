@@ -6,18 +6,18 @@
 <div class="content" style="margin-top: 0px;">
 	<div class="tabbable tabs-below">
 		<div class="tab-content">
-			<div class="tab-pane active" id="starred">
+			<div class="tab-pane active" id="all">
 				<div class="container" style="width:100vw;">
 					{% include "components/provider_table.html" with items=providers %}
 				</div>
 			</div> 
-			<div class="tab-pane" id="oldest">
+			<div class="tab-pane" id="gmap">
 				{% include "components/map.html" with markers=markers %}
 			</div>
 		</div>
 		<ul class="nav nav-tabs">
-			<li class="col-xs-6 active" style="background-color: #5A9DE6;"><a href="#starred" data-toggle="tab">Starred</a></li>
-			<li class="col-xs-6" style="background-color: #5A9DE6;" onclick="initialize_map()"><a href="#oldest" data-toggle="tab">Map</a></li>
+			<li class="col-xs-6 active" style="background-color: #5A9DE6;"><a href="#all" data-toggle="tab">All</a></li>
+			<li class="col-xs-6" style="background-color: #5A9DE6;" onclick="initialize_map()"><a href="#gmap" data-toggle="tab">Map</a></li>
 		</ul>
 	</div>
 </div>
