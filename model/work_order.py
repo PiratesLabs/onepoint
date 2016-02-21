@@ -96,7 +96,7 @@ class WorkOrder(db.Model):
         return woh
 
     def send_wo_created_email(self, wo_id, remarks, priority, fix_by):
-        estimation_link = "http://onepointapp.appspot.com/work_order/provide_estimate?work_order="+str(wo_id)
+        estimation_link = "http://onepointstaging.appspot.com/work_order/provide_estimate?work_order="+str(wo_id)
         template_content = [
             {'name':'work_order_id','content':self.key().id()},
             {'name':'store_name','content':self.appliance_obj.store.name},
@@ -125,7 +125,7 @@ class WorkOrder(db.Model):
         send_mandrill_email('work-order-created-3', template_content, to, merge_vars)
 
     def send_wo_approval_email(self, estimate, service_date, technician):
-        link = 'http://onepointapp.appspot.com/work_order/list?work_order='+str(self.key().id())
+        link = 'http://onepointstaging.appspot.com/work_order/list?work_order='+str(self.key().id())
         template_content = [
             {'name':'work_order_id','content':self.key().id()},
             {'name':'store_name','content':self.appliance_obj.store.name},
