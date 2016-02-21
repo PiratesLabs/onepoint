@@ -14,4 +14,17 @@
 {% block Scripts %}
 	{% block BarScripts %}
 	{% endblock%}
+	<script type="text/javascript">
+		$(document).ready(function(){
+			$('.bottom-menuitem').each(function(){
+				var href = window.location.pathname;
+				var current_link = $($(this).parent('a')).attr('href');
+				if(href == current_link) {
+					$(this).addClass('highlight-bottom-menuitem');
+				} else {
+					$(this).removeClass('highlight-bottom-menuitem');
+				}
+			});
+		});
+	</script>
 {% endblock %}
