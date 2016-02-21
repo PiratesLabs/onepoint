@@ -99,6 +99,7 @@ class WorkOrder(db.Model):
         estimation_link = "http://onepointapp.appspot.com/work_order/provide_estimate?work_order="+str(wo_id)
         template_content = [
             {'name':'work_order_id','content':self.key().id()},
+            {'name':'store_name','content':self.appliance_obj.store.name},
             {'name':'provider_address','content':self.provider_obj.address},
             {'name':'store_address','content':self.store.address},
             {'name':'store_name','content':self.store.name},
@@ -127,6 +128,7 @@ class WorkOrder(db.Model):
         link = 'http://onepointapp.appspot.com/work_order/list?work_order='+str(self.key().id())
         template_content = [
             {'name':'work_order_id','content':self.key().id()},
+            {'name':'store_name','content':self.appliance_obj.store.name},
             {'name':'fix_by','content':service_date},
             {'name':'provider_name','content':self.provider_obj.name},
             {'name':'provider_address','content':self.provider_obj.address},
@@ -153,6 +155,7 @@ class WorkOrder(db.Model):
     def send_wo_disapproved_email(self):
         template_content = [
             {'name':'work_order_id','content':self.key().id()},
+            {'name':'store_name','content':self.appliance_obj.store.name},
             {'name':'provider_address','content':self.provider_obj.address},
             {'name':'provider_name','content':self.provider_obj.name},
             {'name':'fix_by','content':self.fix_by.strftime('%Y-%m-%d')},
@@ -176,6 +179,7 @@ class WorkOrder(db.Model):
         service_date, estimate_str, technician = woh.split(separator)
         template_content = [
             {'name':'work_order_id','content':self.key().id()},
+            {'name':'store_name','content':self.appliance_obj.store.name},
             {'name':'provider_address','content':self.provider_obj.address},
             {'name':'fix_by','content':self.fix_by.strftime('%Y-%m-%d')},
             {'name':'owner_name','content':self.owner_user.name},
@@ -199,6 +203,7 @@ class WorkOrder(db.Model):
     def send_wo_completed_email(self, wo_id, notes, woh):
         template_content = [
             {'name':'work_order_id','content':self.key().id()},
+            {'name':'store_name','content':self.appliance_obj.store.name},
             {'name':'fix_by','content':self.fix_by.strftime('%Y-%m-%d')},
             {'name':'provider_address','content':self.provider_obj.address},
             {'name':'provider_name','content':self.provider_obj.name},
@@ -221,6 +226,7 @@ class WorkOrder(db.Model):
     def send_wo_rejected_email(self, remarks):
         template_content = [
             {'name':'work_order_id','content':self.key().id()},
+            {'name':'store_name','content':self.appliance_obj.store.name},
             {'name':'fix_by','content':self.fix_by.strftime('%Y-%m-%d')},
             {'name':'provider_address','content':self.provider_obj.address},
             {'name':'store_manager_name','content':self.manager_user.name},
@@ -243,6 +249,7 @@ class WorkOrder(db.Model):
     def send_wo_auto_approved_email(self, estimate_str, service_date, technician):
         template_content = [
             {'name':'work_order_id','content':self.key().id()},
+            {'name':'store_name','content':self.appliance_obj.store.name},
             {'name':'provider_address','content':self.provider_obj.address},
             {'name':'fix_by','content':service_date},
             {'name':'owner_name','content':self.owner_user.name},
@@ -266,6 +273,7 @@ class WorkOrder(db.Model):
     def send_wo_cancelled_email(self):
         template_content = [
             {'name':'work_order_id','content':self.key().id()},
+            {'name':'store_name','content':self.appliance_obj.store.name},
             {'name':'provider_address','content':self.provider_obj.address},
             {'name':'fix_by','content':self.fix_by.strftime('%Y-%m-%d')},
             {'name':'owner_name','content':self.owner_user.name},
