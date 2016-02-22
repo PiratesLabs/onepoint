@@ -296,7 +296,8 @@ class WorkOrder(db.Model):
             {'name':'model','content':self.appliance_obj.model},
             {'name':'serial_num','content':self.appliance_obj.serial_num},
             {'name':'warranty','content':self.appliance_obj.warranty},
-            {'name':'appliance_status','content':self.problem_description}
+            {'name':'appliance_status','content':self.problem_description},
+            {'name':'service_type','content':self.priority}
         ]
         to = [{'email':self.provider_user.key().name(),'name':self.provider_user.name,'type':'to'}]
         send_mandrill_email('work-order-cancelled-3', template_content, to)
