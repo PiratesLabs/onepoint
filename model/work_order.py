@@ -146,7 +146,7 @@ class WorkOrder(db.Model):
             {'name':'model','content':self.appliance_obj.model},
             {'name':'serial_num','content':self.appliance_obj.serial_num},
             {'name':'warranty','content':self.appliance_obj.warranty},
-            {'name':'appliance_status','content':self.problem_description},
+            {'name':'application_status','content':self.problem_description},
             {'name':'technician','content':technician},
             {'name':'action_link','content':'<a class="mcnButton " title="TAKE ACTION" href="'+ link + '" target="_blank" style="font-weight: bold;letter-spacing: normal;line-height: 100%;text-align: center;text-decoration: none;color: #FFFFFF;">TAKE ACTION</a>'},
         ]
@@ -173,7 +173,7 @@ class WorkOrder(db.Model):
             {'name':'model','content':self.appliance_obj.model},
             {'name':'serial_num','content':self.appliance_obj.serial_num},
             {'name':'warranty','content':self.appliance_obj.warranty},
-            {'name':'appliance_status','content':self.problem_description}
+            {'name':'application_status','content':self.problem_description}
         ]
         to = [{'email':self.provider_user.key().name(),'name':self.provider_user.name,'type':'to'}]
         send_mandrill_email('work-order-disapproved-3', template_content, to)
@@ -198,7 +198,7 @@ class WorkOrder(db.Model):
             {'name':'model','content':self.appliance_obj.model},
             {'name':'serial_num','content':self.appliance_obj.serial_num},
             {'name':'warranty','content':self.appliance_obj.warranty},
-            {'name':'appliance_status','content':self.problem_description},
+            {'name':'application_status','content':self.problem_description},
             {'name':'technician','content':technician},
             {'name':'estimate','content':estimate_str},
         ]
@@ -222,7 +222,7 @@ class WorkOrder(db.Model):
             {'name':'model','content':self.appliance_obj.model},
             {'name':'serial_num','content':self.appliance_obj.serial_num},
             {'name':'warranty','content':self.appliance_obj.warranty},
-            {'name':'appliance_status','content':self.problem_description},
+            {'name':'application_status','content':self.problem_description},
             {'name':'remarks','content':notes},
             {'name':'time_taken','content':self.time_to_service(woh)}
         ]
@@ -271,7 +271,7 @@ class WorkOrder(db.Model):
             {'name':'model','content':self.appliance_obj.model},
             {'name':'serial_num','content':self.appliance_obj.serial_num},
             {'name':'warranty','content':self.appliance_obj.warranty},
-            {'name':'appliance_status','content':self.problem_description},
+            {'name':'application_status','content':self.problem_description},
             {'name':'technician','content':technician},
             {'name':'estimate','content':estimate_str},
         ]
