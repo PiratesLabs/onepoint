@@ -29,6 +29,7 @@ class WorkOrder(db.Model):
     history = db.ListProperty(long)
     curr_state = db.StringProperty(indexed=True)
     fix_by = db.DateTimeProperty(indexed=False)
+    problem_description = db.StringProperty(indexed=False)
 
     @property
     def id(self):
@@ -95,7 +96,7 @@ class WorkOrder(db.Model):
         self.history.append(woh.key().id())
         return woh
 
-    def send_wo_created_email(self, wo_id, remarks, priority, fix_by):
+    def send_wo_created_email(self, wo_id, priority, fix_by):
         estimation_link = "http://onepointstaging.appspot.com/work_order/provide_estimate?work_order="+str(wo_id)
         template_content = [
             {'name':'work_order_id','content':self.key().id()},
@@ -111,7 +112,7 @@ class WorkOrder(db.Model):
             {'name':'model','content':self.appliance_obj.model},
             {'name':'serial_num','content':self.appliance_obj.serial_num},
             {'name':'warranty','content':self.appliance_obj.warranty},
-            {'name':'appliance_status','content':remarks},
+            {'name':'appliance_status','content':self.problem_description},
             {'name':'service_type','content':priority},
             {'name':'provider_name','content':self.provider_obj.name},
             {'name':'accept_link','content':'<a class="mcnButton " title="ACCEPT" href="' + estimation_link + '&action=accept' + '" target="_blank" style="font-weight: bold;letter-spacing: normal;line-height: 100%;text-align: center;text-decoration: none;color: #FFFFFF;">ACCEPT</a>'},
@@ -144,6 +145,7 @@ class WorkOrder(db.Model):
             {'name':'model','content':self.appliance_obj.model},
             {'name':'serial_num','content':self.appliance_obj.serial_num},
             {'name':'warranty','content':self.appliance_obj.warranty},
+            {'name':'appliance_status','content':self.problem_description},
             {'name':'technician','content':technician},
             {'name':'action_link','content':'<a class="mcnButton " title="TAKE ACTION" href="'+ link + '" target="_blank" style="font-weight: bold;letter-spacing: normal;line-height: 100%;text-align: center;text-decoration: none;color: #FFFFFF;">TAKE ACTION</a>'},
         ]
@@ -170,6 +172,7 @@ class WorkOrder(db.Model):
             {'name':'model','content':self.appliance_obj.model},
             {'name':'serial_num','content':self.appliance_obj.serial_num},
             {'name':'warranty','content':self.appliance_obj.warranty},
+            {'name':'appliance_status','content':self.problem_description}
         ]
         to = [{'email':self.provider_user.key().name(),'name':self.provider_user.name,'type':'to'}]
         send_mandrill_email('work-order-disapproved-3', template_content, to)
@@ -194,6 +197,7 @@ class WorkOrder(db.Model):
             {'name':'model','content':self.appliance_obj.model},
             {'name':'serial_num','content':self.appliance_obj.serial_num},
             {'name':'warranty','content':self.appliance_obj.warranty},
+            {'name':'appliance_status','content':self.problem_description},
             {'name':'technician','content':technician},
             {'name':'estimate','content':estimate_str},
         ]
@@ -217,6 +221,7 @@ class WorkOrder(db.Model):
             {'name':'model','content':self.appliance_obj.model},
             {'name':'serial_num','content':self.appliance_obj.serial_num},
             {'name':'warranty','content':self.appliance_obj.warranty},
+            {'name':'appliance_status','content':self.problem_description},
             {'name':'remarks','content':notes},
             {'name':'time_taken','content':self.time_to_service(woh)}
         ]
@@ -241,6 +246,7 @@ class WorkOrder(db.Model):
             {'name':'model','content':self.appliance_obj.model},
             {'name':'serial_num','content':self.appliance_obj.serial_num},
             {'name':'warranty','content':self.appliance_obj.warranty},
+            {'name':'appliance_status','content':self.problem_description},
             {'name':'reject_remarks','content':remarks},
         ]
         to = [{'email':self.owner_user.key().name(),'name':self.owner_user.name,'type':'to'}]
@@ -264,6 +270,7 @@ class WorkOrder(db.Model):
             {'name':'model','content':self.appliance_obj.model},
             {'name':'serial_num','content':self.appliance_obj.serial_num},
             {'name':'warranty','content':self.appliance_obj.warranty},
+            {'name':'appliance_status','content':self.problem_description},
             {'name':'technician','content':technician},
             {'name':'estimate','content':estimate_str},
         ]
@@ -288,6 +295,7 @@ class WorkOrder(db.Model):
             {'name':'model','content':self.appliance_obj.model},
             {'name':'serial_num','content':self.appliance_obj.serial_num},
             {'name':'warranty','content':self.appliance_obj.warranty},
+            {'name':'appliance_status','content':self.problem_description}
         ]
         to = [{'email':self.provider_user.key().name(),'name':self.provider_user.name,'type':'to'}]
         send_mandrill_email('work-order-cancelled-3', template_content, to)
@@ -318,9 +326,10 @@ class WorkOrder(db.Model):
             self.provider = params['provider']
             self.fix_by = datetime.strptime(params['fix_by'], '%m/%d/%y')
             notes = params['remarks'] + separator + params['priority'] + separator + params['fix_by']
+            self.problem_description = params['remarks']
             woh = self.create_wo_history(notes)
             self.put()
-            self.send_wo_created_email(self.key().id(), params['remarks'], params['priority'], params['fix_by'])
+            self.send_wo_created_email(self.key().id(), params['priority'], params['fix_by'])
         elif self.curr_state == 'ESTIMATED':
             if not self.owner_login(role):
                 ret_val = {'status':'error', 'message':'Only a store owner can approve a work order'}
