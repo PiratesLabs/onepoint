@@ -155,7 +155,7 @@ class WorkOrder(db.Model):
                       {"rcpt": self.manager_user.key().name(),"vars": [{"name":"ROLE", "content":"manager"}]}]
         send_mandrill_email('approve-work-order-3', template_content, to, merge_vars)
 
-    def send_wo_disapproved_email(self):
+    def send_wo_disapproved_email(self, notes):
         template_content = [
             {'name':'work_order_id','content':self.key().id()},
             {'name':'store_name','content':self.appliance_obj.store.name},
@@ -173,12 +173,13 @@ class WorkOrder(db.Model):
             {'name':'model','content':self.appliance_obj.model},
             {'name':'serial_num','content':self.appliance_obj.serial_num},
             {'name':'warranty','content':self.appliance_obj.warranty},
-            {'name':'application_status','content':self.problem_description}
+            {'name':'application_status','content':self.problem_description},
+            {'name':'remarks','content':notes}
         ]
         to = [{'email':self.provider_user.key().name(),'name':self.provider_user.name,'type':'to'}]
         send_mandrill_email('work-order-disapproved-3', template_content, to)
 
-    def send_wo_approved_email(self):
+    def send_wo_approved_email(self, notes):
         woh = WorkOrderHistory.get_by_id(self.history[work_order_states.index(["ESTIMATED", "REJECTED"])]).details
         service_date, estimate_str, technician = woh.split(separator)
         template_content = [
@@ -201,6 +202,7 @@ class WorkOrder(db.Model):
             {'name':'application_status','content':self.problem_description},
             {'name':'technician','content':technician},
             {'name':'estimate','content':estimate_str},
+            {'name':'remarks','content':notes}
         ]
         to = [{'email':self.provider_user.key().name(),'name':self.provider_user.name,'type':'to'}]
         send_mandrill_email('work-order-approved-3', template_content, to)
@@ -339,10 +341,10 @@ class WorkOrder(db.Model):
                 return ret_val
             if params['approval'] == '1':
                 self.curr_state = 'APPROVED'
-                self.send_wo_approved_email()
+                self.send_wo_approved_email(params['notes'])
             else:
                 self.curr_state = 'DISAPPROVED'
-                self.send_wo_disapproved_email()
+                self.send_wo_disapproved_email(params['notes'])
             self.create_wo_history(None)
             self.put()
         elif self.curr_state == 'APPROVED':
