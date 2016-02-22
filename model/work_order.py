@@ -30,6 +30,7 @@ class WorkOrder(db.Model):
     curr_state = db.StringProperty(indexed=True)
     fix_by = db.DateTimeProperty(indexed=False)
     problem_description = db.StringProperty(indexed=False)
+    priority = db.StringProperty()
 
     @property
     def id(self):
@@ -96,7 +97,7 @@ class WorkOrder(db.Model):
         self.history.append(woh.key().id())
         return woh
 
-    def send_wo_created_email(self, wo_id, priority, fix_by):
+    def send_wo_created_email(self, wo_id, fix_by):
         estimation_link = "http://onepointstaging.appspot.com/work_order/provide_estimate?work_order="+str(wo_id)
         template_content = [
             {'name':'work_order_id','content':self.key().id()},
@@ -113,7 +114,7 @@ class WorkOrder(db.Model):
             {'name':'serial_num','content':self.appliance_obj.serial_num},
             {'name':'warranty','content':self.appliance_obj.warranty},
             {'name':'appliance_status','content':self.problem_description},
-            {'name':'service_type','content':priority},
+            {'name':'service_type','content':self.priority},
             {'name':'provider_name','content':self.provider_obj.name},
             {'name':'accept_link','content':'<a class="mcnButton " title="ACCEPT" href="' + estimation_link + '&action=accept' + '" target="_blank" style="font-weight: bold;letter-spacing: normal;line-height: 100%;text-align: center;text-decoration: none;color: #FFFFFF;">ACCEPT</a>'},
             {'name':'reject_link','content':'<a class="mcnButton " title="REJECT" href="' + estimation_link + '&action=reject' + '" target="_blank" style="font-weight: bold;letter-spacing: normal;line-height: 100%;text-align: center;text-decoration: none;color: #FFFFFF;">REJECT</a>'},
@@ -327,9 +328,10 @@ class WorkOrder(db.Model):
             self.fix_by = datetime.strptime(params['fix_by'], '%m/%d/%y')
             notes = params['remarks'] + separator + params['priority'] + separator + params['fix_by']
             self.problem_description = params['remarks']
+            self.priority = params['priority']
             woh = self.create_wo_history(notes)
             self.put()
-            self.send_wo_created_email(self.key().id(), params['priority'], params['fix_by'])
+            self.send_wo_created_email(self.key().id(), params['fix_by'])
         elif self.curr_state == 'ESTIMATED':
             if not self.owner_login(role):
                 ret_val = {'status':'error', 'message':'Only a store owner can approve a work order'}
