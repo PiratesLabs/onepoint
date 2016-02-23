@@ -23,7 +23,7 @@ class WebRequestHandler(RequestHandler):
 	    		{
 	    			'link': '/appliance/list',
 	    			'img': '/assets/img/appliances.png',
-	    			'title': 'Stores'
+	    			'title': self.session['bottom_menu_1'] if 'bottom_menu_1' in self.session else 'Stores'
 	    		},
 	    		{
 	    			'link': '/provider/list',

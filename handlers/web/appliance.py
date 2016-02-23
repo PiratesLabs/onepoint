@@ -14,6 +14,10 @@ class AppliancesPage(WebRequestHandler):
         email = self.session['email']
         role = self.session['role']
         stores = Store.all().filter(role + ' =', email).order('name')
+        if stores.count() > 1:
+            self.session['bottom_menu_1'] = 'Stores'
+        elif stores.count() == 1:
+            self.session['bottom_menu_1'] = 'Appliances'
         store_appliances = []
         for store in stores:
             appliances = [appliance for appliance in Appliance.all().filter('store =', store).fetch(100)]
