@@ -19,7 +19,7 @@ class AppliancesPage(WebRequestHandler):
             appliances = [appliance for appliance in Appliance.all().filter('store =', store).fetch(100)]
             store_appliances.append((store,appliances))
         path = 'appliances.html'
-        template_values = {'store_appliances':store_appliances}
+        template_values = {'store_appliances':store_appliances, 'count':len(store_appliances)}
         self.write(self.get_rendered_html(path, template_values), 200)
 
 class ApplianceDetailsPage(WebRequestHandler):

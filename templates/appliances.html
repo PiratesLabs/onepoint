@@ -8,6 +8,7 @@
 		<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
 			{% for store,appliances in store_appliances %}
 			  <div class="panel panel-default">
+			    {% if count > 1 %}
 			    <div class="panel-heading heading" role="tab" id="store-heading-{{forloop.counter}}">
 			      <a role="button" data-toggle="collapse" data-parent="#accordion" href="#store-{{forloop.counter}}" aria-expanded="true" aria-controls="store-{{forloop.counter}}">
 			      <h4 class="panel-title">
@@ -15,7 +16,8 @@
 			      </h4>
 			      </a>
 			    </div>
-			    <div id="store-{{forloop.counter}}" class="panel-collapse collapse workorder" role="tabpanel" aria-labelledby="store-heading-{{forloop.counter}}">
+			    {% endif %}
+			    <div id="store-{{forloop.counter}}" class="panel-collapse collapse {% if count == 1 %} in {% endif %} workorder" role="tabpanel" aria-labelledby="store-heading-{{forloop.counter}}">
 			      <div class="panel-body">
 			        {% include "components/appliance_table.html" with items=appliances %}
 			      </div>
