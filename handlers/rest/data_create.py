@@ -43,13 +43,15 @@ class TestDataCreationHandler(WebRequestHandler):
     def create_users(self):
         owner = Member(key_name='owner@americangrid.com', name='Brandon Bell', role='owner', phone='(617)-840-0716')
         manager = Member(key_name='manager@americangrid.com', name='Jose Martinez', role='manager', phone='(410)-245-7053')
+        manager2 = Member(key_name='cpshankar@me.com', name='CP Shankar', role='manager', phone='(410)-245-7053')
         owner.put()
         manager.put()
-        return [owner, manager]
+        manager2.put()
+        return [owner, manager, manager2]
 
-    def create_stores(self, manager, owner):
+    def create_stores(self, manager2, manager, owner):
         stores = []
-        store = Store(name="McDonald's", location=db.GeoPt(40.7131116,-74.015359), manager=manager.key().name(), owner=owner.key().name(), address="McDonald's, Logn Gate Shopping Center, 4396 Montgomery Rd, Ellicott City, MD 21043", billing_address="Brdancat Enterprises, Inc., 9107 Mendenhall Ct., Unit B, Columbia, MD 21045")
+        store = Store(name="McDonald's", location=db.GeoPt(40.7131116,-74.015359), manager=manager2.key().name(), owner=owner.key().name(), address="McDonald's, Logn Gate Shopping Center, 4396 Montgomery Rd, Ellicott City, MD 21043", billing_address="Brdancat Enterprises, Inc., 9107 Mendenhall Ct., Unit B, Columbia, MD 21045")
         store.put()
         stores.append(store)
         store = Store(name="Starbucks", location=db.GeoPt(40.7131116,-83.015359), manager=manager.key().name(), owner=owner.key().name(), address="Starbucks, Shrt Gate Shopping Center, 6392 Gregory Rd, Kingston City, NV 52552", billing_address="Fieldcat Enterprises, Inc., 1822 Radcliffe St., Unit B, Durby, DL 62611")
@@ -83,8 +85,8 @@ def map_address(address):
 
 def pull_airtable_data():
     tdc = TestDataCreationHandler()
-    [owner, manager] = tdc.create_users()
-    stores = tdc.create_stores(manager, owner)
+    [owner, manager, manager2] = tdc.create_users()
+    stores = tdc.create_stores(manager2, manager, owner)
 
     payload = {'view': airtable.config['view']}
     encoded_payload = urllib.urlencode(payload)
