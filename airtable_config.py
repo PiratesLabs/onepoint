@@ -1,5 +1,5 @@
 config  = {
-'api_key': 'keyTRNNmcLWA8Wwip',
-'app_id': 'app0Sl7OKpog5f0hg',
+'api_key': 'keyalS6mmoGt7ppa1',
+'app_id': 'app3Um03BhxIjurDc',
 'view': 'Main View'
 }
