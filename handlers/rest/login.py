@@ -41,7 +41,7 @@ class TempLoginHandler(WebRequestHandler):
         success = False
         url = '/'
         member = Member.get_by_key_name(self['email'])
-        if member:
+        if member and member.role != 'provider':
             self.session['email'] = member.key().name()
             self.session['name'] = member.name
             self.session['fb_id'] = "123"
