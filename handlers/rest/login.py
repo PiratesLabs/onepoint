@@ -41,14 +41,20 @@ class TempLoginHandler(WebRequestHandler):
         success = False
         url = '/'
         member = Member.get_by_key_name(self['email'])
-        if member and member.role != 'provider':
-            self.session['email'] = member.key().name()
-            self.session['name'] = member.name
-            self.session['fb_id'] = "123"
-            self.session['role'] = member.role
-            success = True
-            url = '/appliance/list'
-        self.write(json.dumps({'success':success, 'url':url}))
+        error = ''
+        if member:
+            if member.role != 'provider':
+                self.session['email'] = member.key().name()
+                self.session['name'] = member.name
+                self.session['fb_id'] = "123"
+                self.session['role'] = member.role
+                success = True
+                url = '/appliance/list'
+            else:
+                error = "Access for users of role 'Provider' is not allowed"
+        else:
+            error = 'User not found'
+        self.write(json.dumps({'success':success, 'url':url, 'error':error}))
 
 app = webapp2.WSGIApplication([
     ('/rest/fb_login', FacebookLoginHandler),

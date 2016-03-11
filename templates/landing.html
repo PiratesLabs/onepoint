@@ -38,7 +38,11 @@
 		var params = {"email":email_id}
 		$.post( "/rest/temp_login", params).done(function(data) {
 			data = JSON.parse(data);
-			window.location=data.url
+			console.log(data.success);
+			if(!data.success) {
+				alert(data.error);
+			}
+			window.location=data.url;
 		});
 		return false;
 	}
