@@ -1,7 +1,7 @@
 from google.appengine.api import urlfetch
 import json
 
-def send_mandrill_email(template_slug, template_content, to, merge_vars=[]):
+def send_mandrill_email(template_slug, template_content, to, subject, merge_vars=[]):
     json_mandrill = {
         "key": "xgkxelhSdAwZr2Yn0uPDIA",
         "template_name": template_slug,
@@ -11,6 +11,7 @@ def send_mandrill_email(template_slug, template_content, to, merge_vars=[]):
             "from_name": "Genius Admin",
             "to": to,
             "merge_vars": merge_vars,
+            "subject":subject,
         },
     }
     url = "https://mandrillapp.com/api/1.0/messages/send-template.json"

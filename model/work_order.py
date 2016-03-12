@@ -124,7 +124,7 @@ class WorkOrder(db.Model):
         merge_vars = [{"rcpt": self.provider_user.key().name(),"vars": [{"name":"ROLE", "content":"provider"}]},
                       {"rcpt": self.owner_user.key().name(),"vars": [{"name":"ROLE", "content":"owner"}]},
                       {"rcpt": self.manager_user.key().name(),"vars": [{"name":"ROLE", "content":"manager"}]}]
-        send_mandrill_email('work-order-created-3', template_content, to, merge_vars)
+        send_mandrill_email('work-order-created-3', template_content, to, "Service Order created", merge_vars)
 
     def send_wo_approval_email(self, estimate, service_date, technician):
         link = 'http://onepointstaging.appspot.com/work_order/list?work_order='+str(self.key().id())
@@ -153,7 +153,7 @@ class WorkOrder(db.Model):
         to = [{'email':self.owner_user.key().name(),'name':self.owner_user.name,'type':'to'}]
         merge_vars = [{"rcpt": self.owner_user.key().name(),"vars": [{"name":"ROLE", "content":"owner"}]},
                       {"rcpt": self.manager_user.key().name(),"vars": [{"name":"ROLE", "content":"manager"}]}]
-        send_mandrill_email('approve-work-order-3', template_content, to, merge_vars)
+        send_mandrill_email('approve-work-order-3', template_content, to, "Service Order - Request for approval", merge_vars)
 
     def send_wo_disapproved_email(self, notes):
         template_content = [
@@ -177,7 +177,7 @@ class WorkOrder(db.Model):
             {'name':'remarks','content':notes}
         ]
         to = [{'email':self.provider_user.key().name(),'name':self.provider_user.name,'type':'to'}]
-        send_mandrill_email('work-order-disapproved-3', template_content, to)
+        send_mandrill_email('work-order-disapproved-3', template_content, to, "Service Order denied by owner of the store")
 
     def send_wo_approved_email(self, notes):
         woh = WorkOrderHistory.get_by_id(self.history[work_order_states.index(["ESTIMATED", "REJECTED"])]).details
@@ -205,7 +205,7 @@ class WorkOrder(db.Model):
             {'name':'remarks','content':notes}
         ]
         to = [{'email':self.provider_user.key().name(),'name':self.provider_user.name,'type':'to'}]
-        send_mandrill_email('work-order-approved-3', template_content, to)
+        send_mandrill_email('work-order-approved-3', template_content, to, "Service Order scheduled")
 
     def send_wo_completed_email(self, wo_id, notes, woh):
         template_content = [
@@ -229,7 +229,8 @@ class WorkOrder(db.Model):
             {'name':'time_taken','content':self.time_to_service(woh)}
         ]
         to = [{'email':self.provider_user.key().name(),'name':self.provider_user.name,'type':'to'}]
-        send_mandrill_email('work-order-completed-3', template_content, to)
+        subject = "Service Order Completed - " + str(self.key().id()) + ". Service Provider " + self.provider_obj.name
+        send_mandrill_email('work-order-completed-3', template_content, to, subject)
 
     def send_wo_rejected_email(self, remarks):
         template_content = [
@@ -253,7 +254,7 @@ class WorkOrder(db.Model):
             {'name':'reject_remarks','content':remarks},
         ]
         to = [{'email':self.owner_user.key().name(),'name':self.owner_user.name,'type':'to'}]
-        send_mandrill_email('work-order-rejected-3', template_content, to)
+        send_mandrill_email('work-order-rejected-3', template_content, to, "Service request rejected by vendor")
 
     def send_wo_auto_approved_email(self, estimate_str, service_date, technician):
         template_content = [
@@ -278,7 +279,7 @@ class WorkOrder(db.Model):
             {'name':'estimate','content':estimate_str},
         ]
         to = [{'email':self.provider_user.key().name(),'name':self.provider_user.name,'type':'to'}]
-        send_mandrill_email('work-order-approved-3', template_content, to)
+        send_mandrill_email('work-order-approved-3', template_content, to, "Service Order scheduled")
 
     def send_wo_cancelled_email(self):
         template_content = [
@@ -302,7 +303,8 @@ class WorkOrder(db.Model):
             {'name':'service_type','content':self.priority}
         ]
         to = [{'email':self.provider_user.key().name(),'name':self.provider_user.name,'type':'to'}]
-        send_mandrill_email('work-order-cancelled-3', template_content, to)
+        subject = "Service Order Cancelled - " + str(self.key().id()) + ". Service Provide - " + self.provider_obj.name
+        send_mandrill_email('work-order-cancelled-3', template_content, to, subject)
 
     def store_login(self, role):
         if role == 'manager' or role == 'owner':
