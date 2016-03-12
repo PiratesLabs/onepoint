@@ -229,7 +229,7 @@ class WorkOrder(db.Model):
             {'name':'time_taken','content':self.time_to_service(woh)}
         ]
         to = [{'email':self.provider_user.key().name(),'name':self.provider_user.name,'type':'to'}]
-        subject = "Service Order Completed - " + str(self.key().id()) + ". Service Provider " + self.provider_obj.name
+        subject = "Service Order Completed - " + str(self.key().id()) + ". Service Provider - " + self.provider_obj.name
         send_mandrill_email('work-order-completed-3', template_content, to, subject)
 
     def send_wo_rejected_email(self, remarks):
@@ -303,7 +303,7 @@ class WorkOrder(db.Model):
             {'name':'service_type','content':self.priority}
         ]
         to = [{'email':self.provider_user.key().name(),'name':self.provider_user.name,'type':'to'}]
-        subject = "Service Order Cancelled - " + str(self.key().id()) + ". Service Provide - " + self.provider_obj.name
+        subject = "Service Order Cancelled - " + str(self.key().id()) + ". Service Provider - " + self.provider_obj.name
         send_mandrill_email('work-order-cancelled-3', template_content, to, subject)
 
     def store_login(self, role):
