@@ -90,7 +90,7 @@
             data = JSON.parse(data);
             if(data.status == 'success') {
                 $(".spinner-container").hide();
-                alert('Too bad you could not accept this work order. The store will be notified!');
+                alert('You are unable to accept Service Order # ' + data.id + '. Customer will be notified accordingly');
                 window.location = '/'
             }
             else if(data.status == 'error') {

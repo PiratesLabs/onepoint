@@ -359,9 +359,12 @@ class WorkOrder(db.Model):
         return ret_val
 
     def estimate(self, approval_str, params):
-        ret_val = {'status':'success'}
+        ret_val = {'status':'success', 'id':self.key().id()}
         if self.curr_state != 'CREATED':
-            ret_val = {'status':'error', 'message':'Only a work order in created state can be estimated'}
+            msg = 'Unable to schedule this Service Order, since an action has already been taken on it.'
+            if self.curr_state == 'CANCELLED':
+                msg = 'Unable to schedule this Service Order, since it has been cancelled already by the Requestor.'
+            ret_val = {'status':'error', 'message':msg}
             return ret_val
         approval = int(approval_str)
         if approval == 1:
