@@ -15,6 +15,9 @@
           <p>APPLIANCE: {{wo.0.appliance_obj.name}}</p>
           <p>PROVIDER: {{wo.0.provider_obj.name}}</p>
           <p>LAST UPDATED: {{wo.0.curr_state_timestamp}} EST</p>
+          {% if wo.0.curr_state == 'REJECTED' %}
+            <p>PROVIDER REMARKS: {{wo.0.curr_state_notes}}</p>
+          {% endif %}
           {% if wo.1 %}
             {% if wo.1.0.0 == 'ESTIMATE' %}
               <form role="form" id="estimate-form">

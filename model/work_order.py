@@ -89,6 +89,9 @@ class WorkOrder(db.Model):
     @property
     def curr_state_timestamp(self):
         return self.get_work_order_history().time.replace(tzinfo=timezone('UTC')).astimezone(timezone('US/Eastern'))
+    @property
+    def curr_state_notes(self):
+        return self.get_work_order_history().details
 
     def get_state_display_name(self, state=None):
         state = self.curr_state if not state else state
