@@ -5,6 +5,8 @@ from model.store import Store
 from model.member import Member
 from model.provider import Provider
 from datetime import datetime
+import pytz
+from pytz import timezone
 
 work_order_states = ["CREATED", ["ESTIMATED", "REJECTED"], ["APPROVED", "DISAPPROVED"], "PROVIDER_CHECKED_IN", "COMPLETED", "CANCELLED"]
 work_order_display_names = {
@@ -16,6 +18,16 @@ work_order_display_names = {
         "PROVIDER_CHECKED_IN":"PROVIDER_CHECKED_IN", 
         "COMPLETED":"COMPLETED",
         "CANCELLED":"CANCELLED"
+}
+work_order_state_index = {
+        "CREATED":0, 
+        "ESTIMATED":1, 
+        "REJECTED":1, 
+        "APPROVED":2, 
+        "DISAPPROVED":2, 
+        "PROVIDER_CHECKED_IN":3, 
+        "COMPLETED":4,
+        "CANCELLED":-1
 }
 separator = '~~##'
 
@@ -74,10 +86,21 @@ class WorkOrder(db.Model):
     @property
     def curr_state_display_name(self):
         return self.get_state_display_name()
+    @property
+    def curr_state_timestamp(self):
+        return self.get_work_order_history().time.replace(tzinfo=timezone('UTC')).astimezone(timezone('US/Eastern'))
 
     def get_state_display_name(self, state=None):
         state = self.curr_state if not state else state
         return work_order_display_names[state]
+
+    def get_work_order_history(self, state=None):
+        state = self.curr_state if not state else state
+        index = work_order_state_index[state]
+        if index == -1:
+            return WorkOrderHistory.get_by_id(self.history[len(self.history)-1])
+        else:
+            return WorkOrderHistory.get_by_id(self.history[index])
     
     def time_to_service(self, end_woh):
         time_to_service = ''
