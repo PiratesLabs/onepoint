@@ -27,6 +27,7 @@ class AppliancesPage(WebRequestHandler):
         self.write(self.get_rendered_html(path, template_values), 200)
 
 class ApplianceDetailsPage(WebRequestHandler):
+    @login_required
     def get(self):
         path = 'appliance_details.html'
         appliance = Appliance.get_by_id(long(self['id']))

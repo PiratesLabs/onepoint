@@ -35,6 +35,8 @@ class LogoutHandler(WebRequestHandler):
         del self.session['name']
         del self.session['fb_id']
         del self.session['role']
+        if 'redirect_url' in self.session:
+            del self.session['redirect_url']
         self.redirect('/')
 
 class TempLoginHandler(WebRequestHandler):
