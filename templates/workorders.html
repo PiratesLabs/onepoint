@@ -5,6 +5,7 @@
 {% block BarContent%}
 <input type="hidden" id="active-wo" value="{{active_wo}}">
 <input type="hidden" id="new-wo" value="{{new_wo}}">
+<input type="hidden" id="display_wo" value="{{display_wo}}">
 <div class="bartwo">{{count}} SERVICE ORDERS</div>
 <div class="content">
 	<div class="container">
@@ -46,7 +47,7 @@
       }
       var new_wo = $('#new-wo').val();
       if(new_wo) {
-        alert('Successfully created Service Order# '+new_wo);
+        alert('Successfully created Service Order# '+$('#display_wo').val());
         $('#'+new_wo).addClass('new');
         $('#c'+new_wo).collapse('show');
         $('#c'+new_wo).parents('.collapse').collapse('show');

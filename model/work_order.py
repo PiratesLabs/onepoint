@@ -19,6 +19,15 @@ work_order_display_names = {
 }
 separator = '~~##'
 
+def get_display_id(long_id):
+    str_id = str(long_id)
+    retVal = []
+    for (idx, char) in enumerate(str_id):
+        if idx > 0 and idx % 4 == 0:
+            retVal.append("-")
+        retVal.append(char)
+    return "".join(retVal)
+
 class WorkOrderHistory(db.Model):
 	time = db.DateTimeProperty(auto_now=True)
 	details = db.StringProperty(indexed=False)
@@ -35,6 +44,11 @@ class WorkOrder(db.Model):
     @property
     def id(self):
         return self.key().id()
+
+    @property
+    def display_id(self):
+        return get_display_id(self.key().id())
+
     @property
     def appliance_obj(self):
         return Appliance.get_by_id(long(self.appliance))
@@ -100,7 +114,7 @@ class WorkOrder(db.Model):
     def send_wo_created_email(self, wo_id, fix_by):
         estimation_link = "http://onepointstaging.appspot.com/work_order/provide_estimate?work_order="+str(wo_id)
         template_content = [
-            {'name':'work_order_id','content':self.key().id()},
+            {'name':'work_order_id','content':self.display_id},
             {'name':'store_name','content':self.appliance_obj.store.name},
             {'name':'provider_address','content':self.provider_obj.address},
             {'name':'store_address','content':self.store.address},
@@ -129,7 +143,7 @@ class WorkOrder(db.Model):
     def send_wo_approval_email(self, estimate, service_date, technician):
         link = 'http://onepointstaging.appspot.com/work_order/list?work_order='+str(self.key().id())
         template_content = [
-            {'name':'work_order_id','content':self.key().id()},
+            {'name':'work_order_id','content':self.display_id},
             {'name':'store_name','content':self.appliance_obj.store.name},
             {'name':'fix_by','content':service_date},
             {'name':'provider_name','content':self.provider_obj.name},
@@ -157,7 +171,7 @@ class WorkOrder(db.Model):
 
     def send_wo_disapproved_email(self, notes):
         template_content = [
-            {'name':'work_order_id','content':self.key().id()},
+            {'name':'work_order_id','content':self.display_id},
             {'name':'store_name','content':self.appliance_obj.store.name},
             {'name':'provider_address','content':self.provider_obj.address},
             {'name':'provider_name','content':self.provider_obj.name},
@@ -183,7 +197,7 @@ class WorkOrder(db.Model):
         woh = WorkOrderHistory.get_by_id(self.history[work_order_states.index(["ESTIMATED", "REJECTED"])]).details
         service_date, estimate_str, technician = woh.split(separator)
         template_content = [
-            {'name':'work_order_id','content':self.key().id()},
+            {'name':'work_order_id','content':self.display_id},
             {'name':'store_name','content':self.appliance_obj.store.name},
             {'name':'provider_address','content':self.provider_obj.address},
             {'name':'fix_by','content':self.fix_by.strftime('%Y-%m-%d')},
@@ -209,7 +223,7 @@ class WorkOrder(db.Model):
 
     def send_wo_completed_email(self, wo_id, notes, woh):
         template_content = [
-            {'name':'work_order_id','content':self.key().id()},
+            {'name':'work_order_id','content':self.display_id},
             {'name':'store_name','content':self.appliance_obj.store.name},
             {'name':'fix_by','content':self.fix_by.strftime('%Y-%m-%d')},
             {'name':'provider_address','content':self.provider_obj.address},
@@ -229,12 +243,12 @@ class WorkOrder(db.Model):
             {'name':'time_taken','content':self.time_to_service(woh)}
         ]
         to = [{'email':self.provider_user.key().name(),'name':self.provider_user.name,'type':'to'}]
-        subject = "Service Order Completed - " + str(self.key().id()) + ". Service Provider - " + self.provider_obj.name
+        subject = "Service Order Completed - " + str(self.display_id) + ". Service Provider - " + self.provider_obj.name
         send_mandrill_email('work-order-completed-3', template_content, to, subject)
 
     def send_wo_rejected_email(self, remarks):
         template_content = [
-            {'name':'work_order_id','content':self.key().id()},
+            {'name':'work_order_id','content':self.display_id},
             {'name':'store_name','content':self.appliance_obj.store.name},
             {'name':'fix_by','content':self.fix_by.strftime('%Y-%m-%d')},
             {'name':'provider_address','content':self.provider_obj.address},
@@ -258,7 +272,7 @@ class WorkOrder(db.Model):
 
     def send_wo_auto_approved_email(self, estimate_str, service_date, technician):
         template_content = [
-            {'name':'work_order_id','content':self.key().id()},
+            {'name':'work_order_id','content':self.display_id},
             {'name':'store_name','content':self.appliance_obj.store.name},
             {'name':'provider_address','content':self.provider_obj.address},
             {'name':'fix_by','content':service_date},
@@ -283,7 +297,7 @@ class WorkOrder(db.Model):
 
     def send_wo_cancelled_email(self):
         template_content = [
-            {'name':'work_order_id','content':self.key().id()},
+            {'name':'work_order_id','content':self.display_id},
             {'name':'store_name','content':self.appliance_obj.store.name},
             {'name':'provider_address','content':self.provider_obj.address},
             {'name':'fix_by','content':self.fix_by.strftime('%Y-%m-%d')},
@@ -303,7 +317,7 @@ class WorkOrder(db.Model):
             {'name':'service_type','content':self.priority}
         ]
         to = [{'email':self.provider_user.key().name(),'name':self.provider_user.name,'type':'to'}]
-        subject = "Service Order Cancelled - " + str(self.key().id()) + ". Service Provider - " + self.provider_obj.name
+        subject = "Service Order Cancelled - " + str(self.display_id) + ". Service Provider - " + self.provider_obj.name
         send_mandrill_email('work-order-cancelled-3', template_content, to, subject)
 
     def store_login(self, role):

@@ -5,6 +5,7 @@ from model.provider import Provider
 from model.work_order import WorkOrder, WorkOrderHistory
 from model.appliance import Appliance
 from util.util import get_work_orders_for_logged_in_user
+from model.work_order import get_display_id
 import json
 import logging
 
@@ -47,6 +48,7 @@ class ListHandler(WebRequestHandler):
             template_values['active_wo'] = wo_id
         if new_wo:
             template_values['new_wo'] = new_wo
+            template_values['display_wo'] = get_display_id(new_wo)
         template_values['role'] = self.session['role']
         self.write(self.get_rendered_html(path, template_values), 200)
 
