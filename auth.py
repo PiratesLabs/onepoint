@@ -2,11 +2,18 @@ import urllib
 import logging
 from model.member import Member
 
+def set_redirect_url(handler):
+    handler.session['redirect_url'] = handler.request.url
+
 def _member_logged_in(handler):
     if not 'email' in handler.session:
+        set_redirect_url(handler)
+        handler.redirect("/")
         return False
     member = Member.get_by_key_name(handler.session['email'])
     if not member:
+        set_redirect_url(handler)
+        handler.redirect("/")
         return False
     return True
 

@@ -1,5 +1,6 @@
 import webapp2
 import urllib2
+import logging
 import json
 from model.member import Member
 from handlers.web.web_request_handler import WebRequestHandler
@@ -49,7 +50,7 @@ class TempLoginHandler(WebRequestHandler):
                 self.session['fb_id'] = "123"
                 self.session['role'] = member.role
                 success = True
-                url = '/appliance/list'
+                url = self.session['redirect_url'] if 'redirect_url' in self.session else '/appliance/list'
             else:
                 error = "Access for users of role 'Provider' is not allowed"
         else:

@@ -49,6 +49,7 @@
 			if(!data.success) {
 				alert(data.error);
 			}
+			console.log(data.url);
 			window.location=data.url;
 		});
 		return false;
