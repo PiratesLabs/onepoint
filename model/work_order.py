@@ -387,7 +387,7 @@ class WorkOrder(db.Model):
             else:
                 self.curr_state = 'DISAPPROVED'
                 self.send_wo_disapproved_email(params['notes'])
-            self.create_wo_history(None)
+            self.create_wo_history(params['notes'])
             self.put()
         elif self.curr_state == 'APPROVED':
             self.curr_state = work_order_states[work_order_states.index(["APPROVED", "DISAPPROVED"]) + 1]

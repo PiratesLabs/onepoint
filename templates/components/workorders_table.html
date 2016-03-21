@@ -17,6 +17,8 @@
           <p>LAST UPDATED: {{wo.0.curr_state_timestamp}} EST</p>
           {% if wo.0.curr_state == 'REJECTED' %}
             <p>PROVIDER REMARKS: {{wo.0.curr_state_notes}}</p>
+          {% elif wo.0.curr_state == 'DISAPPROVED' %}
+            <p>STORE OWNER REMARKS: {{wo.0.curr_state_notes}}</p>
           {% endif %}
           {% if wo.1 %}
             {% if wo.1.0.0 == 'ESTIMATE' %}
