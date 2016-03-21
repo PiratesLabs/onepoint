@@ -9,6 +9,7 @@ import pytz
 from pytz import timezone
 
 work_order_states = ["CREATED", ["ESTIMATED", "REJECTED"], ["APPROVED", "DISAPPROVED"], "PROVIDER_CHECKED_IN", "COMPLETED", "CANCELLED"]
+workorder_listing_order = ["CREATED", "PENDING", "SCHEDULED", "PROVIDER_CHECKED_IN", "COMPLETED", "REJECTED", "DISAPPROVED", "CANCELLED"]
 work_order_display_names = {
         "CREATED":"CREATED", 
         "ESTIMATED":"PENDING", 

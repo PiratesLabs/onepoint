@@ -13,7 +13,7 @@
       <div class="col-sm-3 col-xs-1"></div>
       <div class="col-sm-6 col-xs-10">
         <div class="panel-group" id="accordion-outer" role="tablist" aria-multiselectable="true">
-          {% for state, workorders in workorders_by_state.items %}
+          {% for state, workorders in workorders_list %}
             <div class="panel panel-default">
               <div class="panel-heading heading" role="tab" id="state-heading-{{forloop.counter}}">
                 <a role="button" data-toggle="collapse" data-parent="#accordion-outer" href="#state-{{forloop.counter}}" aria-expanded="true" aria-controls="state-{{forloop.counter}}">

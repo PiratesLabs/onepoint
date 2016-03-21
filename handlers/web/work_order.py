@@ -2,7 +2,7 @@ import webapp2
 from handlers.web import WebRequestHandler
 from auth import provider_login_required, login_required
 from model.provider import Provider
-from model.work_order import WorkOrder, WorkOrderHistory, work_order_display_names
+from model.work_order import WorkOrder, WorkOrderHistory, work_order_display_names, workorder_listing_order
 from model.appliance import Appliance
 from util.util import get_work_orders_for_logged_in_user
 from model.work_order import get_display_id
@@ -44,7 +44,11 @@ class ListHandler(WebRequestHandler):
             if not state in workorders_by_state:
                 workorders_by_state[state] = []
             workorders_by_state[state].append((workorder, workorder.get_action_url(self.session['role'])))
-        template_values = {'workorders_by_state': workorders_by_state, 'count': len(workorders)}
+        workorders_list = []
+        for state in workorder_listing_order:
+            if state in workorders_by_state:
+                workorders_list.append((state, workorders_by_state[state]))
+        template_values = {'workorders_list': workorders_list, 'count': len(workorders)}
         if wo_id:
             template_values['active_wo'] = wo_id
         if new_wo:
