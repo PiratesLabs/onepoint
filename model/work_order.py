@@ -423,7 +423,6 @@ class WorkOrder(db.Model):
             self.fix_by = datetime.strptime(service_date, '%m/%d/%y')
         else:
             self.curr_state = "REJECTED"
-            self.send_wo_rejected_email(params)
         self.put()
         return ret_val
 
