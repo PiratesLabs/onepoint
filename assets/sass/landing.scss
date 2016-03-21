@@ -7,6 +7,10 @@ html {
     	background: #ffffff;
     	text-align: center;
 
+        .title {
+            font-size: $login_logo_font_size;
+        }
+
         .vertical-middle {
             height: 100vh;
             position: relative;
