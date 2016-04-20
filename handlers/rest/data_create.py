@@ -86,10 +86,30 @@ def map_address(address):
     elif address == '9100 Yellow Brick Road, Suite H, Baltimore, MD 21237':
         return db.GeoPt(39.345803, -76.472525)
 
-def create_member(rel_url, role_name, payload, encoded_payload, headers):
+def owner_manager_fields_mapper(fields, role_name):
+    tdc = TestDataCreationHandler()
+    email = fields['Email']
+    owner_obj = tdc.create_member(email, fields['Name'], fields['Phone'], role_name)
+    return owner_obj
+
+def vendor_mapper(fields, role_name):
+    tdc = TestDataCreationHandler()
+    provider_obj = Provider.get_or_insert(key_name = fields['Vendor ID'])
+    provider_obj.name = fields['Vendor Name']
+    provider_obj.phone_num = fields['Phone - Business Hours']
+    dispatch_email = fields['Dispatch Email']
+    provider_user = tdc.create_member(dispatch_email, fields['Primary Contact Name'], fields['Phone - Business Hours'], role_name)
+    provider_obj.owner = provider_user
+    provider_obj.location = map_address(fields['Address'])
+    provider_obj.address = fields['Address']
+    provider_obj.insurance = 'Hartford insurance'
+    provider_obj.certifications = 'Class B Electrician license'
+    provider_obj.reputation = 4.0
+    provider_obj.put()
+
+def create_member(rel_url, role_name, payload, encoded_payload, headers, fields_mapper):
     url = 'https://api.airtable.com/v0/'+airtable.config['app_id']+'/'+rel_url
     response = urlfetch.fetch(url=url,payload=encoded_payload,method=urlfetch.GET,headers=headers)
-    tdc = TestDataCreationHandler()
     if response.content and 'records' in response.content:
         r = json.loads(response.content)
         members = r['records']
@@ -97,8 +117,7 @@ def create_member(rel_url, role_name, payload, encoded_payload, headers):
             fields = member['fields']
             if len(fields) <= 0:
                 continue
-            email = fields['Email']
-            owner_obj = tdc.create_member(email, fields['Name'], fields['Phone'], role_name)
+            fields_mapper(fields, role_name)
             #owners_map[member['id']] = owner_obj
     logging.info('Done ' + role_name)
 
@@ -113,8 +132,9 @@ def pull_airtable_data():
     encoded_payload = urllib.urlencode(payload)
     headers = {'Authorization': 'Bearer '+airtable.config['api_key'], 'Content-Type': 'application/x-www-form-urlencoded'}
 
-    create_member('Owners', 'owner', payload, encoded_payload, headers)
-    create_member('Managers', 'manager', payload, encoded_payload, headers)
+    create_member('Owners', 'owner', payload, encoded_payload, headers, owner_manager_fields_mapper)
+    create_member('Managers', 'manager', payload, encoded_payload, headers, owner_manager_fields_mapper)
+    create_member('Vendors', 'provider', payload, encoded_payload, headers, vendor_mapper)
 
     # url = 'https://api.airtable.com/v0/'+airtable.config['app_id']+'/Stores'
     # response = urlfetch.fetch(url=url,payload=encoded_payload,method=urlfetch.GET,headers=headers)
@@ -153,30 +173,6 @@ def pull_airtable_data():
     #         appliance_obj.store = stores_map[fields['Store'][0]]
     #         appliance_obj.put()
     # logging.info('Done Appliances')
-    
-    # url = 'https://api.airtable.com/v0/'+airtable.config['app_id']+'/Vendors'
-    # response = urlfetch.fetch(url=url,payload=encoded_payload,method=urlfetch.GET,headers=headers)
-    # if response.content and 'records' in response.content:
-    #     r = json.loads(response.content)
-    #     providers = r['records']
-    #     #provider_user = tdc.create_provider('provider@americangrid.com', 'C.P', '(617)-840-0716')
-    #     for provider in providers:
-    #         fields = provider['fields']
-    #         if len(fields) <= 0:
-    #             continue
-    #         provider_obj = Provider(key_name = fields['Vendor ID'])
-    #         provider_obj.name = fields['Vendor Name']
-    #         provider_obj.phone_num = fields['Phone - Business Hours']
-    #         dispatch_email = fields['Dispatch Email'] if 'Dispatch Email' in fields else 'rajiv@beagleslabs.com'
-    #         provider_user = tdc.create_provider(dispatch_email, fields['Primary Contact Name'], fields['Phone - Business Hours'])
-    #         provider_obj.owner = provider_user
-    #         provider_obj.location = map_address(fields['Address'])
-    #         provider_obj.address = fields['Address']
-    #         provider_obj.insurance = 'Hartford insurance'
-    #         provider_obj.certifications = 'Class B Electrician license'
-    #         provider_obj.reputation = 4.0
-    #         provider_obj.put()
-    # logging.info('Done Vendors')
 
 class AirtableDataPullHandler(webapp2.RequestHandler):
     def get(self):
