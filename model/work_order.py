@@ -7,6 +7,7 @@ from model.provider import Provider
 from datetime import datetime
 import pytz
 from pytz import timezone
+from google.appengine.api import app_identity
 
 work_order_states = ["CREATED", ["ESTIMATED", "REJECTED"], ["APPROVED", "DISAPPROVED"], "PROVIDER_CHECKED_IN", "COMPLETED", "CANCELLED"]
 workorder_listing_order = ["CREATED", "PENDING", "SCHEDULED", "PROVIDER_CHECKED_IN", "COMPLETED", "REJECTED", "DISAPPROVED", "CANCELLED"]
@@ -139,7 +140,8 @@ class WorkOrder(db.Model):
         return woh
 
     def send_wo_created_email(self, wo_id, fix_by):
-        estimation_link = "http://onepointstaging.appspot.com/work_order/provide_estimate?work_order="+str(wo_id)
+        server_url = app_identity.get_default_version_hostname()
+        estimation_link = 'http://'+server_url+"/work_order/provide_estimate?work_order="+str(wo_id)
         template_content = [
             {'name':'work_order_id','content':self.display_id},
             {'name':'store_name','content':self.appliance_obj.store.name},
@@ -168,7 +170,8 @@ class WorkOrder(db.Model):
         send_mandrill_email('work-order-created-3', template_content, to, "Service Order created", merge_vars)
 
     def send_wo_approval_email(self, estimate, service_date, technician):
-        link = 'http://onepointstaging.appspot.com/work_order/list?work_order='+str(self.key().id())
+        server_url = app_identity.get_default_version_hostname()
+        link = 'http://'+server_url+'/work_order/list?work_order='+str(self.key().id())
         template_content = [
             {'name':'work_order_id','content':self.display_id},
             {'name':'store_name','content':self.appliance_obj.store.name},
