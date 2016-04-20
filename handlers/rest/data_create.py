@@ -139,10 +139,10 @@ def pull_airtable_data():
         r = json.loads(response.content)
         stores = r['records']
         for store in stores:
-            store_obj = Store()
             fields = store['fields']
             if len(fields) <= 0:
                 continue
+            store_obj = Store(key_name = fields['Store ID'])
             store_obj.name = fields['Store Name']
             store_obj.location = db.GeoPt(fields['Latitude'],fields['Longitude'])
             store_obj.address = fields['Store Address']
@@ -159,10 +159,10 @@ def pull_airtable_data():
         r = json.loads(response.content)
         appliances = r['records']
         for appliance in appliances:
-            appliance_obj = Appliance()
             fields = appliance['fields']
             if len(fields) <= 0:
                 continue
+            appliance_obj = Appliance(key_name = fields['Appliance_Id'])
             appliance_obj.name = fields['Appliance Name'][0]
             appliance_obj.serial_num = fields['Serial #']
             appliance_obj.model = fields['Model #']
@@ -178,10 +178,10 @@ def pull_airtable_data():
         providers = r['records']
         #provider_user = tdc.create_provider('provider@americangrid.com', 'C.P', '(617)-840-0716')
         for provider in providers:
-            provider_obj = Provider()
             fields = provider['fields']
             if len(fields) <= 0:
                 continue
+            provider_obj = Provider(key_name = fields['Vendor ID'])
             provider_obj.name = fields['Vendor Name']
             provider_obj.phone_num = fields['Phone - Business Hours']
             dispatch_email = fields['Dispatch Email'] if 'Dispatch Email' in fields else 'rajiv@beagleslabs.com'
