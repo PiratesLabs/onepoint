@@ -15,6 +15,8 @@ from google.appengine.ext import db
 from google.appengine.ext import deferred
 from google.appengine.api import urlfetch
 
+obj_map = {}
+
 def clear_datastore():
     models = [Member, Store, Appliance, Provider, WorkOrder, WorkOrderHistory]
     for model in models:
@@ -86,15 +88,20 @@ def map_address(address):
     elif address == '9100 Yellow Brick Road, Suite H, Baltimore, MD 21237':
         return db.GeoPt(39.345803, -76.472525)
 
-def owner_manager_fields_mapper(fields, role_name):
+def owner_manager_fields_mapper(member, role_name):
+    fields = member['fields']
     tdc = TestDataCreationHandler()
     email = fields['Email']
     owner_obj = tdc.create_member(email, fields['Name'], fields['Phone'], role_name)
+    obj_map[member['id']] = owner_obj
     return owner_obj
 
-def vendor_mapper(fields, role_name):
+def vendor_mapper(member, role_name):
+    fields = member['fields']
     tdc = TestDataCreationHandler()
-    provider_obj = Provider.get_or_insert(key_name = fields['Vendor ID'])
+    provider_obj = Provider.all().filter('airtable_id =', fields['Vendor ID']).get()
+    if not provider_obj:
+        provider_obj = Provider()
     provider_obj.name = fields['Vendor Name']
     provider_obj.phone_num = fields['Phone - Business Hours']
     dispatch_email = fields['Dispatch Email']
@@ -105,9 +112,38 @@ def vendor_mapper(fields, role_name):
     provider_obj.insurance = 'Hartford insurance'
     provider_obj.certifications = 'Class B Electrician license'
     provider_obj.reputation = 4.0
+    provider_obj.airtable_id = fields['Vendor ID']
     provider_obj.put()
 
-def create_member(rel_url, role_name, payload, encoded_payload, headers, fields_mapper):
+def store_mapper(member, role_name):
+    fields = member['fields']
+    store_obj = Store.all().filter('airtable_id =', fields['Store ID']).get()
+    if not store_obj:
+        store_obj = Store()
+    store_obj.name = fields['Store Name']
+    store_obj.location = db.GeoPt(fields['Latitude'],fields['Longitude'])
+    store_obj.address = fields['Store Address']
+    store_obj.billing_address = fields['Billing Address']
+    store_obj.owner = obj_map[fields['Store Owner'][0]].key().name()
+    store_obj.manager = obj_map[fields['Store Manager'][0]].key().name()
+    store_obj.airtable_id = fields['Store ID']
+    store_obj.put()
+    obj_map[member['id']] = store_obj
+
+def appliance_mapper(member, role_name):
+    fields = member['fields']
+    appliance_obj = Appliance.all().filter('airtable_id =', fields['Appliance_Id']).get()
+    if not appliance_obj:
+        appliance_obj = Appliance()
+    appliance_obj.name = fields['Appliance Name'][0]
+    appliance_obj.serial_num = fields['Serial #']
+    appliance_obj.model = fields['Model #']
+    appliance_obj.manufacturer = fields['Manufacturer'][0]
+    appliance_obj.store = obj_map[fields['Store'][0]]
+    appliance_obj.airtable_id = fields['Appliance_Id']
+    appliance_obj.put()
+
+def create_db_object(rel_url, role_name, payload, encoded_payload, headers, fields_mapper):
     url = 'https://api.airtable.com/v0/'+airtable.config['app_id']+'/'+rel_url
     response = urlfetch.fetch(url=url,payload=encoded_payload,method=urlfetch.GET,headers=headers)
     if response.content and 'records' in response.content:
@@ -117,62 +153,21 @@ def create_member(rel_url, role_name, payload, encoded_payload, headers, fields_
             fields = member['fields']
             if len(fields) <= 0:
                 continue
-            fields_mapper(fields, role_name)
-            #owners_map[member['id']] = owner_obj
+            fields_mapper(member, role_name)
     logging.info('Done ' + role_name)
 
 def pull_airtable_data():
     logging.info('Starting Airtable Pull')
 
-    owners_map = {}
-    managers_map = {}
-    stores_map = {}
-
     payload = {'view': airtable.config['view']}
     encoded_payload = urllib.urlencode(payload)
     headers = {'Authorization': 'Bearer '+airtable.config['api_key'], 'Content-Type': 'application/x-www-form-urlencoded'}
 
-    create_member('Owners', 'owner', payload, encoded_payload, headers, owner_manager_fields_mapper)
-    create_member('Managers', 'manager', payload, encoded_payload, headers, owner_manager_fields_mapper)
-    create_member('Vendors', 'provider', payload, encoded_payload, headers, vendor_mapper)
-
-    # url = 'https://api.airtable.com/v0/'+airtable.config['app_id']+'/Stores'
-    # response = urlfetch.fetch(url=url,payload=encoded_payload,method=urlfetch.GET,headers=headers)
-    # if response.content and 'records' in response.content:
-    #     r = json.loads(response.content)
-    #     stores = r['records']
-    #     for store in stores:
-    #         fields = store['fields']
-    #         if len(fields) <= 0:
-    #             continue
-    #         store_obj = Store(key_name = fields['Store ID'])
-    #         store_obj.name = fields['Store Name']
-    #         store_obj.location = db.GeoPt(fields['Latitude'],fields['Longitude'])
-    #         store_obj.address = fields['Store Address']
-    #         store_obj.billing_address = fields['Billing Address']
-    #         store_obj.owner = owners_map[fields['Store Owner'][0]].key().name()
-    #         store_obj.manager = managers_map[fields['Store Manager'][0]].key().name()
-    #         store_obj.put()
-    #         stores_map[store['id']] = store_obj
-    # logging.info('Done Stores')
-
-    # url = 'https://api.airtable.com/v0/'+airtable.config['app_id']+'/Appliances'
-    # response = urlfetch.fetch(url=url,payload=encoded_payload,method=urlfetch.GET,headers=headers)
-    # if response.content and 'records' in response.content:
-    #     r = json.loads(response.content)
-    #     appliances = r['records']
-    #     for appliance in appliances:
-    #         fields = appliance['fields']
-    #         if len(fields) <= 0:
-    #             continue
-    #         appliance_obj = Appliance(key_name = fields['Appliance_Id'])
-    #         appliance_obj.name = fields['Appliance Name'][0]
-    #         appliance_obj.serial_num = fields['Serial #']
-    #         appliance_obj.model = fields['Model #']
-    #         appliance_obj.manufacturer = fields['Manufacturer'][0]
-    #         appliance_obj.store = stores_map[fields['Store'][0]]
-    #         appliance_obj.put()
-    # logging.info('Done Appliances')
+    create_db_object('Owners', 'owner', payload, encoded_payload, headers, owner_manager_fields_mapper)
+    create_db_object('Managers', 'manager', payload, encoded_payload, headers, owner_manager_fields_mapper)
+    create_db_object('Vendors', 'provider', payload, encoded_payload, headers, vendor_mapper)
+    create_db_object('Stores', 'stores', payload, encoded_payload, headers, store_mapper)
+    create_db_object('Appliances', 'appliances', payload, encoded_payload, headers, appliance_mapper)
 
 class AirtableDataPullHandler(webapp2.RequestHandler):
     def get(self):

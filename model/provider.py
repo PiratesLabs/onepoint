@@ -9,6 +9,7 @@ class Provider(db.Model):
     insurance = db.StringProperty(indexed=False)
     certifications = db.StringProperty(indexed=False)
     reputation = db.FloatProperty(indexed=False)
+    airtable_id = db.StringProperty(indexed=True)
 
     @property
     def details_url(self):

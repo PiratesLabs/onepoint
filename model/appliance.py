@@ -9,6 +9,7 @@ class Appliance(db.Model):
     last_repair_date = db.StringProperty(indexed=False)
     installed_on = db.StringProperty(indexed=False)
     warranty = db.StringProperty(indexed=False)
+    airtable_id = db.StringProperty(indexed=True)
 
     @property
     def details_url(self):

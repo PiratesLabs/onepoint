@@ -7,3 +7,4 @@ class Store(db.Model):
     owner = db.StringProperty(indexed=True)
     address = db.StringProperty(indexed=False)
     billing_address = db.StringProperty(indexed=False)
+    airtable_id = db.StringProperty(indexed=True)
