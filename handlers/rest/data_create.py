@@ -68,20 +68,13 @@ class TestDataCreationHandler(WebRequestHandler):
         stores.append(store)
         return stores
 
-    def create_provider(self, email, name, phone):
-        provider = Member(key_name = email, name = name, role = 'provider', phone = phone)
-        provider.put()
-        return provider
-
-    def create_owner(self, email, name, phone):
-        owner = Member(key_name = email, name = name, role = 'owner', phone = phone)
-        owner.put()
-        return owner
-
-    def create_manager(self, email, name, phone):
-        manager = Member(key_name = email, name = name, role = 'manager', phone = phone)
-        manager.put()
-        return manager
+    def create_member(self, email, name, phone, role_name):
+        member = Member.get_or_insert(key_name = email)
+        member.name = name
+        member.role = role_name
+        member.phone = phone
+        member.put()
+        return member
 
 def map_address(address):
     if address == '9107 Mendenhall Court, Columbia, MD 21045':
@@ -93,9 +86,24 @@ def map_address(address):
     elif address == '9100 Yellow Brick Road, Suite H, Baltimore, MD 21237':
         return db.GeoPt(39.345803, -76.472525)
 
+def create_member(rel_url, role_name, payload, encoded_payload, headers):
+    url = 'https://api.airtable.com/v0/'+airtable.config['app_id']+'/'+rel_url
+    response = urlfetch.fetch(url=url,payload=encoded_payload,method=urlfetch.GET,headers=headers)
+    tdc = TestDataCreationHandler()
+    if response.content and 'records' in response.content:
+        r = json.loads(response.content)
+        members = r['records']
+        for member in members:
+            fields = member['fields']
+            if len(fields) <= 0:
+                continue
+            email = fields['Email']
+            owner_obj = tdc.create_member(email, fields['Name'], fields['Phone'], role_name)
+            #owners_map[member['id']] = owner_obj
+    logging.info('Done ' + role_name)
+
 def pull_airtable_data():
     logging.info('Starting Airtable Pull')
-    tdc = TestDataCreationHandler()
 
     owners_map = {}
     managers_map = {}
@@ -105,103 +113,82 @@ def pull_airtable_data():
     encoded_payload = urllib.urlencode(payload)
     headers = {'Authorization': 'Bearer '+airtable.config['api_key'], 'Content-Type': 'application/x-www-form-urlencoded'}
 
-    url = 'https://api.airtable.com/v0/'+airtable.config['app_id']+'/Owners'
-    response = urlfetch.fetch(url=url,payload=encoded_payload,method=urlfetch.GET,headers=headers)
-    if response.content and 'records' in response.content:
-        r = json.loads(response.content)
-        owners = r['records']
-        for owner in owners:
-            fields = owner['fields']
-            if len(fields) <= 0:
-                continue
-            email = fields['Email'] if 'Email' in fields else 'owner@americangrid.com'
-            owner_obj = tdc.create_owner(email, fields['Name'], fields['Phone'])
-            owners_map[owner['id']] = owner_obj
-    logging.info('Done Owners')
+    create_member('Owners', 'owner', payload, encoded_payload, headers)
+    create_member('Managers', 'manager', payload, encoded_payload, headers)
 
-    url = 'https://api.airtable.com/v0/'+airtable.config['app_id']+'/Managers'
-    response = urlfetch.fetch(url=url,payload=encoded_payload,method=urlfetch.GET,headers=headers)
-    if response.content and 'records' in response.content:
-        r = json.loads(response.content)
-        managers = r['records']
-        for manager in managers:
-            fields = manager['fields']
-            if len(fields) <= 0:
-                continue
-            email = fields['Email'] if 'Email' in fields else 'manager@americangrid.com'
-            manager_obj = tdc.create_manager(email, fields['Name'], fields['Phone'])
-            managers_map[manager['id']] = manager_obj
-    logging.info('Done Managers')
+    # url = 'https://api.airtable.com/v0/'+airtable.config['app_id']+'/Stores'
+    # response = urlfetch.fetch(url=url,payload=encoded_payload,method=urlfetch.GET,headers=headers)
+    # if response.content and 'records' in response.content:
+    #     r = json.loads(response.content)
+    #     stores = r['records']
+    #     for store in stores:
+    #         fields = store['fields']
+    #         if len(fields) <= 0:
+    #             continue
+    #         store_obj = Store(key_name = fields['Store ID'])
+    #         store_obj.name = fields['Store Name']
+    #         store_obj.location = db.GeoPt(fields['Latitude'],fields['Longitude'])
+    #         store_obj.address = fields['Store Address']
+    #         store_obj.billing_address = fields['Billing Address']
+    #         store_obj.owner = owners_map[fields['Store Owner'][0]].key().name()
+    #         store_obj.manager = managers_map[fields['Store Manager'][0]].key().name()
+    #         store_obj.put()
+    #         stores_map[store['id']] = store_obj
+    # logging.info('Done Stores')
 
-    url = 'https://api.airtable.com/v0/'+airtable.config['app_id']+'/Stores'
-    response = urlfetch.fetch(url=url,payload=encoded_payload,method=urlfetch.GET,headers=headers)
-    if response.content and 'records' in response.content:
-        r = json.loads(response.content)
-        stores = r['records']
-        for store in stores:
-            fields = store['fields']
-            if len(fields) <= 0:
-                continue
-            store_obj = Store(key_name = fields['Store ID'])
-            store_obj.name = fields['Store Name']
-            store_obj.location = db.GeoPt(fields['Latitude'],fields['Longitude'])
-            store_obj.address = fields['Store Address']
-            store_obj.billing_address = fields['Billing Address']
-            store_obj.owner = owners_map[fields['Store Owner'][0]].key().name()
-            store_obj.manager = managers_map[fields['Store Manager'][0]].key().name()
-            store_obj.put()
-            stores_map[store['id']] = store_obj
-    logging.info('Done Stores')
-
-    url = 'https://api.airtable.com/v0/'+airtable.config['app_id']+'/Appliances'
-    response = urlfetch.fetch(url=url,payload=encoded_payload,method=urlfetch.GET,headers=headers)
-    if response.content and 'records' in response.content:
-        r = json.loads(response.content)
-        appliances = r['records']
-        for appliance in appliances:
-            fields = appliance['fields']
-            if len(fields) <= 0:
-                continue
-            appliance_obj = Appliance(key_name = fields['Appliance_Id'])
-            appliance_obj.name = fields['Appliance Name'][0]
-            appliance_obj.serial_num = fields['Serial #']
-            appliance_obj.model = fields['Model #']
-            appliance_obj.manufacturer = fields['Manufacturer'][0]
-            appliance_obj.store = stores_map[fields['Store'][0]]
-            appliance_obj.put()
-    logging.info('Done Appliances')
+    # url = 'https://api.airtable.com/v0/'+airtable.config['app_id']+'/Appliances'
+    # response = urlfetch.fetch(url=url,payload=encoded_payload,method=urlfetch.GET,headers=headers)
+    # if response.content and 'records' in response.content:
+    #     r = json.loads(response.content)
+    #     appliances = r['records']
+    #     for appliance in appliances:
+    #         fields = appliance['fields']
+    #         if len(fields) <= 0:
+    #             continue
+    #         appliance_obj = Appliance(key_name = fields['Appliance_Id'])
+    #         appliance_obj.name = fields['Appliance Name'][0]
+    #         appliance_obj.serial_num = fields['Serial #']
+    #         appliance_obj.model = fields['Model #']
+    #         appliance_obj.manufacturer = fields['Manufacturer'][0]
+    #         appliance_obj.store = stores_map[fields['Store'][0]]
+    #         appliance_obj.put()
+    # logging.info('Done Appliances')
     
-    url = 'https://api.airtable.com/v0/'+airtable.config['app_id']+'/Vendors'
-    response = urlfetch.fetch(url=url,payload=encoded_payload,method=urlfetch.GET,headers=headers)
-    if response.content and 'records' in response.content:
-        r = json.loads(response.content)
-        providers = r['records']
-        #provider_user = tdc.create_provider('provider@americangrid.com', 'C.P', '(617)-840-0716')
-        for provider in providers:
-            fields = provider['fields']
-            if len(fields) <= 0:
-                continue
-            provider_obj = Provider(key_name = fields['Vendor ID'])
-            provider_obj.name = fields['Vendor Name']
-            provider_obj.phone_num = fields['Phone - Business Hours']
-            dispatch_email = fields['Dispatch Email'] if 'Dispatch Email' in fields else 'rajiv@beagleslabs.com'
-            provider_user = tdc.create_provider(dispatch_email, fields['Primary Contact Name'], fields['Phone - Business Hours'])
-            provider_obj.owner = provider_user
-            provider_obj.location = map_address(fields['Address'])
-            provider_obj.address = fields['Address']
-            provider_obj.insurance = 'Hartford insurance'
-            provider_obj.certifications = 'Class B Electrician license'
-            provider_obj.reputation = 4.0
-            provider_obj.put()
-    logging.info('Done Vendors')
+    # url = 'https://api.airtable.com/v0/'+airtable.config['app_id']+'/Vendors'
+    # response = urlfetch.fetch(url=url,payload=encoded_payload,method=urlfetch.GET,headers=headers)
+    # if response.content and 'records' in response.content:
+    #     r = json.loads(response.content)
+    #     providers = r['records']
+    #     #provider_user = tdc.create_provider('provider@americangrid.com', 'C.P', '(617)-840-0716')
+    #     for provider in providers:
+    #         fields = provider['fields']
+    #         if len(fields) <= 0:
+    #             continue
+    #         provider_obj = Provider(key_name = fields['Vendor ID'])
+    #         provider_obj.name = fields['Vendor Name']
+    #         provider_obj.phone_num = fields['Phone - Business Hours']
+    #         dispatch_email = fields['Dispatch Email'] if 'Dispatch Email' in fields else 'rajiv@beagleslabs.com'
+    #         provider_user = tdc.create_provider(dispatch_email, fields['Primary Contact Name'], fields['Phone - Business Hours'])
+    #         provider_obj.owner = provider_user
+    #         provider_obj.location = map_address(fields['Address'])
+    #         provider_obj.address = fields['Address']
+    #         provider_obj.insurance = 'Hartford insurance'
+    #         provider_obj.certifications = 'Class B Electrician license'
+    #         provider_obj.reputation = 4.0
+    #         provider_obj.put()
+    # logging.info('Done Vendors')
 
 class AirtableDataPullHandler(webapp2.RequestHandler):
     def get(self):
-        clear_datastore()
         deferred.defer(pull_airtable_data)
+
+class ClearAirtableDataHandler(webapp2.RequestHandler):
+    def get(self):
+        clear_datastore()
 
 app = webapp2.WSGIApplication([
     ('/rest/create/store', StoreCreationHandler),
     ('/rest/create/appliance', ApplianceCreationHandler),
-    ('/rest/create/airtable_data', AirtableDataPullHandler)
+    ('/rest/create/airtable_data', AirtableDataPullHandler),
+    ('/rest/create/clear_airtable_data', ClearAirtableDataHandler)
 ])
