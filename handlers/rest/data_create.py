@@ -177,9 +177,48 @@ class ClearAirtableDataHandler(webapp2.RequestHandler):
     def get(self):
         clear_datastore()
 
+class FormDataReadHandler(WebRequestHandler):
+    def get_appliance_form_date(self, date_name, appliance, appliance_index):
+        date = appliance[appliance_index.index(date_name)].split(" ")[0]
+        if date == "UNKNOWN" or date == "NA":
+            date = ""
+        return date
+
+    def post(self):
+        tdc = TestDataCreationHandler()
+        tdc.create_member(self['owner_email'], self['owner_name'], self['owner_phone'], 'owner')
+        tdc.create_member(self['manager_email'], self['manager_name'], self['manager_phone'], 'manager')
+
+        store_obj = Store()
+        store_obj.name = self['store_name']
+        store_obj.owner = self['owner_email']
+        store_obj.manager = self['manager_email']
+        store_obj.location = db.GeoPt(self['store_lat'],self['store_long'])
+        store_obj.address = self['store_address']
+        store_obj.billing_address = self['store_billing_address']
+        store_obj.put()
+
+        appliances_csv = self['appliances_csv']
+        appliances = appliances_csv.splitlines()
+        appliance_index = [index.strip("\"") for index in str(appliances[0]).split(',')]
+        for appliance in appliances[1:]:
+            appliance = [detail.strip("\"") for detail in str(appliance).split(',')]
+            appliance_obj = Appliance()
+            appliance_obj.name = appliance[appliance_index.index("Name of Appliance")]
+            appliance_obj.serial_num = appliance[appliance_index.index("Serial #")]
+            appliance_obj.model = appliance[appliance_index.index("Model #")]
+            appliance_obj.manufacturer = appliance[appliance_index.index("Manufacturer Name")]
+            appliance_obj.last_repair_date = self.get_appliance_form_date("Last Repair Date (if you know it)", appliance, appliance_index)
+            appliance_obj.installed_on = self.get_appliance_form_date("Installed on (if known)", appliance, appliance_index)
+            appliance_obj.warranty = self.get_appliance_form_date("Is it in warranty (if known)", appliance, appliance_index)
+            appliance_obj.store = store_obj
+            appliance_obj.put()
+
+
 app = webapp2.WSGIApplication([
     ('/rest/create/store', StoreCreationHandler),
     ('/rest/create/appliance', ApplianceCreationHandler),
+    ('/rest/create/form_data', FormDataReadHandler),
     ('/rest/create/airtable_data', AirtableDataPullHandler),
     ('/rest/create/clear_airtable_data', ClearAirtableDataHandler)
 ])

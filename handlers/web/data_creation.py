@@ -16,7 +16,14 @@ class CreateAppliancePage(WebRequestHandler):
         template_values = {}
         self.write(self.get_rendered_html(path, template_values), 200)
 
+class AppliancesFormPage(WebRequestHandler):
+    def get(self):
+        path = 'appliances_form.html'
+        template_values = {}
+        self.write(self.get_rendered_html(path, template_values), 200)
+
 app = webapp2.WSGIApplication([
     ('/data_creation/create_store', CreateStorePage),
-    ('/data_creation/create_appliance', CreateAppliancePage)
+    ('/data_creation/create_appliance', CreateAppliancePage),
+    ('/data_creation/appliances_form', AppliancesFormPage)
 ])

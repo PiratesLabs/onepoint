@@ -1,0 +1,88 @@
+{% extends "bar_base.html" %}
+{% block BarStyles %}
+<link href="/assets/css/sass_out/appliance.css" type="text/css" rel="stylesheet">
+{% endblock %}
+{% block BarContent%}
+<div class="bartwo">Appliances CSV Form</div>
+<div class="content">
+    <div class="details">
+        <div class="container">
+			<form role="form" action="/rest/create/form_data" method="post">
+				<div class="form-group">
+					<label for="store_name">Store Name:</label>
+					<input type="text" class="form-control" name="store_name">
+				</div>
+				<div class="form-group">
+					<label for="store_address">Store Address:</label>
+					<textarea class="form-control" name="store_address"></textarea>
+				</div>
+				<div class="form-group">
+					<label for="store_billing_address">Store Billing Address:</label>
+					<textarea class="form-control" name="store_billing_address"></textarea>
+				</div>
+				<div class="row">
+					<div class="col-xs-6">
+						<div class="form-group">
+							<label for="store_lat">Store Latitude:</label>
+							<input type="text" class="form-control" name="store_lat">
+						</div>
+					</div>
+					<div class="col-xs-6">
+						<div class="form-group">
+							<label for="store_long">Store Longitude:</label>
+							<input type="text" class="form-control" name="store_long">
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-xs-4">
+						<div class="form-group">
+							<label for="owner_email">Owner Email:</label>
+							<input type="text" class="form-control" name="owner_email">
+						</div>
+					</div>
+					<div class="col-xs-4">
+						<div class="form-group">
+							<label for="owner_name">Owner Name:</label>
+							<input type="text" class="form-control" name="owner_name">
+						</div>
+					</div>
+					<div class="col-xs-4">
+						<div class="form-group">
+							<label for="owner_phone">Owner Phone:</label>
+							<input type="text" class="form-control" name="owner_phone">
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-xs-4">
+						<div class="form-group">
+							<label for="manager_email">Manager Email:</label>
+							<input type="text" class="form-control" name="manager_email">
+						</div>
+					</div>
+					<div class="col-xs-4">
+						<div class="form-group">
+							<label for="manager-name">Manager Name:</label>
+							<input type="text" class="form-control" name="manager_name">
+						</div>
+					</div>
+					<div class="col-xs-4">
+						<div class="form-group">
+							<label for="manager-phone">Manager Phone:</label>
+							<input type="text" class="form-control" name="manager_phone">
+						</div>
+					</div>
+				</div>
+				<div class="form-group">
+					<label for="appliances_csv">CSV Appliances Data:</label>
+					<textarea class="form-control" name="appliances_csv"></textarea>
+				</div>
+				<div class="form-group">
+					<button type="submit">Submit</button>
+				</div>
+			</form>
+        </div>
+    </div>
+</div>
+{% endblock %}
