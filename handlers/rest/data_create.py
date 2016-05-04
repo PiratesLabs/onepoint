@@ -194,8 +194,8 @@ class FormDataReadHandler(WebRequestHandler):
         store_obj.owner = self['owner_email']
         store_obj.manager = self['manager_email']
         store_obj.location = db.GeoPt(self['store_lat'],self['store_long'])
-        store_obj.address = self['store_address']
-        store_obj.billing_address = self['store_billing_address']
+        store_obj.address = " ".join(self['store_address'].split("\n"))
+        store_obj.billing_address = " ".join(self['store_billing_address'].split("\n"))
         store_obj.put()
 
         appliances_csv = self['appliances_csv']
