@@ -33,7 +33,7 @@ class Appliance(db.Model):
 
     @property
     def abbr_name(self):
-        abbr = (''.join([part[0] for part in self.name.split(' ')])).upper()
+        abbr = (''.join([part[0] for part in self.name.strip().split(' ')])).upper()
         if len(abbr) > 3:
             abbr = abbr[0:3]
         return abbr
